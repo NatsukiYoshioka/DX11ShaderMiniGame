@@ -11,10 +11,27 @@
     <Filter Include="Json">
       <UniqueIdentifier>{ad4ff8cd-220f-4d39-9c27-08aafdafaef6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{6e464c84-f1be-4ab8-b2c8-430d36d987e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\GameObjectManager">
+      <UniqueIdentifier>{7bbec805-394c-4bc4-bb39-512c99ef99c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Block">
+      <UniqueIdentifier>{d0f75243-7e18-46cf-948a-d6d4817fe95b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Block\BlockAccessor">
+      <UniqueIdentifier>{fe380dd2-0661-43b9-bf72-b43f43480a0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Camera">
+      <UniqueIdentifier>{e4ce6c31-20d8-4d57-b8bb-4ecf710ed56a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Camera\CameraAccessor">
+      <UniqueIdentifier>{b482794d-1317-40e2-95a0-276935d97544}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Game.h" />
     <ClInclude Include="StepTimer.h">
       <Filter>Common</Filter>
     </ClInclude>
@@ -23,6 +40,26 @@
     </ClInclude>
     <ClInclude Include="Json.h">
       <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectManager.h">
+      <Filter>GameObject\GameObjectManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Block.h">
+      <Filter>GameObject\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockAccessor.h">
+      <Filter>GameObject\Block\BlockAccessor</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceAccessor.h" />
+    <ClInclude Include="Camera.h">
+      <Filter>GameObject\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraAccessor.h">
+      <Filter>GameObject\Camera\CameraAccessor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -34,6 +71,25 @@
     </ClCompile>
     <ClCompile Include="Json.cpp">
       <Filter>Json</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectManager.cpp">
+      <Filter>GameObject\GameObjectManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Block.cpp">
+      <Filter>GameObject\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockAccessor.cpp">
+      <Filter>GameObject\Block\BlockAccessor</Filter>
+    </ClCompile>
+    <ClCompile Include="DeviceAccessor.cpp" />
+    <ClCompile Include="Camera.cpp">
+      <Filter>GameObject\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraAccessor.cpp">
+      <Filter>GameObject\Camera\CameraAccessor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

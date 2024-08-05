@@ -183,15 +183,29 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Block.h" />
+    <ClInclude Include="BlockAccessor.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraAccessor.h" />
+    <ClInclude Include="DeviceAccessor.h" />
     <ClInclude Include="DeviceResources.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="Json.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="StepTimer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Block.cpp" />
+    <ClCompile Include="BlockAccessor.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraAccessor.cpp" />
+    <ClCompile Include="DeviceAccessor.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="Json.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="pch.cpp">

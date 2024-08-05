@@ -1,3 +1,40 @@
 {
-  "data": 1
+  "Block": [
+    [
+      "Cube.cmo",
+      [ 0, 0, 0, 2 ]
+    ],
+    [
+      "Cylinder.cmo",
+      [ -0.2, 0, 3, 2 ]
+    ],
+    [
+      "HalfCylinderBig.cmo",
+      [ 0, 0, 6, 2 ]
+    ],
+    [
+      "HalfCylinderSmall.cmo",
+      [ 0, 0, 9, 2 ]
+    ],
+    [
+      "NarrowTunnel.cmo",
+      [ 0, 0, 12, 2 ]
+    ],
+    [
+      "Rectangular.cmo",
+      [ 0, 0, 15, 2 ]
+    ],
+    [
+      "TriangularBig.cmo",
+      [ 0, 0, 18, 2 ]
+    ],
+    [
+      "TriangularSmall.cmo",
+      [ 0, 0, 21, 2 ]
+    ],
+    [
+      "WideTunnel.cmo",
+      [ 0, 0, 24, 2 ]
+    ]
+  ]
 }

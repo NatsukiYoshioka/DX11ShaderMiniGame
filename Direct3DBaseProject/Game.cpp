@@ -4,6 +4,10 @@
 
 #include "pch.h"
 #include"Json.h"
+#include"DeviceAccessor.h"
+#include"CameraAccessor.h"
+#include"BlockAccessor.h"
+#include"GameObjectManager.h"
 #include "Game.h"
 
 extern void ExitGame() noexcept;
@@ -60,6 +64,8 @@ void Game::Update(DX::StepTimer const& timer)
     float elapsedTime = float(timer.GetElapsedSeconds());
 
     // TODO: Add your game logic here.
+    auto gameObjectManager = GameObjectManager::GetInstance();
+    gameObjectManager->Update();
     elapsedTime;
 }
 #pragma endregion
@@ -80,6 +86,8 @@ void Game::Render()
     auto context = m_deviceResources->GetD3DDeviceContext();
 
     // TODO: Add your rendering code here.
+    auto gameObjectManager = GameObjectManager::GetInstance();
+    gameObjectManager->Draw();
     context;
 
     m_deviceResources->PIXEndEvent();
@@ -169,9 +177,14 @@ void Game::GetDefaultSize(int& width, int& height) const noexcept
 void Game::CreateDeviceDependentResources()
 {
     auto device = m_deviceResources->GetD3DDevice();
+    auto context = m_deviceResources->GetD3DDeviceContext();
 
     // TODO: Initialize device dependent objects here (independent of window size).
     Json::CreateInstance();
+    DeviceAccessor::CreateInstance(device, context, m_deviceResources->GetOutputSize());
+    CameraAccessor::CreateInstance();
+    BlockAccessor::CreateInstance();
+    GameObjectManager::CreateInstance();
     device;
 }
 
@@ -185,6 +198,10 @@ void Game::OnDeviceLost()
 {
     // TODO: Add Direct3D resource cleanup here.
     Json::DestroyInstance();
+    DeviceAccessor::DestroyInstance();
+    CameraAccessor::DestroyInstance();
+    BlockAccessor::DestroyInstance();
+    GameObjectManager::DestroyInstance();
 }
 
 void Game::OnDeviceRestored()

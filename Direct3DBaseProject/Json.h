@@ -14,6 +14,8 @@ public:
 	static void DestroyInstance();
 	static Json* GetInstance() { return m_instance; }
 	json GetData() { return m_json; }
+
+	wstring Widen(const string& str);
 private:
 	static Json* m_instance;
 
