@@ -1,0 +1,48 @@
+#pragma once
+#include"GameObject.h"
+
+using namespace DirectX;
+using namespace SimpleMath;
+using namespace Microsoft::WRL;
+using namespace std;
+
+class GameObject;
+class OriginalEffect;
+
+/// <summary>
+/// デスク3Dモデルオブジェクト
+/// </summary>
+class Desk:public GameObject
+{
+public:
+	/// <summary>
+	/// デスクの初期化
+	/// </summary>
+	/// <param name="fileName">3Dモデルのファイル名</param>
+	/// <param name="pos">オブジェクトの初期座標</param>
+	/// <param name="rotate">オブジェクトのY軸回転量(XM_PI / rotate)</param>
+	Desk(const wchar_t* fileName, Vector3 pos, float rotate);
+
+	/// <summary>
+	/// データ破棄
+	/// </summary>
+	~Desk();
+
+	/// <summary>
+	/// オブジェクトの更新
+	/// </summary>
+	void Update()override;
+
+	/// <summary>
+	/// オブジェクトの描画
+	/// </summary>
+	void Draw()override;
+
+private:
+	unique_ptr<OriginalEffect> m_effect;		//モデル描画用エフェクトクラス
+	ComPtr<ID3D11InputLayout> m_inputLayout;	//モデル描画用入力レイアウト
+
+	float m_rotate;		//モデルのY軸回転量
+	Matrix m_world;		//モデルのワールド行列
+};
+

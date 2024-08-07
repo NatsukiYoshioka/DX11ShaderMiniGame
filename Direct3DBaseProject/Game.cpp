@@ -7,6 +7,7 @@
 #include"DeviceAccessor.h"
 #include"CameraAccessor.h"
 #include"BlockAccessor.h"
+#include"DeskAccessor.h"
 #include"GameObjectManager.h"
 #include "Game.h"
 
@@ -184,6 +185,7 @@ void Game::CreateDeviceDependentResources()
     DeviceAccessor::CreateInstance(device, context, m_deviceResources->GetOutputSize());
     CameraAccessor::CreateInstance();
     BlockAccessor::CreateInstance();
+    DeskAccessor::CreateInstance();
     GameObjectManager::CreateInstance();
     device;
 }
@@ -201,6 +203,7 @@ void Game::OnDeviceLost()
     DeviceAccessor::DestroyInstance();
     CameraAccessor::DestroyInstance();
     BlockAccessor::DestroyInstance();
+    DeskAccessor::DestroyInstance();
     GameObjectManager::DestroyInstance();
 }
 

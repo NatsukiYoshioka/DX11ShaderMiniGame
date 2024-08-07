@@ -5,6 +5,7 @@
 
 BlockAccessor* BlockAccessor::m_instance = nullptr;
 
+//ブロックの生成
 BlockAccessor::BlockAccessor()
 {
 	auto json = Json::GetInstance();
@@ -22,17 +23,20 @@ BlockAccessor::BlockAccessor()
 	}
 }
 
+//ブロックの破棄
 BlockAccessor::~BlockAccessor()
 {
 	m_blocks.clear();
 }
 
+//インスタンス生成
 void BlockAccessor::CreateInstance()
 {
 	if (m_instance)return;
 	m_instance = new BlockAccessor();
 }
 
+//インスタンス破棄
 void BlockAccessor::DestroyInstance()
 {
 	if (!m_instance)return;

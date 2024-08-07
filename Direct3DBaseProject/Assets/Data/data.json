@@ -1,40 +1,58 @@
 {
   "Block": [
     [
-      "Cube.cmo",
-      [ 0, 0, 0, 2 ]
+      "Cube.sdkmesh",
+      [ 0, 0, 0, 1 ]
     ],
     [
-      "Cylinder.cmo",
-      [ -0.2, 0, 3, 2 ]
+      "Cylinder.sdkmesh",
+      [ -0.2, 0, 3, 1 ]
     ],
     [
-      "HalfCylinderBig.cmo",
+      "HalfCylinderBig.sdkmesh",
       [ 0, 0, 6, 2 ]
     ],
     [
-      "HalfCylinderSmall.cmo",
+      "HalfCylinderSmall.sdkmesh",
       [ 0, 0, 9, 2 ]
     ],
     [
-      "NarrowTunnel.cmo",
-      [ 0, 0, 12, 2 ]
+      "NarrowTunnel.sdkmesh",
+      [ 0, 0, 12, 1 ]
     ],
     [
-      "Rectangular.cmo",
-      [ 0, 0, 15, 2 ]
+      "Rectangular.sdkmesh",
+      [ 0, 0, 15, 1 ]
     ],
     [
-      "TriangularBig.cmo",
+      "TriangularBig.sdkmesh",
       [ 0, 0, 18, 2 ]
     ],
     [
-      "TriangularSmall.cmo",
+      "TriangularSmall.sdkmesh",
       [ 0, 0, 21, 2 ]
     ],
     [
-      "WideTunnel.cmo",
-      [ 0, 0, 24, 2 ]
+      "WideTunnel.sdkmesh",
+      [ 0, 0, 24, 1 ]
     ]
+  ],
+
+  "BlockTexture": [
+    "Red.dds",
+    "Blue.dds",
+    "Yellow.dds",
+    "Wood.dds"
+  ],
+
+  "Desk": [
+    "Furniture_Desk.sdkmesh",
+    [ 0, -31.5, 20, 2 ]
+  ],
+
+  "DeskTexture": [
+    "Wood_Oak.dds",
+    "Wood_Oak-normal.dds",
+    "Wood_Oak-ao.dds"
   ]
 }

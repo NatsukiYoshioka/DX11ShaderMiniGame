@@ -23,6 +23,18 @@
     <Filter Include="GameObject\Block\BlockAccessor">
       <UniqueIdentifier>{fe380dd2-0661-43b9-bf72-b43f43480a0b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="OriginalEffect">
+      <UniqueIdentifier>{5be76c05-f1bb-41aa-8b18-752ecf07efb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{0c3562f8-01c0-4cd1-a9e3-f19ea8e5f072}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Desk">
+      <UniqueIdentifier>{531da2e1-a6e3-4b97-804e-073934c0c088}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Desk\DeskAccessor">
+      <UniqueIdentifier>{d4f9a7fa-6b90-4d37-8b9a-36f47c872ee2}</UniqueIdentifier>
+    </Filter>
     <Filter Include="GameObject\Camera">
       <UniqueIdentifier>{e4ce6c31-20d8-4d57-b8bb-4ecf710ed56a}</UniqueIdentifier>
     </Filter>
@@ -61,6 +73,18 @@
     <ClInclude Include="CameraAccessor.h">
       <Filter>GameObject\Camera\CameraAccessor</Filter>
     </ClInclude>
+    <ClInclude Include="OriginalEffect.h">
+      <Filter>OriginalEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadData.h">
+      <Filter>OriginalEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="Desk.h">
+      <Filter>GameObject\Desk</Filter>
+    </ClInclude>
+    <ClInclude Include="DeskAccessor.h">
+      <Filter>GameObject\Desk\DeskAccessor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -78,9 +102,6 @@
     <ClCompile Include="GameObjectManager.cpp">
       <Filter>GameObject\GameObjectManager</Filter>
     </ClCompile>
-    <ClCompile Include="Block.cpp">
-      <Filter>GameObject\Block</Filter>
-    </ClCompile>
     <ClCompile Include="BlockAccessor.cpp">
       <Filter>GameObject\Block\BlockAccessor</Filter>
     </ClCompile>
@@ -90,6 +111,18 @@
     </ClCompile>
     <ClCompile Include="CameraAccessor.cpp">
       <Filter>GameObject\Camera\CameraAccessor</Filter>
+    </ClCompile>
+    <ClCompile Include="OriginalEffect.cpp">
+      <Filter>OriginalEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="Block.cpp">
+      <Filter>GameObject\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="Desk.cpp">
+      <Filter>GameObject\Desk</Filter>
+    </ClCompile>
+    <ClCompile Include="DeskAccessor.cpp">
+      <Filter>GameObject\Desk\DeskAccessor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -110,5 +143,16 @@
     <None Include="Assets\Data\data.json">
       <Filter>Json</Filter>
     </None>
+    <None Include="Header.hlsli">
+      <Filter>Shader</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="VertexShader.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="TestPixel.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

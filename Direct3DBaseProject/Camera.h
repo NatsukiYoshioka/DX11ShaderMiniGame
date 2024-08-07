@@ -4,20 +4,46 @@ using namespace DirectX::SimpleMath;
 
 class GameObject;
 
+/// <summary>
+/// カメラオブジェクト
+/// </summary>
 class Camera:public GameObject
 {
 public:
+	/// <summary>
+	/// カメラの初期化
+	/// </summary>
 	Camera();
+
+	/// <summary>
+	/// データ破棄
+	/// </summary>
 	~Camera();
 
+	/// <summary>
+	/// オブジェクトの更新
+	/// </summary>
 	void Update()override;
+
+	/// <summary>
+	/// オブジェクトの描画(カメラなので描画処理は無し)
+	/// </summary>
 	void Draw()override;
 
+	/// <summary>
+	/// カメラビュー行列の取得
+	/// </summary>
+	/// <returns>ビュー行列</returns>
 	Matrix GetView()const { return m_view; }
+
+	/// <summary>
+	/// カメラプロジェクション行列の取得
+	/// </summary>
+	/// <returns>プロジェクション行列</returns>
 	Matrix GetProjection()const { return m_projection; }
 
 private:
-	Matrix m_view;
-	Matrix m_projection;
+	Matrix m_view;			//カメラのビュー行列
+	Matrix m_projection;	//カメラのプロジェクション行列
 };
 
