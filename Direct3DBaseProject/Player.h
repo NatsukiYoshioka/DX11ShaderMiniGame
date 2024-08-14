@@ -1,0 +1,55 @@
+#pragma once
+#include"GameObject.h"
+#include"Animation.h"
+
+using namespace DirectX;
+using namespace SimpleMath;
+using namespace Microsoft::WRL;
+using namespace std;
+
+class GameObject;
+class OriginalEffect;
+
+class Player :public GameObject
+{
+public:
+	/// <summary>
+	/// オブジェクトの初期化
+	/// </summary>
+	/// <param name="fileName">3Dモデルファイル名</param>
+	/// <param name="pos">初期座標</param>
+	/// <param name="rotate">オブジェクトのY軸回転量(XM_PI / rotate)</param>
+	Player(const wchar_t* fileName, Vector3 pos, float rotate);
+
+	/// <summary>
+	/// データ破棄
+	/// </summary>
+	~Player();
+
+	/// <summary>
+	/// オブジェクトの更新
+	/// </summary>
+	void Update()override;
+
+	/// <summary>
+	/// オブジェクトの描画
+	/// </summary>
+	void Draw()override;
+
+	/// <summary>
+	/// オブジェクトの回転量の取得
+	/// </summary>
+	/// <returns>オブジェクトの回転量</returns>
+	float GetRotate()const { return m_rotate; }
+
+private:
+	DX::AnimationSDKMESH m_animation;			//スキニングアニメーションクラス
+	ModelBone::TransformArray m_drawBones;		//ボーン変換行列の配列
+
+	shared_ptr<OriginalEffect> m_effect;		//モデル描画用エフェクトクラス
+	ComPtr<ID3D11InputLayout> m_inputLayout;	//モデル描画用入力レイアウト
+
+	float m_rotate;		//モデルのY軸回転量
+	Matrix m_world;		//モデルのワールド行列
+};
+

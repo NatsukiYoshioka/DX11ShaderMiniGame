@@ -9,14 +9,18 @@ namespace
 }
 
 //エフェクトの初期化
-OriginalEffect::OriginalEffect(ID3D11Device* device):
+OriginalEffect::OriginalEffect(ID3D11Device* device, bool isSkinning):
 	m_dirtyFlags(uint32_t(-1)),
-	m_matrixBuffer(device)
+	m_matrixBuffer(device),
+	m_skinnedBuffer(device),
+	m_skinnedConstants()
 {
 	assert((sizeof(OriginalEffect::MatrixConstants) % 16) == 0, "CB size alignment");
+	assert((sizeof(OriginalEffect::SkinnedConstants) % 16) == 0, "CB size alignment");
 
 	//頂点シェーダーのロード
-	m_vsBlob = DX::ReadData(L"VertexShader.cso");
+	if (isSkinning)m_vsBlob = DX::ReadData(L"SkinningVertex.cso");
+	else m_vsBlob = DX::ReadData(L"VertexShader.cso");
 	DX::ThrowIfFailed(device->CreateVertexShader(m_vsBlob.data(), m_vsBlob.size(), nullptr, m_vs.ReleaseAndGetAddressOf()));
 
 	//ピクセルシェーダーのロード
@@ -40,9 +44,13 @@ void OriginalEffect::Apply(ID3D11DeviceContext* context)
 		m_dirtyFlags &= ~DirtyConstantBuffer;
 	}
 
+	m_skinnedBuffer.SetData(context, m_skinnedConstants);
+
 	//定数バッファとSRVのセット
 	auto mb = m_matrixBuffer.GetBuffer();
+	auto sb = m_skinnedBuffer.GetBuffer();
 	context->VSSetConstantBuffers(0, 1, &mb);
+	context->VSSetConstantBuffers(1, 1, &sb);
 	context->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
 	context->PSSetShaderResources(1, 1, m_normal.GetAddressOf());
 	context->PSSetShaderResources(2, 1, m_ao.GetAddressOf());
@@ -99,11 +107,39 @@ void OriginalEffect::SetProjection(FXMMATRIX projection)
 	m_dirtyFlags |= DirtyWVPMatrix;
 }
 
-//ワールド,ビュー,ロジェクション行列の設定
+//ワールド,ビュー,プロジェクション行列の設定
 void OriginalEffect::SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection)
 {
 	m_world = world;
 	m_view = view;
 	m_projection = projection;
 	m_dirtyFlags |= DirtyWVPMatrix;
+}
+
+//影響を受けるボーン数の設定(処理なし)
+void OriginalEffect::SetWeightsPerVertex(int value)
+{
+	
+}
+
+//ボーン変換行列の設定
+void OriginalEffect::SetBoneTransforms(_In_reads_(count) XMMATRIX const* value, size_t count)
+{
+	if(count>MaxBones)throw std::invalid_argument("count parameter exceeds MaxBones");
+	auto boneConstant = m_skinnedConstants.bones;
+	for (size_t i = 0; i < count; i++)
+	{
+		XMStoreFloat3x4A(reinterpret_cast<XMFLOAT3X4A*>(&boneConstant[i]), value[i]);
+	}
+}
+
+//ボーン変換行列のリセット
+void OriginalEffect::ResetBoneTransforms()
+{
+	for (size_t i = 0; i < MaxBones; ++i)
+	{
+		m_skinnedConstants.bones[i][0] = g_XMIdentityR0;
+		m_skinnedConstants.bones[i][1] = g_XMIdentityR1;
+		m_skinnedConstants.bones[i][2] = g_XMIdentityR2;
+	}
 }

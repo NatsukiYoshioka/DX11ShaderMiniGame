@@ -8,19 +8,19 @@ using namespace std;
 /// <summary>
 /// モデル描画用自作エフェクトクラス
 /// </summary>
-class OriginalEffect :public IEffect, public IEffectMatrices
+class OriginalEffect :public IEffect, public IEffectMatrices, public IEffectSkinning
 {
 public:
 	/// <summary>
 	/// エフェクトの初期化
 	/// </summary>
-	/// <param name="device"></param>
-	explicit OriginalEffect(ID3D11Device* device);
+	/// <param name="device">描画デバイス</param>
+	explicit OriginalEffect(ID3D11Device* device, bool isSkinning = false);
 
 	/// <summary>
 	/// エフェクトの適用処理
 	/// </summary>
-	/// <param name="context"></param>
+	/// <param name="context">描画コンテキスト</param>
 	virtual void Apply(ID3D11DeviceContext* context);
 
 	/// <summary>
@@ -75,6 +75,27 @@ public:
 	/// <param name="projection">プロジェクション行列</param>
 	void XM_CALLCONV SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection)override;
 
+	/// <summary>
+	/// 影響を受けるボーンの数(今回は処理なし)
+	/// </summary>
+	/// <param name="value">影響ボーン数</param>
+	/// <returns></returns>
+	void __cdecl SetWeightsPerVertex(int value)override;
+
+	/// <summary>
+	/// ボーン変換行列の設定
+	/// </summary>
+	/// <param name="value">設定する行列</param>
+	/// <param name="count">総ボーン数</param>
+	/// <returns></returns>
+	void __cdecl SetBoneTransforms(_In_reads_(count) XMMATRIX const* value, size_t count)override;
+
+	/// <summary>
+	/// ボーン変換行列のリセット
+	/// </summary>
+	/// <returns></returns>
+	void __cdecl ResetBoneTransforms()override;
+
 private:
 	ComPtr<ID3D11VertexShader> m_vs;			//頂点シェーダー
 	ComPtr<ID3D11PixelShader> m_ps;				//ピクセルシェーダー
@@ -99,5 +120,15 @@ private:
 		XMMATRIX projection;
 	};
 	ConstantBuffer<MatrixConstants> m_matrixBuffer;	//行列の定数バッファ
+
+	/// <summary>
+	/// スキニング用の定数バッファ用構造体
+	/// </summary>
+	struct __declspec(align(16)) SkinnedConstants
+	{
+		XMVECTOR bones[MaxBones][3];
+	};
+	SkinnedConstants m_skinnedConstants;
+	ConstantBuffer<SkinnedConstants> m_skinnedBuffer;	//ボーン変換行列の定数バッファ
 };
 

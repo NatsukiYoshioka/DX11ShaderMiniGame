@@ -54,5 +54,13 @@
     "Wood_Oak.dds",
     "Wood_Oak-normal.dds",
     "Wood_Oak-ao.dds"
-  ]
+  ],
+
+  "Player": [
+    "Ch09_nonPBR.sdkmesh",
+    "Walking.sdkmesh_anim",
+    [ 0, 2, 0, 0.5 ]
+  ],
+
+  "PlayerTexture": "Ch09_1001_Diffuse.dds"
 }

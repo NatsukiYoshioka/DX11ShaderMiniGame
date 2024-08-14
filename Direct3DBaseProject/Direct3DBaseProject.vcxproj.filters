@@ -41,6 +41,12 @@
     <Filter Include="GameObject\Camera\CameraAccessor">
       <UniqueIdentifier>{b482794d-1317-40e2-95a0-276935d97544}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Player">
+      <UniqueIdentifier>{773869d7-78db-4c84-83c6-113653bd02f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Player\PlayerAccessor">
+      <UniqueIdentifier>{d38af0ef-cdf8-4aeb-81ef-143e5268f8d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -85,6 +91,13 @@
     <ClInclude Include="DeskAccessor.h">
       <Filter>GameObject\Desk\DeskAccessor</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>GameObject\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerAccessor.h">
+      <Filter>GameObject\Player\PlayerAccessor</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -124,6 +137,13 @@
     <ClCompile Include="DeskAccessor.cpp">
       <Filter>GameObject\Desk\DeskAccessor</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>GameObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerAccessor.cpp">
+      <Filter>GameObject\Player\PlayerAccessor</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -152,6 +172,9 @@
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="TestPixel.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="SkinningVertex.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>

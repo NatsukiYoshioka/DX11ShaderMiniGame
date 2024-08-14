@@ -39,7 +39,7 @@ public:
 	void Draw()override;
 
 private:
-	unique_ptr<OriginalEffect> m_effect;		//モデル描画用エフェクトクラス
+	shared_ptr<OriginalEffect> m_effect;		//モデル描画用エフェクトクラス
 	ComPtr<ID3D11InputLayout> m_inputLayout;	//モデル描画用入力レイアウト
 
 	float m_rotate;		//モデルのY軸回転量

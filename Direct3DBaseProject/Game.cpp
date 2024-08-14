@@ -5,9 +5,6 @@
 #include "pch.h"
 #include"Json.h"
 #include"DeviceAccessor.h"
-#include"CameraAccessor.h"
-#include"BlockAccessor.h"
-#include"DeskAccessor.h"
 #include"GameObjectManager.h"
 #include "Game.h"
 
@@ -65,6 +62,8 @@ void Game::Update(DX::StepTimer const& timer)
     float elapsedTime = float(timer.GetElapsedSeconds());
 
     // TODO: Add your game logic here.
+    auto deviceAccessor = DeviceAccessor::GetInstance();
+    deviceAccessor->SetElapsedTime(&elapsedTime);
     auto gameObjectManager = GameObjectManager::GetInstance();
     gameObjectManager->Update();
     elapsedTime;
@@ -183,9 +182,6 @@ void Game::CreateDeviceDependentResources()
     // TODO: Initialize device dependent objects here (independent of window size).
     Json::CreateInstance();
     DeviceAccessor::CreateInstance(device, context, m_deviceResources->GetOutputSize());
-    CameraAccessor::CreateInstance();
-    BlockAccessor::CreateInstance();
-    DeskAccessor::CreateInstance();
     GameObjectManager::CreateInstance();
     device;
 }
@@ -201,9 +197,6 @@ void Game::OnDeviceLost()
     // TODO: Add Direct3D resource cleanup here.
     Json::DestroyInstance();
     DeviceAccessor::DestroyInstance();
-    CameraAccessor::DestroyInstance();
-    BlockAccessor::DestroyInstance();
-    DeskAccessor::DestroyInstance();
     GameObjectManager::DestroyInstance();
 }
 

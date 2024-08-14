@@ -26,7 +26,7 @@ Block::Block(const wchar_t* fileName, Vector3 pos, float rotate)
 
 	//エフェクトの初期化
 	SetCurrentDirectory(L"Assets/Shader");
-	m_effect = make_unique<OriginalEffect>(deviceAccessor->GetDevice());
+	m_effect = make_shared<OriginalEffect>(deviceAccessor->GetDevice());
 	SetCurrentDirectory(L"../../");
 
 	//モデルの各メッシュの描画方法の設定
@@ -36,14 +36,16 @@ Block::Block(const wchar_t* fileName, Vector3 pos, float rotate)
 		assert(mesh != nullptr);
 
 		mesh->PrepareForRendering(deviceAccessor->GetContext(), *deviceAccessor->GetStates());
-	}
+		for (const auto& pit : mesh->meshParts)
+		{
+			auto part = pit.get();
+			assert(part != nullptr);
 
-	//入力レイアウトの初期化
-	CreateInputLayoutFromEffect(deviceAccessor->GetDevice(),
-		m_effect.get(),
-		deviceAccessor->GetInputElements(),
-		deviceAccessor->GetInputElementSize(),
-		m_inputLayout.ReleaseAndGetAddressOf());
+			//入力レイアウトの初期化とエフェクトの適用
+			part->CreateInputLayout(deviceAccessor->GetDevice(), m_effect.get(), m_inputLayout.ReleaseAndGetAddressOf());
+			part->ModifyEffect(deviceAccessor->GetDevice(), m_effect, false);
+		}
+	}
 
 	//テクスチャの設定(ランダム)
 	auto json = Json::GetInstance();
@@ -63,9 +65,6 @@ Block::Block(const wchar_t* fileName, Vector3 pos, float rotate)
 	//初期座標とY軸回転量の設定
 	m_pos = pos;
 	m_rotate = XM_PI / rotate;
-
-	//カメラプロジェクション行列の取得
-	m_effect->SetProjection(CameraAccessor::GetInstance()->GetCamera()->GetProjection());
 }
 
 //データ破棄
@@ -82,29 +81,14 @@ void Block::Update()
 	m_world = XMMatrixMultiply(m_world, Matrix::CreateScale(0.01f));
 	m_world = XMMatrixMultiply(m_world, Matrix::CreateRotationY(m_rotate));
 	m_world = XMMatrixMultiply(m_world, XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
-
-	//ワールド座標行列の取得
-	m_effect->SetWorld(m_world);
-	//カメラビュー行列の取得
-	m_effect->SetView(CameraAccessor::GetInstance()->GetCamera()->GetView());
 }
 
 //オブジェクトの描画
 void Block::Draw()
 {
-	for (const auto& mit : m_modelHandle->meshes)
-	{
-		auto mesh = mit.get();
-		assert(mesh != nullptr);
-
-		for (const auto& pit : mesh->meshParts)
-		{
-			auto part = pit.get();
-			assert(part != nullptr);
-
-			part->Draw(DeviceAccessor::GetInstance()->GetContext(),
-				m_effect.get(),
-				m_inputLayout.Get());
-		}
-	}
+	m_modelHandle->Draw(DeviceAccessor::GetInstance()->GetContext(),
+		*DeviceAccessor::GetInstance()->GetStates(),
+		m_world,
+		CameraAccessor::GetInstance()->GetCamera()->GetView(),
+		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
 }

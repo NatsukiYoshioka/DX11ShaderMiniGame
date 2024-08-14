@@ -29,6 +29,18 @@ public:
 	/// </summary>
 	virtual void Draw() = 0;
 
+	/// <summary>
+	/// 座標の取得
+	/// </summary>
+	/// <returns>座標(Vector3)</returns>
+	Vector3 GetPos()const { return m_pos; }
+
+	/// <summary>
+	/// モデルハンドル取得
+	/// </summary>
+	/// <returns>モデルのポインタ</returns>
+	Model* GetModelHandle() { return m_modelHandle.get(); }
+
 protected:
 	unique_ptr<Model> m_modelHandle;	//3Dモデルハンドル
 	Vector3 m_pos;						//オブジェクトの座標
