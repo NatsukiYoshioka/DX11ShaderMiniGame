@@ -32,7 +32,7 @@ OriginalEffect::OriginalEffect(ID3D11Device* device, bool isSkinning):
 //エフェクトの適用
 void OriginalEffect::Apply(ID3D11DeviceContext* context)
 {
-	if (m_dirtyFlags & DirtyConstantBuffer)
+	if (m_dirtyFlags & DirtyWVPMatrix)
 	{
 		//定数バッファの設定
 		MatrixConstants matrixConstants;
@@ -41,7 +41,8 @@ void OriginalEffect::Apply(ID3D11DeviceContext* context)
 		matrixConstants.projection = m_projection;
 		m_matrixBuffer.SetData(context, matrixConstants);
 
-		m_dirtyFlags &= ~DirtyConstantBuffer;
+		m_dirtyFlags &= ~DirtyWVPMatrix;
+		m_dirtyFlags |= DirtyConstantBuffer;
 	}
 
 	m_skinnedBuffer.SetData(context, m_skinnedConstants);

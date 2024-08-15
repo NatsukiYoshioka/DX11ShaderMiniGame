@@ -42,8 +42,18 @@ public:
 	/// <returns>プロジェクション行列</returns>
 	Matrix GetProjection()const { return m_projection; }
 
+	/// <summary>
+	/// カメラのピッチ取得
+	/// </summary>
+	/// <returns>カメラのピッチ</returns>
+	float GetPitch()const  { return m_pitch; }
+
 private:
 	Matrix m_view;			//カメラのビュー行列
 	Matrix m_projection;	//カメラのプロジェクション行列
+	float m_distance;		//カメラとプレイヤーとの距離
+	float m_pitch;
+
+	const float m_speed;
 };
 

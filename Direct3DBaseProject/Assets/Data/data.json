@@ -56,11 +56,17 @@
     "Wood_Oak-ao.dds"
   ],
 
+  "CameraDistance": 10,
+  "CameraSpeed"   : 0.3,
+
   "Player": [
     "Ch09_nonPBR.sdkmesh",
-    "Walking.sdkmesh_anim",
-    [ 0, 2, 0, 0.5 ]
+    "HappyIdle.sdkmesh_anim",
+    "Walking.sdkmesh_anim"
   ],
 
-  "PlayerTexture": "Ch09_1001_Diffuse.dds"
+  "PlayerTexture": "Ch09_1001_Diffuse.dds",
+
+  "PlayerPosition": [ -1, -0.5, 0, 0.5 ],
+  "PlayerSpeed"   : 0.005
 }

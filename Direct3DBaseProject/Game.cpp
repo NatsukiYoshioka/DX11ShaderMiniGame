@@ -133,6 +133,8 @@ void Game::OnDeactivated()
 void Game::OnSuspending()
 {
     // TODO: Game is being power-suspended (or minimized).
+    auto deviceAccessor = DeviceAccessor::GetInstance();
+    deviceAccessor->GetGamePad()->Suspend();
 }
 
 void Game::OnResuming()
@@ -140,6 +142,8 @@ void Game::OnResuming()
     m_timer.ResetElapsedTime();
 
     // TODO: Game is being power-resumed (or returning from minimize).
+    auto deviceAccessor = DeviceAccessor::GetInstance();
+    deviceAccessor->GetGamePad()->Resume();
 }
 
 void Game::OnWindowMoved()

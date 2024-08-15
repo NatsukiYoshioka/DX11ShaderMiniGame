@@ -15,18 +15,18 @@ GameObjectManager* GameObjectManager::m_instance = nullptr;
 //管理するオブジェクトの設定
 GameObjectManager::GameObjectManager()
 {
-	CameraAccessor::CreateInstance();
 	BlockAccessor::CreateInstance();
 	DeskAccessor::CreateInstance();
 	PlayerAccessor::CreateInstance();
+	CameraAccessor::CreateInstance();
 
-	m_gameObjects.push_back(dynamic_cast<GameObject*>(CameraAccessor::GetInstance()->GetCamera()));
 	for (int i = 0; i < BlockAccessor::GetInstance()->GetBlocks().size(); i++)
 	{
 		m_gameObjects.push_back(dynamic_cast<GameObject*>(BlockAccessor::GetInstance()->GetBlocks().at(i)));
 	}
 	m_gameObjects.push_back(dynamic_cast<GameObject*>(DeskAccessor::GetInstance()->GetDesk()));
 	m_gameObjects.push_back(dynamic_cast<GameObject*>(PlayerAccessor::GetInstance()->GetPlayer()));
+	m_gameObjects.push_back(dynamic_cast<GameObject*>(CameraAccessor::GetInstance()->GetCamera()));
 }
 
 //データ破棄

@@ -14,6 +14,15 @@ class Player :public GameObject
 {
 public:
 	/// <summary>
+	/// アニメーションの状態
+	/// </summary>
+	enum class AnimationState
+	{
+		Idle,		//待機
+		Walk		//歩き
+	};
+
+	/// <summary>
 	/// オブジェクトの初期化
 	/// </summary>
 	/// <param name="fileName">3Dモデルファイル名</param>
@@ -43,7 +52,8 @@ public:
 	float GetRotate()const { return m_rotate; }
 
 private:
-	DX::AnimationSDKMESH m_animation;			//スキニングアニメーションクラス
+	AnimationState m_nowAnimationState;			//アニメーションの現在の状態
+	vector<DX::AnimationSDKMESH> m_animations;	//スキニングアニメーションクラスコンテナ
 	ModelBone::TransformArray m_drawBones;		//ボーン変換行列の配列
 
 	shared_ptr<OriginalEffect> m_effect;		//モデル描画用エフェクトクラス
@@ -51,5 +61,7 @@ private:
 
 	float m_rotate;		//モデルのY軸回転量
 	Matrix m_world;		//モデルのワールド行列
+
+	const float m_speed;//プレイヤーの移動スピード
 };
 
