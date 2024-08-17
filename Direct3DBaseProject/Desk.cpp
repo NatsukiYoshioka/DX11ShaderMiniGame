@@ -70,7 +70,7 @@ Desk::Desk(const wchar_t* fileName, Vector3 pos, float rotate)
 
 	//座標とY軸回転量の設定
 	m_pos = pos;
-	m_rotate = XM_PI / rotate;
+	m_rotate = rotate * XM_PI / 180.f;
 }
 
 //データ破棄

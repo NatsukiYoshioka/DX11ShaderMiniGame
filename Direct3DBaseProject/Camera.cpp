@@ -10,7 +10,8 @@
 Camera::Camera():
 	m_speed(float(Json::GetInstance()->GetData()["CameraSpeed"])),
 	m_distance(float(Json::GetInstance()->GetData()["CameraDistance"])),
-	m_pitch(0)
+	m_pitch(0),
+	m_yaw(0)
 {
 	m_modelHandle = nullptr;
 
@@ -36,14 +37,27 @@ void Camera::Update()
 			auto moveDirection = Vector2(pad.thumbSticks.rightX, pad.thumbSticks.rightY);
 			moveDirection.Normalize();
 			m_pitch += -moveDirection.x * m_speed;
+			m_yaw += -moveDirection.y * m_speed;
 		}
+	}
+	
+	if (m_yaw < 10)
+	{
+		m_yaw = 10;
+	}
+	if (m_yaw > 45)
+	{
+		m_yaw = 45;
 	}
 
 	auto playerPos = PlayerAccessor::GetInstance()->GetPlayer()->GetPos();
-	float radian = m_pitch * XM_PI / 180;
-	float z = playerPos.z + cos(radian) * m_distance;
-	float x = playerPos.x + sin(radian) * m_distance;
-	m_pos = Vector3(x, 3.f, z);
+	float radianX = m_pitch * XM_PI / 180;
+	float radianY = m_yaw * XM_PI / 180;
+
+	float z = playerPos.z + cos(radianX) * m_distance;
+	float x = playerPos.x + sin(radianX) * m_distance;
+	float y = playerPos.y + tan(radianY) * m_distance;
+	m_pos = Vector3(x, y, z);
 
 	m_view = Matrix::CreateLookAt(m_pos, playerPos, Vector3::Up);
 }

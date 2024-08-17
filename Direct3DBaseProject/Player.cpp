@@ -11,7 +11,10 @@ extern void ExitGame() noexcept;
 
 Player::Player(const wchar_t* fileName, Vector3 pos, float rotate):
 	m_nowAnimationState(AnimationState::Idle),
-	m_speed(float(Json::GetInstance()->GetData()["PlayerSpeed"]))
+	m_scale(float(Json::GetInstance()->GetData()["PlayerScale"])),
+	m_speed(float(Json::GetInstance()->GetData()["PlayerSpeed"])),
+	m_runSpeed(float(Json::GetInstance()->GetData()["PlayerRunSpeed"])),
+	m_crouchSpeed(float(Json::GetInstance()->GetData()["PlayerCrouchSpeed"]))
 {
 	auto deviceAccessor = DeviceAccessor::GetInstance();
 
@@ -77,7 +80,7 @@ Player::Player(const wchar_t* fileName, Vector3 pos, float rotate):
 
 	//座標とY軸回転量の設定
 	m_pos = pos;
-	m_rotate = XM_PI / rotate;
+	m_rotate = rotate * XM_PI / 180.f;
 }
 
 Player::~Player()
@@ -91,6 +94,8 @@ void Player::Update()
 
 	
 	bool isMove = false;
+	bool isCrouch = false;
+	float nowSpeed = 0.f;
 	m_nowAnimationState = AnimationState::Idle;
 	if (pad.IsConnected())
 	{
@@ -98,12 +103,29 @@ void Player::Update()
 		{
 			ExitGame();
 		}
+		if (pad.IsLeftShoulderPressed())
+		{
+			m_nowAnimationState = AnimationState::Crouch;
+			isCrouch = true;
+		}
 		if (pad.thumbSticks.leftX != 0 || pad.thumbSticks.leftY != 0)
 		{
 			m_rotate = atan2f(-pad.thumbSticks.leftX, pad.thumbSticks.leftY);
 			
 			isMove = true;
+			nowSpeed = m_speed;
 			m_nowAnimationState = AnimationState::Walk;
+
+			if (isCrouch)
+			{
+				nowSpeed = m_crouchSpeed;
+				m_nowAnimationState = AnimationState::CrouchedWalk;
+			}
+			else if (pad.IsRightShoulderPressed())
+			{
+				nowSpeed = m_runSpeed;
+				m_nowAnimationState = AnimationState::Run;
+			}
 		}
 	}
 
@@ -113,13 +135,13 @@ void Player::Update()
 		auto radian = cameraPitch * XM_PI / 180;
 		m_rotate += radian;
 
-		m_pos.z += -cos(m_rotate) * m_speed;
-		m_pos.x += -sin(m_rotate) * m_speed;
+		m_pos.z += -cos(m_rotate) * nowSpeed;
+		m_pos.x += -sin(m_rotate) * nowSpeed;
 	}
 
 	//ワールド座標行列の更新
 	m_world = Matrix::Identity;
-	m_world = XMMatrixMultiply(m_world, Matrix::CreateScale(0.0075f));
+	m_world = XMMatrixMultiply(m_world, Matrix::CreateScale(m_scale));
 	m_world = XMMatrixMultiply(m_world, Matrix::CreateRotationY(m_rotate));
 	m_world = XMMatrixMultiply(m_world, XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
 

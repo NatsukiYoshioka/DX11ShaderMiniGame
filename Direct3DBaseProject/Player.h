@@ -18,8 +18,11 @@ public:
 	/// </summary>
 	enum class AnimationState
 	{
-		Idle,		//待機
-		Walk		//歩き
+		Idle,			//待機
+		Walk,			//歩き
+		Run,			//走り
+		Crouch,			//しゃがみ
+		CrouchedWalk	//しゃがみ歩き
 	};
 
 	/// <summary>
@@ -57,11 +60,13 @@ private:
 	ModelBone::TransformArray m_drawBones;		//ボーン変換行列の配列
 
 	shared_ptr<OriginalEffect> m_effect;		//モデル描画用エフェクトクラス
-	ComPtr<ID3D11InputLayout> m_inputLayout;	//モデル描画用入力レイアウト
 
 	float m_rotate;		//モデルのY軸回転量
 	Matrix m_world;		//モデルのワールド行列
 
-	const float m_speed;//プレイヤーの移動スピード
+	const float m_scale;
+	const float m_speed;		//プレイヤーの移動スピード
+	const float m_runSpeed;		//プレイヤーのダッシュスピード
+	const float m_crouchSpeed;	//プレイヤーのしゃがみ移動スピード
 };
 

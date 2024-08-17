@@ -192,6 +192,8 @@
     <ClInclude Include="DeskAccessor.h" />
     <ClInclude Include="DeviceAccessor.h" />
     <ClInclude Include="DeviceResources.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyAccessor.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectManager.h" />
@@ -213,6 +215,8 @@
     <ClCompile Include="DeskAccessor.cpp" />
     <ClCompile Include="DeviceAccessor.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyAccessor.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />

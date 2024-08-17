@@ -52,7 +52,8 @@ private:
 	Matrix m_view;			//カメラのビュー行列
 	Matrix m_projection;	//カメラのプロジェクション行列
 	float m_distance;		//カメラとプレイヤーとの距離
-	float m_pitch;
+	float m_pitch;			//カメラの縦軸回転量
+	float m_yaw;			//カメラの横軸回転量
 
 	const float m_speed;
 };

@@ -8,6 +8,8 @@
 #include"DeskAccessor.h"
 #include"Player.h"
 #include"PlayerAccessor.h"
+#include"Enemy.h"
+#include"EnemyAccessor.h"
 #include "GameObjectManager.h"
 
 GameObjectManager* GameObjectManager::m_instance = nullptr;
@@ -18,6 +20,7 @@ GameObjectManager::GameObjectManager()
 	BlockAccessor::CreateInstance();
 	DeskAccessor::CreateInstance();
 	PlayerAccessor::CreateInstance();
+	EnemyAccessor::CreateInstance();
 	CameraAccessor::CreateInstance();
 
 	for (int i = 0; i < BlockAccessor::GetInstance()->GetBlocks().size(); i++)
@@ -26,6 +29,7 @@ GameObjectManager::GameObjectManager()
 	}
 	m_gameObjects.push_back(dynamic_cast<GameObject*>(DeskAccessor::GetInstance()->GetDesk()));
 	m_gameObjects.push_back(dynamic_cast<GameObject*>(PlayerAccessor::GetInstance()->GetPlayer()));
+	m_gameObjects.push_back(dynamic_cast<GameObject*>(EnemyAccessor::GetInstance()->GetEnemy()));
 	m_gameObjects.push_back(dynamic_cast<GameObject*>(CameraAccessor::GetInstance()->GetCamera()));
 }
 
@@ -39,6 +43,7 @@ GameObjectManager::~GameObjectManager()
 	BlockAccessor::DestroyInstance();
 	DeskAccessor::DestroyInstance();
 	PlayerAccessor::DestroyInstance();
+	EnemyAccessor::DestroyInstance();
 }
 
 //インスタンス生成
