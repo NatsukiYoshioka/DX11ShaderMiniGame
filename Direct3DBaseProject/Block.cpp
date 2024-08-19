@@ -3,6 +3,8 @@
 #include"DeviceAccessor.h"
 #include"Camera.h"
 #include"CameraAccessor.h"
+#include"Enemy.h"
+#include"EnemyAccessor.h"
 #include"GameObject.h"
 #include"OriginalEffect.h"
 #include<WinBase.h>
@@ -81,6 +83,7 @@ void Block::Update()
 	m_world = XMMatrixMultiply(m_world, Matrix::CreateScale(0.01f));
 	m_world = XMMatrixMultiply(m_world, Matrix::CreateRotationY(m_rotate));
 	m_world = XMMatrixMultiply(m_world, XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
+	m_effect->SetLightDirection(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeDirection());
 }
 
 //オブジェクトの描画

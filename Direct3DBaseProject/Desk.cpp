@@ -5,6 +5,8 @@
 #include"DeviceAccessor.h"
 #include"Camera.h"
 #include"CameraAccessor.h"
+#include"Enemy.h"
+#include"EnemyAccessor.h"
 #include "Desk.h"
 
 //デスクの初期化
@@ -87,6 +89,8 @@ void Desk::Update()
 	m_world = XMMatrixMultiply(m_world, Matrix::CreateScale(0.2f));
 	m_world = XMMatrixMultiply(m_world, Matrix::CreateRotationY(m_rotate));
 	m_world = XMMatrixMultiply(m_world, XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
+
+	m_effect->SetLightDirection(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeDirection());
 }
 
 //オブジェクトの描画

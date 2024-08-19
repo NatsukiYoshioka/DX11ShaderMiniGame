@@ -28,6 +28,8 @@ public:
 	void Update()override;
 	void Draw()override;
 
+	Vector3 GetEyeDirection()const { return m_eyeDirection; }
+
 private:
 	AnimationState m_nowAnimationState;			//アニメーションの現在の状態
 	vector<DX::AnimationSDKMESH> m_animations;	//スキニングアニメーションクラスコンテナ
@@ -35,9 +37,15 @@ private:
 
 	shared_ptr<OriginalEffect> m_effect;		//モデル描画用エフェクトクラス
 
+	Vector3 m_eyePos;		//敵の目の位置
+	Vector3 m_eyeDirection;	//目の向き
+
+	float m_posAngle;	//モデルの座標を決める角度
 	float m_rotate;		//モデルのY軸回転量
 	Matrix m_world;		//モデルのワールド行列
 
 	const float m_scale;	//モデルのスケール
+	const float m_distance;	//モデルの距離
+	const float m_speed;	//モデルの移動スピード
 };
 

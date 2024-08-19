@@ -13,10 +13,12 @@ OriginalEffect::OriginalEffect(ID3D11Device* device, bool isSkinning):
 	m_dirtyFlags(uint32_t(-1)),
 	m_matrixBuffer(device),
 	m_skinnedBuffer(device),
+	m_lightBuffer(device),
 	m_skinnedConstants()
 {
 	assert((sizeof(OriginalEffect::MatrixConstants) % 16) == 0, "CB size alignment");
 	assert((sizeof(OriginalEffect::SkinnedConstants) % 16) == 0, "CB size alignment");
+	assert((sizeof(OriginalEffect::LightConstants) % 16) == 0, "CB size alignment");
 
 	//頂点シェーダーのロード
 	if (isSkinning)m_vsBlob = DX::ReadData(L"SkinningVertex.cso");
@@ -46,12 +48,15 @@ void OriginalEffect::Apply(ID3D11DeviceContext* context)
 	}
 
 	m_skinnedBuffer.SetData(context, m_skinnedConstants);
+	m_lightBuffer.SetData(context, m_light);
 
 	//定数バッファとSRVのセット
 	auto mb = m_matrixBuffer.GetBuffer();
 	auto sb = m_skinnedBuffer.GetBuffer();
+	auto lb = m_lightBuffer.GetBuffer();
 	context->VSSetConstantBuffers(0, 1, &mb);
 	context->VSSetConstantBuffers(1, 1, &sb);
+	context->VSSetConstantBuffers(2, 1, &lb);
 	context->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
 	context->PSSetShaderResources(1, 1, m_normal.GetAddressOf());
 	context->PSSetShaderResources(2, 1, m_ao.GetAddressOf());
@@ -143,4 +148,9 @@ void OriginalEffect::ResetBoneTransforms()
 		m_skinnedConstants.bones[i][1] = g_XMIdentityR1;
 		m_skinnedConstants.bones[i][2] = g_XMIdentityR2;
 	}
+}
+
+void OriginalEffect::SetLightDirection(FXMVECTOR direction)
+{
+	m_light.direction = direction;
 }

@@ -5,12 +5,21 @@
 #include"CameraAccessor.h"
 #include"Player.h"
 #include"PlayerAccessor.h"
+#include"Desk.h"
+#include"DeskAccessor.h"
 #include"OriginalEffect.h"
+#include<random>
+#define _USE_MATH_DEFINES
+#include<math.h>
 #include "Enemy.h"
 
 Enemy::Enemy(const wchar_t* fileName, Vector3 pos, float rotate):
 	m_nowAnimationState(AnimationState::Idle),
-	m_scale(float(Json::GetInstance()->GetData()["EnemyScale"]))
+	m_posAngle(0),
+	m_eyeDirection(Vector3::Zero),
+	m_scale(float(Json::GetInstance()->GetData()["EnemyScale"])),
+	m_distance(float(Json::GetInstance()->GetData()["EnemyDistance"])),
+	m_speed(float(Json::GetInstance()->GetData()["EnemySpeed"]))
 {
 	auto deviceAccessor = DeviceAccessor::GetInstance();
 
@@ -76,6 +85,8 @@ Enemy::Enemy(const wchar_t* fileName, Vector3 pos, float rotate):
 
 	//座標とY軸回転量の設定
 	m_pos = pos;
+	m_eyePos = m_pos;
+	m_eyePos.y = float(json->GetData()["EnemyEyeHeight"]);
 	m_rotate = rotate * XM_PI / 180.f;
 }
 
@@ -86,10 +97,56 @@ Enemy::~Enemy()
 
 void Enemy::Update()
 {
-	m_nowAnimationState = AnimationState::Idle;
+	std::random_device random;
+	std::mt19937 generator(random());
+	using dist_type = std::uniform_int_distribution<int>;
+	dist_type distribution(0, 99);
+	dist_type::param_type animationParam(0, 2);
+
+	switch (distribution(generator))
+	{
+	case 0:
+		distribution.param(animationParam);
+		switch (distribution(generator))
+		{
+		case 0:
+			m_nowAnimationState = AnimationState::Idle;
+			break;
+		case 1:
+			m_nowAnimationState = AnimationState::RightWalk;
+			break;
+		case 2:
+			m_nowAnimationState = AnimationState::LeftWalk;
+			break;
+		}
+		break;
+	default :
+		break;
+	}
+
+	if (m_nowAnimationState == AnimationState::LeftWalk)
+	{
+		m_posAngle += m_speed;
+	}
+	else if (m_nowAnimationState == AnimationState::RightWalk)
+	{
+		m_posAngle -= m_speed;
+	}
+
+	auto deskPos = DeskAccessor::GetInstance()->GetDesk()->GetPos();
+	float radian = m_posAngle * XM_PI / 180;
+	float x = deskPos.x + sin(radian) * m_distance;
+	float z = deskPos.z + cos(radian) * m_distance;
+	m_eyePos.x = m_pos.x = x;
+	m_eyePos.z = m_pos.z = z;
 
 	auto playerPos = PlayerAccessor::GetInstance()->GetPlayer()->GetPos();
 	m_rotate = atan2f(m_pos.x - playerPos.x, m_pos.z - playerPos.z);
+
+	m_eyeDirection = playerPos - m_eyePos;
+	m_eyeDirection.Normalize();
+
+	m_effect->SetLightDirection(m_eyeDirection);
 
 	//ワールド座標行列の更新
 	m_world = Matrix::Identity;

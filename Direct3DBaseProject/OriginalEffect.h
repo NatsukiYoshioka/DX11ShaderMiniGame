@@ -96,6 +96,8 @@ public:
 	/// <returns></returns>
 	void __cdecl ResetBoneTransforms()override;
 
+	void SetLightDirection(FXMVECTOR direction);
+
 private:
 	ComPtr<ID3D11VertexShader> m_vs;			//頂点シェーダー
 	ComPtr<ID3D11PixelShader> m_ps;				//ピクセルシェーダー
@@ -120,6 +122,13 @@ private:
 		XMMATRIX projection;
 	};
 	ConstantBuffer<MatrixConstants> m_matrixBuffer;	//行列の定数バッファ
+
+	struct __declspec(align(16)) LightConstants
+	{
+		XMVECTOR direction;
+	};
+	LightConstants m_light;
+	ConstantBuffer<LightConstants> m_lightBuffer;
 
 	/// <summary>
 	/// スキニング用の定数バッファ用構造体

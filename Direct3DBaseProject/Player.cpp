@@ -3,6 +3,8 @@
 #include"DeviceAccessor.h"
 #include"Camera.h"
 #include"CameraAccessor.h"
+#include"Enemy.h"
+#include"EnemyAccessor.h"
 #include"OriginalEffect.h"
 #include"GameObject.h"
 #include "Player.h"
@@ -146,6 +148,7 @@ void Player::Update()
 	m_world = XMMatrixMultiply(m_world, XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
 
 	m_animations.at(static_cast<int>(m_nowAnimationState)).Update(*DeviceAccessor::GetInstance()->GetElapsedTime());
+	m_effect->SetLightDirection(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeDirection());
 }
 
 void Player::Draw()

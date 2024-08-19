@@ -47,10 +47,10 @@
     <Filter Include="GameObject\Player\PlayerAccessor">
       <UniqueIdentifier>{d38af0ef-cdf8-4aeb-81ef-143e5268f8d1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Enemy">
+    <Filter Include="GameObject\Enemy">
       <UniqueIdentifier>{86b166bc-6fe0-4f3c-82bd-00888c4992b3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Enemy\EnemyAccessor">
+    <Filter Include="GameObject\Enemy\EnemyAccessor">
       <UniqueIdentifier>{be8c042e-7e5e-48ab-8f2e-990535420b8e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -105,10 +105,10 @@
     </ClInclude>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Enemy.h">
-      <Filter>Enemy</Filter>
+      <Filter>GameObject\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="EnemyAccessor.h">
-      <Filter>Enemy\EnemyAccessor</Filter>
+      <Filter>GameObject\Enemy\EnemyAccessor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -157,10 +157,10 @@
     </ClCompile>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Enemy.cpp">
-      <Filter>Enemy</Filter>
+      <Filter>GameObject\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="EnemyAccessor.cpp">
-      <Filter>Enemy\EnemyAccessor</Filter>
+      <Filter>GameObject\Enemy\EnemyAccessor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
