@@ -195,5 +195,11 @@
     <FxCompile Include="SkinningVertex.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
+    <FxCompile Include="Lighting.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="CharacterLighting.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

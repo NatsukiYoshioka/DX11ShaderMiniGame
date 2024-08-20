@@ -1,20 +1,16 @@
 #include "pch.h"
+#include"Json.h"
 #include "OriginalEffect.h"
 #include"ReadData.h"
 
-namespace
-{
-	constexpr uint32_t DirtyConstantBuffer = 0x1;
-	constexpr uint32_t DirtyWVPMatrix = 0x2;
-}
-
 //エフェクトの初期化
-OriginalEffect::OriginalEffect(ID3D11Device* device, bool isSkinning):
-	m_dirtyFlags(uint32_t(-1)),
+OriginalEffect::OriginalEffect(ID3D11Device* device, PixelType type, bool isSkinning):
+	m_type(type),
 	m_matrixBuffer(device),
 	m_skinnedBuffer(device),
 	m_lightBuffer(device),
-	m_skinnedConstants()
+	m_skinnedConstants(),
+	m_light()
 {
 	assert((sizeof(OriginalEffect::MatrixConstants) % 16) == 0, "CB size alignment");
 	assert((sizeof(OriginalEffect::SkinnedConstants) % 16) == 0, "CB size alignment");
@@ -27,25 +23,37 @@ OriginalEffect::OriginalEffect(ID3D11Device* device, bool isSkinning):
 
 	//ピクセルシェーダーのロード
 	vector<uint8_t> psBlob;
-	psBlob = DX::ReadData(L"TestPixel.cso");
+	switch (m_type)
+	{
+	case PixelType::Object:
+		psBlob = DX::ReadData(L"Lighting.cso");
+		break;
+	case PixelType::Character:
+		psBlob = DX::ReadData(L"CharacterLighting.cso");
+		break;
+	}
 	DX::ThrowIfFailed(device->CreatePixelShader(psBlob.data(), psBlob.size(), nullptr, m_ps.ReleaseAndGetAddressOf()));
+
+	m_light.range = float(Json::GetInstance()->GetData()["LightRange"]);
+	m_light.angle = XMConvertToRadians(float(Json::GetInstance()->GetData()["LightAngle"]));
 }
 
 //エフェクトの適用
 void OriginalEffect::Apply(ID3D11DeviceContext* context)
 {
-	if (m_dirtyFlags & DirtyWVPMatrix)
-	{
-		//定数バッファの設定
-		MatrixConstants matrixConstants;
-		matrixConstants.world = m_world;
-		matrixConstants.view = m_view;
-		matrixConstants.projection = m_projection;
-		m_matrixBuffer.SetData(context, matrixConstants);
+	//定数バッファの設定
+	MatrixConstants matrixConstants;
+	matrixConstants.world = m_world;
+	matrixConstants.view = m_view;
+	matrixConstants.projection = m_projection;
 
-		m_dirtyFlags &= ~DirtyWVPMatrix;
-		m_dirtyFlags |= DirtyConstantBuffer;
-	}
+	XMMATRIX worldTranspose = XMMatrixTranspose(m_world);
+	XMMATRIX worldInverseTransPose = XMMatrixInverse(nullptr, worldTranspose);
+	matrixConstants.worldInverse[0] = worldInverseTransPose.r[0];
+	matrixConstants.worldInverse[1] = worldInverseTransPose.r[1];
+	matrixConstants.worldInverse[2] = worldInverseTransPose.r[2];
+
+	m_matrixBuffer.SetData(context, matrixConstants);
 
 	m_skinnedBuffer.SetData(context, m_skinnedConstants);
 	m_lightBuffer.SetData(context, m_light);
@@ -56,7 +64,7 @@ void OriginalEffect::Apply(ID3D11DeviceContext* context)
 	auto lb = m_lightBuffer.GetBuffer();
 	context->VSSetConstantBuffers(0, 1, &mb);
 	context->VSSetConstantBuffers(1, 1, &sb);
-	context->VSSetConstantBuffers(2, 1, &lb);
+	context->PSSetConstantBuffers(2, 1, &lb);
 	context->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
 	context->PSSetShaderResources(1, 1, m_normal.GetAddressOf());
 	context->PSSetShaderResources(2, 1, m_ao.GetAddressOf());
@@ -64,6 +72,7 @@ void OriginalEffect::Apply(ID3D11DeviceContext* context)
 	//シェーダーの適用
 	context->VSSetShader(m_vs.Get(), nullptr, 0);
 	context->PSSetShader(m_ps.Get(), nullptr, 0);
+
 }
 
 //頂点シェーダーのバイトコード取得
@@ -96,21 +105,18 @@ void OriginalEffect::SetAO(ID3D11ShaderResourceView* value)
 void OriginalEffect::SetWorld(FXMMATRIX world)
 {
 	m_world = world;
-	m_dirtyFlags |= DirtyWVPMatrix;
 }
 
 //ビュー行列の設定
 void OriginalEffect::SetView(FXMMATRIX view)
 {
 	m_view = view;
-	m_dirtyFlags |= DirtyWVPMatrix;
 }
 
 //プロジェクション行列の設定
 void OriginalEffect::SetProjection(FXMMATRIX projection)
 {
 	m_projection = projection;
-	m_dirtyFlags |= DirtyWVPMatrix;
 }
 
 //ワールド,ビュー,プロジェクション行列の設定
@@ -119,7 +125,6 @@ void OriginalEffect::SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX proj
 	m_world = world;
 	m_view = view;
 	m_projection = projection;
-	m_dirtyFlags |= DirtyWVPMatrix;
 }
 
 //影響を受けるボーン数の設定(処理なし)
@@ -150,7 +155,17 @@ void OriginalEffect::ResetBoneTransforms()
 	}
 }
 
-void OriginalEffect::SetLightDirection(FXMVECTOR direction)
+void OriginalEffect::SetLightPosition(Vector3 position)
+{
+	m_light.position = position;
+}
+
+void OriginalEffect::SetLightDirection(Vector3 direction)
 {
 	m_light.direction = direction;
+}
+
+void OriginalEffect::SetEyePosition(Vector3 eyePosition)
+{
+	m_light.eyePosition = eyePosition;
 }

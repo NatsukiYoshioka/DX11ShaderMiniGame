@@ -11,11 +11,17 @@ using namespace std;
 class OriginalEffect :public IEffect, public IEffectMatrices, public IEffectSkinning
 {
 public:
+	enum class PixelType
+	{
+		Object,
+		Character
+	};
+
 	/// <summary>
 	/// エフェクトの初期化
 	/// </summary>
 	/// <param name="device">描画デバイス</param>
-	explicit OriginalEffect(ID3D11Device* device, bool isSkinning = false);
+	explicit OriginalEffect(ID3D11Device* device, PixelType type, bool isSkinning = false);
 
 	/// <summary>
 	/// エフェクトの適用処理
@@ -96,9 +102,15 @@ public:
 	/// <returns></returns>
 	void __cdecl ResetBoneTransforms()override;
 
-	void SetLightDirection(FXMVECTOR direction);
+	void SetLightPosition(Vector3 position);
+
+	void SetLightDirection(Vector3 direction);
+
+	void SetEyePosition(Vector3 eyePosition);
 
 private:
+	PixelType m_type;
+
 	ComPtr<ID3D11VertexShader> m_vs;			//頂点シェーダー
 	ComPtr<ID3D11PixelShader> m_ps;				//ピクセルシェーダー
 	vector<uint8_t> m_vsBlob;					//頂点シェーダーのデータ情報
@@ -110,8 +122,6 @@ private:
 	Matrix m_view;			//ビュー行列
 	Matrix m_projection;	//プロジェクション行列
 
-	uint32_t m_dirtyFlags;
-
 	/// <summary>
 	/// 定数バッファ用の構造体
 	/// </summary>
@@ -120,12 +130,17 @@ private:
 		XMMATRIX world;
 		XMMATRIX view;
 		XMMATRIX projection;
+		XMVECTOR worldInverse[3];
 	};
 	ConstantBuffer<MatrixConstants> m_matrixBuffer;	//行列の定数バッファ
 
 	struct __declspec(align(16)) LightConstants
 	{
-		XMVECTOR direction;
+		Vector3 direction;
+		float range;
+		Vector3 position;
+		float angle;
+		Vector3 eyePosition;		
 	};
 	LightConstants m_light;
 	ConstantBuffer<LightConstants> m_lightBuffer;

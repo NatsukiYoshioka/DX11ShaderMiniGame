@@ -24,7 +24,7 @@ Desk::Desk(const wchar_t* fileName, Vector3 pos, float rotate)
 
 	//エフェクトの初期化
 	SetCurrentDirectory(L"Assets/Shader");
-	m_effect = make_shared<OriginalEffect>(deviceAccessor->GetDevice());
+	m_effect = make_unique<OriginalEffect>(deviceAccessor->GetDevice(), OriginalEffect::PixelType::Object);
 	SetCurrentDirectory(L"../../");
 
 	//モデルの各メッシュの描画設定
@@ -40,7 +40,6 @@ Desk::Desk(const wchar_t* fileName, Vector3 pos, float rotate)
 			assert(part != nullptr);
 
 			//入力レイアウトの初期化とエフェクトの適用
-			part->CreateInputLayout(deviceAccessor->GetDevice(), m_effect.get(), m_inputLayout.ReleaseAndGetAddressOf());
 			part->ModifyEffect(deviceAccessor->GetDevice(), m_effect, false);
 		}
 	}
@@ -84,13 +83,27 @@ Desk::~Desk()
 //オブジェクトの更新
 void Desk::Update()
 {
+	for (const auto& mit : m_modelHandle->meshes)
+	{
+		auto mesh = mit.get();
+		assert(mesh != nullptr);
+		for (const auto& pit : mesh->meshParts)
+		{
+			auto part = pit.get();
+			assert(part != nullptr);
+
+			auto effect = static_cast<OriginalEffect*>(part->effect.get());
+			effect->SetLightPosition(EnemyAccessor::GetInstance()->GetEnemy()->GetEyePosition());
+			effect->SetLightDirection(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeDirection());
+			effect->SetEyePosition(CameraAccessor::GetInstance()->GetCamera()->GetPos());
+		}
+	}
+
 	//ワールド座標行列の更新
 	m_world = Matrix::Identity;
 	m_world = XMMatrixMultiply(m_world, Matrix::CreateScale(0.2f));
 	m_world = XMMatrixMultiply(m_world, Matrix::CreateRotationY(m_rotate));
 	m_world = XMMatrixMultiply(m_world, XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
-
-	m_effect->SetLightDirection(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeDirection());
 }
 
 //オブジェクトの描画

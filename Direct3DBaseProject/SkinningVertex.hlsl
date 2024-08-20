@@ -1,10 +1,5 @@
 #include"Header.hlsli"
 
-cbuffer SkinnedConstants : register(b1)
-{
-    float4x3 Bones[72];
-}
-
 struct VSSkinningOutput
 {
     float2 TexCoord : TEXCOORD0;
@@ -29,10 +24,12 @@ PSOutput main(VSSkinningOutput vin)
     vin.Position.xyz = mul(vin.Position, skinning);
     
     float4 worldPos = mul(World, vin.Position);
+    pout.WorldPos = worldPos;
     pout.Position = mul(View, worldPos);
     pout.Position = mul(Projection, pout.Position);
-        
+    
     pout.Normal = mul(World, vin.Normal);
+    pout.Normal = normalize(pout.Normal);
     
     pout.TexCoord = vin.TexCoord;
         

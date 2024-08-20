@@ -30,7 +30,7 @@ Player::Player(const wchar_t* fileName, Vector3 pos, float rotate):
 
 	//エフェクトの初期化
 	SetCurrentDirectory(L"Assets/Shader");
-	m_effect = make_unique<OriginalEffect>(deviceAccessor->GetDevice(), true);
+	m_effect = make_unique<OriginalEffect>(deviceAccessor->GetDevice(), OriginalEffect::PixelType::Character, true);
 	SetCurrentDirectory(L"../../");
 
 	//モデルの各メッシュの描画設定
@@ -141,6 +141,22 @@ void Player::Update()
 		m_pos.x += -sin(m_rotate) * nowSpeed;
 	}
 
+	for (const auto& mit : m_modelHandle->meshes)
+	{
+		auto mesh = mit.get();
+		assert(mesh != nullptr);
+		for (const auto& pit : mesh->meshParts)
+		{
+			auto part = pit.get();
+			assert(part != nullptr);
+
+			auto effect = static_cast<OriginalEffect*>(part->effect.get());
+			effect->SetLightPosition(EnemyAccessor::GetInstance()->GetEnemy()->GetEyePosition());
+			effect->SetLightDirection(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeDirection());
+			effect->SetEyePosition(CameraAccessor::GetInstance()->GetCamera()->GetPos());
+		}
+	}
+
 	//ワールド座標行列の更新
 	m_world = Matrix::Identity;
 	m_world = XMMatrixMultiply(m_world, Matrix::CreateScale(m_scale));
@@ -148,7 +164,6 @@ void Player::Update()
 	m_world = XMMatrixMultiply(m_world, XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
 
 	m_animations.at(static_cast<int>(m_nowAnimationState)).Update(*DeviceAccessor::GetInstance()->GetElapsedTime());
-	m_effect->SetLightDirection(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeDirection());
 }
 
 void Player::Draw()

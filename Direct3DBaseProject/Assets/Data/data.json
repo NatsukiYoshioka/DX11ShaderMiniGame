@@ -90,5 +90,8 @@
   "EnemyEyeHeight"  : 10,
   "EnemyScale"      : 0.325,
   "EnemyDistance"   : 40,
-  "EnemySpeed"      : 0.5
+  "EnemySpeed"      : 0.5,
+
+  "LightRange": 500,
+  "LightAngle": 10
 }

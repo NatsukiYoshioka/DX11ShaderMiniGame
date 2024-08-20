@@ -33,7 +33,7 @@ Enemy::Enemy(const wchar_t* fileName, Vector3 pos, float rotate):
 
 	//エフェクトの初期化
 	SetCurrentDirectory(L"Assets/Shader");
-	m_effect = make_unique<OriginalEffect>(deviceAccessor->GetDevice(), true);
+	m_effect = make_unique<OriginalEffect>(deviceAccessor->GetDevice(), OriginalEffect::PixelType::Character, true);
 	SetCurrentDirectory(L"../../");
 
 	//モデルの各メッシュの描画設定
@@ -146,7 +146,21 @@ void Enemy::Update()
 	m_eyeDirection = playerPos - m_eyePos;
 	m_eyeDirection.Normalize();
 
-	m_effect->SetLightDirection(m_eyeDirection);
+	for (const auto& mit : m_modelHandle->meshes)
+	{
+		auto mesh = mit.get();
+		assert(mesh != nullptr);
+		for (const auto& pit : mesh->meshParts)
+		{
+			auto part = pit.get();
+			assert(part != nullptr);
+
+			auto effect = static_cast<OriginalEffect*>(part->effect.get());
+			effect->SetLightPosition(m_eyePos);
+			effect->SetLightDirection(m_eyeDirection);
+			effect->SetEyePosition(CameraAccessor::GetInstance()->GetCamera()->GetPos());
+		}
+	}
 
 	//ワールド座標行列の更新
 	m_world = Matrix::Identity;

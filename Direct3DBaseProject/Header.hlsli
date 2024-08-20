@@ -4,6 +4,21 @@ cbuffer Constants : register(b0)
     float4x4 World;
     float4x4 View;
     float4x4 Projection;
+    float3x3 WorldInverse;
+}
+
+cbuffer SkinnedConstants : register(b1)
+{
+    float4x3 Bones[72];
+}
+
+cbuffer Light : register(b2)
+{
+    float3 LightDirection;
+    float LightRange;
+    float3 LightPosition;
+    float LightAngle;
+    float3 EyePosition;
 }
 
 //í∏ì_ç\ë¢ëÃ
@@ -20,4 +35,5 @@ struct PSOutput
     float2 TexCoord : TEXCOORD0;
     float3 Normal : NORMAL;
     float4 Position : SV_POSITION;
+    float3 WorldPos : TEXVOORD1;
 };

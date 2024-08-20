@@ -28,6 +28,7 @@ public:
 	void Update()override;
 	void Draw()override;
 
+	Vector3 GetEyePosition()const { return m_eyePos; }
 	Vector3 GetEyeDirection()const { return m_eyeDirection; }
 
 private:
