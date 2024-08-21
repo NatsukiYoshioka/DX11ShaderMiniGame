@@ -154,6 +154,7 @@ void Player::Update()
 			effect->SetLightPosition(EnemyAccessor::GetInstance()->GetEnemy()->GetEyePosition());
 			effect->SetLightDirection(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeDirection());
 			effect->SetEyePosition(CameraAccessor::GetInstance()->GetCamera()->GetPos());
+			effect->SetLightView(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeView());
 		}
 	}
 
@@ -179,4 +180,47 @@ void Player::Draw()
 		m_world,
 		CameraAccessor::GetInstance()->GetCamera()->GetView(),
 		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
+}
+
+void Player::DrawShadow()
+{
+	for (const auto& mit : m_modelHandle->meshes)
+	{
+		auto mesh = mit.get();
+		assert(mesh != nullptr);
+		for (const auto& pit : mesh->meshParts)
+		{
+			auto part = pit.get();
+			assert(part != nullptr);
+
+			auto effect = static_cast<OriginalEffect*>(part->effect.get());
+			effect->SetShadow(true);
+		}
+	}
+
+	size_t nbones = m_modelHandle->bones.size();
+
+	m_animations.at(static_cast<int>(m_nowAnimationState)).Apply(*m_modelHandle, nbones, m_drawBones.get());
+
+	m_modelHandle->DrawSkinned(DeviceAccessor::GetInstance()->GetContext(),
+		*DeviceAccessor::GetInstance()->GetStates(),
+		nbones,
+		m_drawBones.get(),
+		m_world,
+		EnemyAccessor::GetInstance()->GetEnemy()->GetEyeView(),
+		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
+
+	for (const auto& mit : m_modelHandle->meshes)
+	{
+		auto mesh = mit.get();
+		assert(mesh != nullptr);
+		for (const auto& pit : mesh->meshParts)
+		{
+			auto part = pit.get();
+			assert(part != nullptr);
+
+			auto effect = static_cast<OriginalEffect*>(part->effect.get());
+			effect->SetShadow(false);
+		}
+	}
 }

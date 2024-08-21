@@ -201,5 +201,11 @@
     <FxCompile Include="CharacterLighting.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
+    <FxCompile Include="ObjectShadow.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="CharacterShadow.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -48,6 +48,8 @@ public:
 	/// </summary>
 	void Draw()override;
 
+	void DrawShadow();
+
 	/// <summary>
 	/// オブジェクトの回転量の取得
 	/// </summary>

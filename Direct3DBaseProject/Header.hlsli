@@ -4,7 +4,6 @@ cbuffer Constants : register(b0)
     float4x4 World;
     float4x4 View;
     float4x4 Projection;
-    float3x3 WorldInverse;
 }
 
 cbuffer SkinnedConstants : register(b1)
@@ -19,6 +18,11 @@ cbuffer Light : register(b2)
     float3 LightPosition;
     float LightAngle;
     float3 EyePosition;
+}
+
+cbuffer LVP : register(b3)
+{
+    float4x4 LVP;
 }
 
 //í∏ì_ç\ë¢ëÃ
@@ -36,4 +40,5 @@ struct PSOutput
     float3 Normal : NORMAL;
     float4 Position : SV_POSITION;
     float3 WorldPos : TEXVOORD1;
+    float4 PosInLVP : TEXCOORD2;
 };

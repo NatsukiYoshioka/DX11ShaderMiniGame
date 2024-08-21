@@ -17,6 +17,8 @@ public:
 		Character
 	};
 
+	void SetShadow(bool value) { m_isDrawShadow = value; }
+
 	/// <summary>
 	/// エフェクトの初期化
 	/// </summary>
@@ -108,15 +110,20 @@ public:
 
 	void SetEyePosition(Vector3 eyePosition);
 
+	void SetLightView(Matrix view);
+
 private:
 	PixelType m_type;
+	bool m_isDrawShadow;
 
-	ComPtr<ID3D11VertexShader> m_vs;			//頂点シェーダー
-	ComPtr<ID3D11PixelShader> m_ps;				//ピクセルシェーダー
-	vector<uint8_t> m_vsBlob;					//頂点シェーダーのデータ情報
-	ComPtr<ID3D11ShaderResourceView> m_texture;	//テクスチャSRV
-	ComPtr<ID3D11ShaderResourceView> m_normal;	//法線マップSRV
-	ComPtr<ID3D11ShaderResourceView> m_ao;		//AOマップSRV
+	ComPtr<ID3D11VertexShader> m_vs;				//頂点シェーダー
+	ComPtr<ID3D11PixelShader> m_ps;					//ピクセルシェーダー
+	ComPtr<ID3D11PixelShader> m_objectShadow;		//オブジェクト深度シャドウ用ピクセルシェーダー
+	ComPtr<ID3D11PixelShader> m_characterShadow;	//キャラクター深度シャドウ用ピクセルシェーダー
+	vector<uint8_t> m_vsBlob;						//頂点シェーダーのデータ情報
+	ComPtr<ID3D11ShaderResourceView> m_texture;		//テクスチャSRV
+	ComPtr<ID3D11ShaderResourceView> m_normal;		//法線マップSRV
+	ComPtr<ID3D11ShaderResourceView> m_ao;			//AOマップSRV
 
 	Matrix m_world;			//ワールド行列
 	Matrix m_view;			//ビュー行列
@@ -130,7 +137,6 @@ private:
 		XMMATRIX world;
 		XMMATRIX view;
 		XMMATRIX projection;
-		XMVECTOR worldInverse[3];
 	};
 	ConstantBuffer<MatrixConstants> m_matrixBuffer;	//行列の定数バッファ
 
@@ -140,10 +146,19 @@ private:
 		float range;
 		Vector3 position;
 		float angle;
-		Vector3 eyePosition;		
+		Vector3 eyePosition;
+		float pad0;
 	};
+	
 	LightConstants m_light;
 	ConstantBuffer<LightConstants> m_lightBuffer;
+
+	struct __declspec(align(16)) LVPConstants
+	{
+		XMMATRIX LVP;
+	};
+	ConstantBuffer<LVPConstants> m_LVPBuffer;
+	Matrix m_lightView;
 
 	/// <summary>
 	/// スキニング用の定数バッファ用構造体

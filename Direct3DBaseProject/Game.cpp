@@ -79,14 +79,17 @@ void Game::Render()
     {
         return;
     }
+    auto gameObjectManager = GameObjectManager::GetInstance();
+    gameObjectManager->ClearShadow();
+    gameObjectManager->SetShadowRenderTarget();
 
     Clear();
+    gameObjectManager->SetShadowResource();
 
     m_deviceResources->PIXBeginEvent(L"Render");
     auto context = m_deviceResources->GetD3DDeviceContext();
 
     // TODO: Add your rendering code here.
-    auto gameObjectManager = GameObjectManager::GetInstance();
     gameObjectManager->Draw();
     context;
 

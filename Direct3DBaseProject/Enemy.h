@@ -30,6 +30,7 @@ public:
 
 	Vector3 GetEyePosition()const { return m_eyePos; }
 	Vector3 GetEyeDirection()const { return m_eyeDirection; }
+	Matrix GetEyeView()const { return m_eyeView; }
 
 private:
 	AnimationState m_nowAnimationState;			//アニメーションの現在の状態
@@ -40,6 +41,7 @@ private:
 
 	Vector3 m_eyePos;		//敵の目の位置
 	Vector3 m_eyeDirection;	//目の向き
+	Matrix m_eyeView;		//敵の目のビュー行列
 
 	float m_posAngle;	//モデルの座標を決める角度
 	float m_rotate;		//モデルのY軸回転量

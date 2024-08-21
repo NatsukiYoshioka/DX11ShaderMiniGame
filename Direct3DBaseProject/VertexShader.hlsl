@@ -12,6 +12,8 @@ PSOutput main(VSOutput vout,uniform bool hasSkin)
     pout.Normal = normalize(pout.Normal);
     
     pout.TexCoord = vout.TexCoord;
+    
+    pout.PosInLVP = mul(LVP, worldPos);
         
     return pout;
 }

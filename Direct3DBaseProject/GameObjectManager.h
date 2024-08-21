@@ -1,5 +1,6 @@
 #pragma once
 using namespace std;
+using namespace Microsoft::WRL;
 
 class GameObject;
 
@@ -45,9 +46,21 @@ public:
 	/// </summary>
 	void Draw();
 
+	void ClearShadow();
+
+	void SetShadowRenderTarget();
+
+	void SetShadowResource();
+
+	void DrawShadow();
+
 private:
 	static GameObjectManager* m_instance;	//マネージャのインスタンス
 
 	vector<GameObject*> m_gameObjects;		//ゲームオブジェクトのコンテナ
+
+	ComPtr<ID3D11Texture2D> m_shadowDepth;
+	ComPtr<ID3D11DepthStencilView> m_shadowDepthView;
+	ComPtr<ID3D11ShaderResourceView> m_shadowView;
 };
 

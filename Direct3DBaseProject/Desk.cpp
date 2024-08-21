@@ -96,6 +96,7 @@ void Desk::Update()
 			effect->SetLightPosition(EnemyAccessor::GetInstance()->GetEnemy()->GetEyePosition());
 			effect->SetLightDirection(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeDirection());
 			effect->SetEyePosition(CameraAccessor::GetInstance()->GetCamera()->GetPos());
+			effect->SetLightView(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeView());
 		}
 	}
 

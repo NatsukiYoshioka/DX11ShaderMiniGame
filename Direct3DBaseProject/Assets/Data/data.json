@@ -87,11 +87,11 @@
 
   "EnemyTexture"    : "Ch46_1001_Diffuse.dds",
   "EnemyPosition"   : [ 0, -31.5, -40, 180 ],
-  "EnemyEyeHeight"  : 10,
+  "EnemyEyeHeight"  : 5,
   "EnemyScale"      : 0.325,
   "EnemyDistance"   : 40,
   "EnemySpeed"      : 0.5,
 
-  "LightRange": 500,
+  "LightRange": 1000,
   "LightAngle": 10
 }

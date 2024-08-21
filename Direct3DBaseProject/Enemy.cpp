@@ -17,6 +17,7 @@ Enemy::Enemy(const wchar_t* fileName, Vector3 pos, float rotate):
 	m_nowAnimationState(AnimationState::Idle),
 	m_posAngle(0),
 	m_eyeDirection(Vector3::Zero),
+	m_eyeView(),
 	m_scale(float(Json::GetInstance()->GetData()["EnemyScale"])),
 	m_distance(float(Json::GetInstance()->GetData()["EnemyDistance"])),
 	m_speed(float(Json::GetInstance()->GetData()["EnemySpeed"]))
@@ -137,11 +138,18 @@ void Enemy::Update()
 	float radian = m_posAngle * XM_PI / 180;
 	float x = deskPos.x + sin(radian) * m_distance;
 	float z = deskPos.z + cos(radian) * m_distance;
-	m_eyePos.x = m_pos.x = x;
-	m_eyePos.z = m_pos.z = z;
+	m_pos.x = x;
+	m_pos.z = z;
+
+	x = deskPos.x + sin(radian) * (m_distance);
+	z = deskPos.z + cos(radian) * (m_distance);
+	m_eyePos.x = x;
+	m_eyePos.z = z;
 
 	auto playerPos = PlayerAccessor::GetInstance()->GetPlayer()->GetPos();
 	m_rotate = atan2f(m_pos.x - playerPos.x, m_pos.z - playerPos.z);
+
+	m_eyeView = Matrix::CreateLookAt(m_eyePos, playerPos, Vector3::Up);
 
 	m_eyeDirection = playerPos - m_eyePos;
 	m_eyeDirection.Normalize();
@@ -159,6 +167,7 @@ void Enemy::Update()
 			effect->SetLightPosition(m_eyePos);
 			effect->SetLightDirection(m_eyeDirection);
 			effect->SetEyePosition(CameraAccessor::GetInstance()->GetCamera()->GetPos());
+			effect->SetLightView(m_eyeView);
 		}
 	}
 

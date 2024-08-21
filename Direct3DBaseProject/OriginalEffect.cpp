@@ -6,9 +6,11 @@
 //エフェクトの初期化
 OriginalEffect::OriginalEffect(ID3D11Device* device, PixelType type, bool isSkinning):
 	m_type(type),
+	m_isDrawShadow(false),
 	m_matrixBuffer(device),
 	m_skinnedBuffer(device),
 	m_lightBuffer(device),
+	m_LVPBuffer(device),
 	m_skinnedConstants(),
 	m_light()
 {
@@ -34,6 +36,12 @@ OriginalEffect::OriginalEffect(ID3D11Device* device, PixelType type, bool isSkin
 	}
 	DX::ThrowIfFailed(device->CreatePixelShader(psBlob.data(), psBlob.size(), nullptr, m_ps.ReleaseAndGetAddressOf()));
 
+	//シャドウマップ描画用ピクセルシェーダーのロード
+	psBlob = DX::ReadData(L"ObjectShadow.cso");
+	DX::ThrowIfFailed(device->CreatePixelShader(psBlob.data(), psBlob.size(), nullptr, m_objectShadow.ReleaseAndGetAddressOf()));
+	psBlob = DX::ReadData(L"CharacterShadow.cso");
+	DX::ThrowIfFailed(device->CreatePixelShader(psBlob.data(), psBlob.size(), nullptr, m_characterShadow.ReleaseAndGetAddressOf()));
+
 	m_light.range = float(Json::GetInstance()->GetData()["LightRange"]);
 	m_light.angle = XMConvertToRadians(float(Json::GetInstance()->GetData()["LightAngle"]));
 }
@@ -47,23 +55,23 @@ void OriginalEffect::Apply(ID3D11DeviceContext* context)
 	matrixConstants.view = m_view;
 	matrixConstants.projection = m_projection;
 
-	XMMATRIX worldTranspose = XMMatrixTranspose(m_world);
-	XMMATRIX worldInverseTransPose = XMMatrixInverse(nullptr, worldTranspose);
-	matrixConstants.worldInverse[0] = worldInverseTransPose.r[0];
-	matrixConstants.worldInverse[1] = worldInverseTransPose.r[1];
-	matrixConstants.worldInverse[2] = worldInverseTransPose.r[2];
-
 	m_matrixBuffer.SetData(context, matrixConstants);
 
 	m_skinnedBuffer.SetData(context, m_skinnedConstants);
 	m_lightBuffer.SetData(context, m_light);
 
+	LVPConstants LVP;
+	LVP.LVP = XMMatrixMultiply(m_lightView, m_projection);
+	m_LVPBuffer.SetData(context, LVP);
+
 	//定数バッファとSRVのセット
 	auto mb = m_matrixBuffer.GetBuffer();
 	auto sb = m_skinnedBuffer.GetBuffer();
 	auto lb = m_lightBuffer.GetBuffer();
+	auto lvpb = m_LVPBuffer.GetBuffer();
 	context->VSSetConstantBuffers(0, 1, &mb);
 	context->VSSetConstantBuffers(1, 1, &sb);
+	context->VSSetConstantBuffers(3, 1, &lvpb);
 	context->PSSetConstantBuffers(2, 1, &lb);
 	context->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
 	context->PSSetShaderResources(1, 1, m_normal.GetAddressOf());
@@ -71,7 +79,19 @@ void OriginalEffect::Apply(ID3D11DeviceContext* context)
 
 	//シェーダーの適用
 	context->VSSetShader(m_vs.Get(), nullptr, 0);
-	context->PSSetShader(m_ps.Get(), nullptr, 0);
+	if (m_isDrawShadow)
+	{
+		switch (m_type)
+		{
+		case PixelType::Object:
+			context->PSSetShader(m_objectShadow.Get(), nullptr, 0);
+			break;
+		case PixelType::Character:
+			context->PSSetShader(m_characterShadow.Get(), nullptr, 0);
+			break;
+		}
+	}	
+	else context->PSSetShader(m_ps.Get(), nullptr, 0);
 
 }
 
@@ -168,4 +188,9 @@ void OriginalEffect::SetLightDirection(Vector3 direction)
 void OriginalEffect::SetEyePosition(Vector3 eyePosition)
 {
 	m_light.eyePosition = eyePosition;
+}
+
+void OriginalEffect::SetLightView(Matrix view)
+{
+	m_lightView = view;
 }

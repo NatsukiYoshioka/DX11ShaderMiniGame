@@ -3,6 +3,7 @@
 Texture2D<float4> Texture : register(t0);
 Texture2D<float4> Normal : register(t1);
 Texture2D<float4> AO : register(t2);
+Texture2D<float4> Shadow : register(t10);
 SamplerState Sampler : register(s0);
 
 float4 main(PSOutput pout):SV_Target0
@@ -79,6 +80,22 @@ float4 main(PSOutput pout):SV_Target0
     //スポットライトの反射光を最終的な反射光に足し算する
     float3 ambientLight = 0.3f;
     float3 finalLight = ambientLight + diffuseLight + specularLight;
+    
+    float2 shadowMapUV = pout.PosInLVP.xy / pout.PosInLVP.w;
+    shadowMapUV *= float2(0.5f, -0.5f);
+    shadowMapUV += 0.5f;
+    
+    float zInLVP = pout.PosInLVP.z / pout.PosInLVP.w;
+    
+    //UV座標を使ってシャドウマップから影情報をサンプリング
+    if (shadowMapUV.x > 0.f && shadowMapUV.x < 1.f && shadowMapUV.y > 0.f && shadowMapUV.y < 1.f)
+    {
+        float zInShadowMap = Shadow.Sample(Sampler, shadowMapUV).r;
+        if (zInLVP > zInShadowMap)
+        {
+            finalLight *= 0.5f;
+        }
+    }
     
     //テクスチャカラーに求めた光を乗算して最終出力カラーを求める
     float4 finalColor = Texture.Sample(Sampler, pout.TexCoord);

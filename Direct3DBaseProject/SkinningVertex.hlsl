@@ -32,6 +32,8 @@ PSOutput main(VSSkinningOutput vin)
     pout.Normal = normalize(pout.Normal);
     
     pout.TexCoord = vin.TexCoord;
+    
+    pout.PosInLVP = mul(LVP, worldPos);
         
     return pout;
 }
