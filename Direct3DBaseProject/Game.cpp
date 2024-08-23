@@ -80,11 +80,17 @@ void Game::Render()
         return;
     }
     auto gameObjectManager = GameObjectManager::GetInstance();
-    gameObjectManager->ClearShadow();
-    gameObjectManager->SetShadowRenderTarget();
+    gameObjectManager->ClearObjectShadow();
+    gameObjectManager->SetObjectShadowRenderTarget();
+    gameObjectManager->DrawObjectShadow();
+
+    gameObjectManager->ClearCharacterShadow();
+    gameObjectManager->SetCharacterShadowRenderTarget();
+    gameObjectManager->DrawCharacterShadow();
 
     Clear();
-    gameObjectManager->SetShadowResource();
+    gameObjectManager->SetObjectShadowResource();
+    gameObjectManager->SetCharacterShadowResource();
 
     m_deviceResources->PIXBeginEvent(L"Render");
     auto context = m_deviceResources->GetD3DDeviceContext();

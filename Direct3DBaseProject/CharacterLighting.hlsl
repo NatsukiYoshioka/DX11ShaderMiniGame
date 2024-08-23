@@ -4,7 +4,16 @@ Texture2D<float4> Texture : register(t0);
 Texture2D<float4> Normal : register(t1);
 Texture2D<float4> AO : register(t2);
 Texture2D<float4> Shadow : register(t10);
+Texture2D<float4> CharacterShadow : register(t11);
 SamplerState Sampler : register(s0);
+
+struct HitInfo
+{
+    int playerPixNum;
+    int hiddenPixNum;
+};
+
+RWStructuredBuffer<HitInfo> rwBuffer : register(u0);
 
 float4 main(PSOutput pout) : SV_Target0
 {
@@ -74,9 +83,10 @@ float4 main(PSOutput pout) : SV_Target0
     if (shadowMapUV.x > 0.f && shadowMapUV.x < 1.f && shadowMapUV.y > 0.f && shadowMapUV.y < 1.f)
     {
         float zInShadowMap = Shadow.Sample(Sampler, shadowMapUV).r;
-        if (zInLVP > zInShadowMap)
+        float zInCharacterShadowMap = CharacterShadow.Sample(Sampler, shadowMapUV).r;
+        if (zInLVP > zInShadowMap + 0.00001f || zInLVP > zInCharacterShadowMap + 0.00001f)
         {
-            finalLight *= 0.5f;
+            finalLight = ambientLight;
         }
     }
     

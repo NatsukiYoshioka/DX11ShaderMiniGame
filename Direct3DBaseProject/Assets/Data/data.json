@@ -2,42 +2,42 @@
   "Block": [
     [
       "Cube.sdkmesh",
-        [ 0, 0, 0, 180 ],
-        [ 1, 0, 0, 180 ],
-        [ 2, 0, 0, 180 ]
+        [ 0, -0.1, 0, 180 ],
+        [ 1, -0.1, 0, 180 ],
+        [ 2, -0.1, 0, 180 ]
 
     ],
     [
       "Cylinder.sdkmesh",
-      [ 0, 0, 3, 180 ]
+        [ 0, -0.1, 3, 180 ]
     ],
     [
       "HalfCylinderBig.sdkmesh",
-      [ 0, 0, 6, 0 ]
+        [ 0, -0.1, 6, 0 ]
     ],
     [
       "HalfCylinderSmall.sdkmesh",
-      [ 0, 0, 9, 0 ]
+        [ 0, -0.1, 9, 0 ]
     ],
     [
       "NarrowTunnel.sdkmesh",
-      [ 0, 0, 12, 180 ]
+        [ 0, -0.1, 12, 180 ]
     ],
     [
       "Rectangular.sdkmesh",
-      [ 0, 0, 15, 180 ]
+        [ 0, -0.1, 15, 180 ]
     ],
     [
       "TriangularBig.sdkmesh",
-      [ 0, 0, 18, 90 ]
+        [ 0, -0.1, 18, 90 ]
     ],
     [
       "TriangularSmall.sdkmesh",
-      [ 0, 0, 21, 90 ]
+        [ 0, -0.1, 21, 90 ]
     ],
     [
       "WideTunnel.sdkmesh",
-      [ 0, 0, 24, 180 ]
+        [ 0, -0.1, 24, 180 ]
     ]
   ],
 
@@ -72,7 +72,7 @@
   ],
 
   "PlayerTexture"     : "Ch09_1001_Diffuse.dds",
-  "PlayerPosition"    : [ -1, -0.5, 0, 90 ],
+  "PlayerPosition"    : [ -1, -0.6, 0, 90 ],
   "PlayerScale"       : 0.0055,
   "PlayerSpeed"       : 0.025,
   "PlayerRunSpeed"    : 0.05,
@@ -87,7 +87,7 @@
 
   "EnemyTexture"    : "Ch46_1001_Diffuse.dds",
   "EnemyPosition"   : [ 0, -31.5, -40, 180 ],
-  "EnemyEyeHeight"  : 5,
+  "EnemyEyeHeight"  : 7.5,
   "EnemyScale"      : 0.325,
   "EnemyDistance"   : 40,
   "EnemySpeed"      : 0.5,

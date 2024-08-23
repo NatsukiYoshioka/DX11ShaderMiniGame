@@ -46,21 +46,28 @@ public:
 	/// </summary>
 	void Draw();
 
-	void ClearShadow();
+	void ClearObjectShadow();
+	void ClearCharacterShadow();
 
-	void SetShadowRenderTarget();
+	void SetObjectShadowRenderTarget();
+	void SetCharacterShadowRenderTarget();
 
-	void SetShadowResource();
+	void SetObjectShadowResource();
+	void SetCharacterShadowResource();
 
-	void DrawShadow();
+	void DrawObjectShadow();
+	void DrawCharacterShadow();
 
 private:
 	static GameObjectManager* m_instance;	//マネージャのインスタンス
 
 	vector<GameObject*> m_gameObjects;		//ゲームオブジェクトのコンテナ
 
-	ComPtr<ID3D11Texture2D> m_shadowDepth;
-	ComPtr<ID3D11DepthStencilView> m_shadowDepthView;
-	ComPtr<ID3D11ShaderResourceView> m_shadowView;
+	ComPtr<ID3D11Texture2D> m_objectShadowDepth;
+	ComPtr<ID3D11Texture2D> m_characterShadowDepth;
+	ComPtr<ID3D11DepthStencilView> m_objectShadowDepthView;
+	ComPtr<ID3D11DepthStencilView> m_characterShadowDepthView;
+	ComPtr<ID3D11ShaderResourceView> m_objectShadowView;
+	ComPtr<ID3D11ShaderResourceView> m_characterShadowView;
 };
 

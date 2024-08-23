@@ -66,6 +66,13 @@ private:
 	float m_rotate;		//モデルのY軸回転量
 	Matrix m_world;		//モデルのワールド行列
 
+	struct HitInfo
+	{
+		int playerPixNum;
+		int hiddenPixNum;
+	};
+	ComPtr<ID3D11UnorderedAccessView> m_hitInfo;
+
 	const float m_scale;
 	const float m_speed;		//プレイヤーの移動スピード
 	const float m_runSpeed;		//プレイヤーのダッシュスピード

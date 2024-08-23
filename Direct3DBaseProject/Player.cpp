@@ -83,6 +83,27 @@ Player::Player(const wchar_t* fileName, Vector3 pos, float rotate):
 	//ç¿ïWÇ∆Yé≤âÒì]ó ÇÃê›íË
 	m_pos = pos;
 	m_rotate = rotate * XM_PI / 180.f;
+
+	ComPtr<ID3D11Buffer> buffer;
+	D3D11_BUFFER_DESC bufferDesc;
+	ZeroMemory(&bufferDesc, sizeof(D3D11_BUFFER_DESC));
+	bufferDesc.ByteWidth = sizeof(HitInfo);
+	bufferDesc.BindFlags = D3D11_BIND_UNORDERED_ACCESS;
+	bufferDesc.StructureByteStride = sizeof(HitInfo);
+	deviceAccessor->GetDevice()->CreateBuffer(&bufferDesc, nullptr, buffer.ReleaseAndGetAddressOf());
+
+	ComPtr<ID3D11Buffer> resultBuffer;
+	bufferDesc.Usage = D3D11_USAGE_STAGING;
+	bufferDesc.BindFlags = 0;
+	bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+	deviceAccessor->GetDevice()->CreateBuffer(&bufferDesc, nullptr, resultBuffer.ReleaseAndGetAddressOf());
+
+	D3D11_UNORDERED_ACCESS_VIEW_DESC UAVDesc;
+	ZeroMemory(&UAVDesc, sizeof(D3D11_UNORDERED_ACCESS_VIEW_DESC));
+	UAVDesc.Buffer.NumElements = 1;
+	UAVDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
+	UAVDesc.Format = DXGI_FORMAT_UNKNOWN;
+	deviceAccessor->GetDevice()->CreateUnorderedAccessView(buffer.Get(), &UAVDesc, m_hitInfo.ReleaseAndGetAddressOf());
 }
 
 Player::~Player()
