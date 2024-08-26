@@ -4,9 +4,15 @@
 DeviceAccessor* DeviceAccessor::m_instance = nullptr;
 
 //アクセサの初期化
-DeviceAccessor::DeviceAccessor(ID3D11Device* device, ID3D11DeviceContext* context, RECT screenSize):
+DeviceAccessor::DeviceAccessor(ID3D11Device* device,
+	ID3D11DeviceContext* context,
+	ID3D11RenderTargetView* rtv,
+	ID3D11DepthStencilView* dsv,
+	RECT screenSize):
 	m_device(device),
 	m_context(context),
+	m_RTV(rtv),
+	m_DSV(dsv),
 	m_screenSize(screenSize),
 	m_elapsedTime()
 {
@@ -24,10 +30,14 @@ DeviceAccessor::~DeviceAccessor()
 }
 
 //インスタンス生成
-void DeviceAccessor::CreateInstance(ID3D11Device* device, ID3D11DeviceContext* context, RECT screenSize)
+void DeviceAccessor::CreateInstance(ID3D11Device* device,
+	ID3D11DeviceContext* context,
+	ID3D11RenderTargetView* rtv,
+	ID3D11DepthStencilView* dsv,
+	RECT screenSize)
 {
 	if (m_instance)return;
-	m_instance = new DeviceAccessor(device, context, screenSize);
+	m_instance = new DeviceAccessor(device, context, rtv, dsv, screenSize);
 }
 
 //インスタンス破棄

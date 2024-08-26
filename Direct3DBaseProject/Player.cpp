@@ -83,27 +83,6 @@ Player::Player(const wchar_t* fileName, Vector3 pos, float rotate):
 	//座標とY軸回転量の設定
 	m_pos = pos;
 	m_rotate = rotate * XM_PI / 180.f;
-
-	ComPtr<ID3D11Buffer> buffer;
-	D3D11_BUFFER_DESC bufferDesc;
-	ZeroMemory(&bufferDesc, sizeof(D3D11_BUFFER_DESC));
-	bufferDesc.ByteWidth = sizeof(HitInfo);
-	bufferDesc.BindFlags = D3D11_BIND_UNORDERED_ACCESS;
-	bufferDesc.StructureByteStride = sizeof(HitInfo);
-	deviceAccessor->GetDevice()->CreateBuffer(&bufferDesc, nullptr, buffer.ReleaseAndGetAddressOf());
-
-	ComPtr<ID3D11Buffer> resultBuffer;
-	bufferDesc.Usage = D3D11_USAGE_STAGING;
-	bufferDesc.BindFlags = 0;
-	bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
-	deviceAccessor->GetDevice()->CreateBuffer(&bufferDesc, nullptr, resultBuffer.ReleaseAndGetAddressOf());
-
-	D3D11_UNORDERED_ACCESS_VIEW_DESC UAVDesc;
-	ZeroMemory(&UAVDesc, sizeof(D3D11_UNORDERED_ACCESS_VIEW_DESC));
-	UAVDesc.Buffer.NumElements = 1;
-	UAVDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
-	UAVDesc.Format = DXGI_FORMAT_UNKNOWN;
-	deviceAccessor->GetDevice()->CreateUnorderedAccessView(buffer.Get(), &UAVDesc, m_hitInfo.ReleaseAndGetAddressOf());
 }
 
 Player::~Player()
@@ -244,4 +223,61 @@ void Player::DrawShadow()
 			effect->SetShadow(false);
 		}
 	}
+}
+
+void Player::CalcHitInfo()
+{
+	auto deviceAccessor = DeviceAccessor::GetInstance();
+	D3D11_BUFFER_DESC bufferDesc;
+	ZeroMemory(&bufferDesc, sizeof(D3D11_BUFFER_DESC));
+	bufferDesc.BindFlags = D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_SHADER_RESOURCE;
+	bufferDesc.ByteWidth = sizeof(HitInfo);
+	bufferDesc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+	bufferDesc.StructureByteStride = sizeof(HitInfo);
+	deviceAccessor->GetDevice()->CreateBuffer(&bufferDesc, NULL, m_bufferResult.ReleaseAndGetAddressOf());
+
+	D3D11_UNORDERED_ACCESS_VIEW_DESC UAVDesc;
+	ZeroMemory(&UAVDesc, sizeof(D3D11_UNORDERED_ACCESS_VIEW_DESC));
+
+	UAVDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
+	UAVDesc.Buffer.FirstElement = 0;
+	UAVDesc.Format = DXGI_FORMAT_UNKNOWN;
+	UAVDesc.Buffer.NumElements = 1;
+
+	deviceAccessor->GetDevice()->CreateUnorderedAccessView(m_bufferResult.Get(), &UAVDesc, m_hitInfo.ReleaseAndGetAddressOf());
+	
+	ID3D11RenderTargetView* renderTarget = NULL;
+	deviceAccessor->GetContext()->OMSetRenderTargetsAndUnorderedAccessViews(1,
+		&renderTarget,
+		deviceAccessor->GetDepthStencilView(),
+		1,
+		1,
+		m_hitInfo.GetAddressOf(),
+		NULL);
+
+	size_t nbones = m_modelHandle->bones.size();
+
+	m_animations.at(static_cast<int>(m_nowAnimationState)).Apply(*m_modelHandle, nbones, m_drawBones.get());
+
+	m_modelHandle->DrawSkinned(DeviceAccessor::GetInstance()->GetContext(),
+		*DeviceAccessor::GetInstance()->GetStates(),
+		nbones,
+		m_drawBones.get(),
+		m_world,
+		CameraAccessor::GetInstance()->GetCamera()->GetView(),
+		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
+
+	ID3D11Buffer* debugBuffer = NULL;
+	D3D11_BUFFER_DESC BufferDesc;
+	ZeroMemory(&BufferDesc, sizeof(D3D11_BUFFER_DESC));
+	m_bufferResult->GetDesc(&BufferDesc);
+	BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;  // CPU から読み込みできるように設定する
+	BufferDesc.Usage = D3D11_USAGE_STAGING;             // GPU から CPU へのデータ転送 (コピー) をサポートするリソース
+	BufferDesc.BindFlags = 0;
+	BufferDesc.MiscFlags = 0;
+	deviceAccessor->GetDevice()->CreateBuffer(&BufferDesc, NULL, &debugBuffer);
+	deviceAccessor->GetContext()->CopyResource(debugBuffer, m_bufferResult.Get());
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	deviceAccessor->GetContext()->Map(debugBuffer, 0, D3D11_MAP_READ, 0, &mappedResource);
+	HitInfo* p = reinterpret_cast<HitInfo*>(mappedResource.pData);
 }

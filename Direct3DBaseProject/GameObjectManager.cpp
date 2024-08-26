@@ -75,6 +75,39 @@ GameObjectManager::GameObjectManager()
 	);
 	device->CreateShaderResourceView(m_objectShadowDepth.Get(), &sd, m_objectShadowView.ReleaseAndGetAddressOf());
 	device->CreateShaderResourceView(m_characterShadowDepth.Get(), &sd, m_characterShadowView.ReleaseAndGetAddressOf());
+
+	//ヒット判定用テクスチャの作成
+	CD3D11_TEXTURE2D_DESC h(
+		DXGI_FORMAT_R32G32B32A32_FLOAT,
+		1920,
+		1080,
+		1,
+		1,
+		D3D11_BIND_SHADER_RESOURCE|D3D11_BIND_RENDER_TARGET,
+		D3D11_USAGE_DEFAULT,
+		0,
+		1,
+		0,
+		0
+	);
+	ComPtr<ID3D11Texture2D> hitCheckTex;
+	device->CreateTexture2D(&h, NULL, hitCheckTex.ReleaseAndGetAddressOf());
+
+	D3D11_RENDER_TARGET_VIEW_DESC rh = {};
+	rh.Format = h.Format;
+	rh.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+	device->CreateRenderTargetView(hitCheckTex.Get(), &rh, m_hitCheckRenderTargetView.ReleaseAndGetAddressOf());
+
+	CD3D11_SHADER_RESOURCE_VIEW_DESC sh(
+		D3D11_SRV_DIMENSION_TEXTURE2D,
+		DXGI_FORMAT_R32G32B32A32_FLOAT,
+		0,
+		1,
+		0,
+		1
+	);
+	ComPtr<ID3D11ShaderResourceView> hitCheckView;
+	device->CreateShaderResourceView(hitCheckTex.Get(), &sh, m_hitCheckShaderResourceView.ReleaseAndGetAddressOf());
 }
 
 //データ破棄

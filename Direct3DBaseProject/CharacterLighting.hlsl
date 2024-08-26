@@ -7,14 +7,6 @@ Texture2D<float4> Shadow : register(t10);
 Texture2D<float4> CharacterShadow : register(t11);
 SamplerState Sampler : register(s0);
 
-struct HitInfo
-{
-    int playerPixNum;
-    int hiddenPixNum;
-};
-
-RWStructuredBuffer<HitInfo> rwBuffer : register(u0);
-
 float4 main(PSOutput pout) : SV_Target0
 {
     //ピクセルの座標 - スポットライトの座標を計算

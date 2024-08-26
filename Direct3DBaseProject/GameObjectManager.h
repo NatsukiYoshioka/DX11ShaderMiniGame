@@ -69,5 +69,8 @@ private:
 	ComPtr<ID3D11DepthStencilView> m_characterShadowDepthView;
 	ComPtr<ID3D11ShaderResourceView> m_objectShadowView;
 	ComPtr<ID3D11ShaderResourceView> m_characterShadowView;
+
+	ComPtr<ID3D11RenderTargetView> m_hitCheckRenderTargetView;
+	ComPtr<ID3D11ShaderResourceView> m_hitCheckShaderResourceView;
 };
 

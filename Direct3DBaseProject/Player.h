@@ -50,6 +50,8 @@ public:
 
 	void DrawShadow();
 
+	void CalcHitInfo();
+
 	/// <summary>
 	/// オブジェクトの回転量の取得
 	/// </summary>
@@ -71,6 +73,7 @@ private:
 		int playerPixNum;
 		int hiddenPixNum;
 	};
+	ComPtr<ID3D11Buffer> m_bufferResult;
 	ComPtr<ID3D11UnorderedAccessView> m_hitInfo;
 
 	const float m_scale;

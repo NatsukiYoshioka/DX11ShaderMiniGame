@@ -194,7 +194,11 @@ void Game::CreateDeviceDependentResources()
 
     // TODO: Initialize device dependent objects here (independent of window size).
     Json::CreateInstance();
-    DeviceAccessor::CreateInstance(device, context, m_deviceResources->GetOutputSize());
+    DeviceAccessor::CreateInstance(device,
+        context,
+        m_deviceResources->GetRenderTargetView(),
+        m_deviceResources->GetDepthStencilView(),
+        m_deviceResources->GetOutputSize());
     GameObjectManager::CreateInstance();
     device;
 }

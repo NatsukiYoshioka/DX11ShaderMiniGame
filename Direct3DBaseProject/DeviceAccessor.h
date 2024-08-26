@@ -10,7 +10,11 @@ private:
 	/// <param name="device">描画デバイス</param>
 	/// <param name="context">描画コンテキスト</param>
 	/// <param name="screenSize">スクリーンサイズ</param>
-	DeviceAccessor(ID3D11Device* device, ID3D11DeviceContext* context, RECT screenSize);
+	DeviceAccessor(ID3D11Device* device,
+		ID3D11DeviceContext* context,
+		ID3D11RenderTargetView* rtv,
+		ID3D11DepthStencilView* dsv,
+		RECT screenSize);
 
 	/// <summary>
 	/// データ破棄
@@ -23,7 +27,11 @@ public:
 	/// <param name="device">描画デバイス</param>
 	/// <param name="context">描画コンテキスト</param>
 	/// <param name="screenSize">スクリーンサイズ</param>
-	static void CreateInstance(ID3D11Device* device, ID3D11DeviceContext* context, RECT screenSize);
+	static void CreateInstance(ID3D11Device* device,
+		ID3D11DeviceContext* context,
+		ID3D11RenderTargetView* rtv,
+		ID3D11DepthStencilView* dsv,
+		RECT screenSize);
 
 	/// <summary>
 	/// インスタンス破棄
@@ -47,6 +55,10 @@ public:
 	/// </summary>
 	/// <returns>描画コンテキスト</returns>
 	ID3D11DeviceContext* GetContext() { return m_context; }
+
+	ID3D11RenderTargetView* GetRenderTargetView() { return m_RTV; }
+
+	ID3D11DepthStencilView* GetDepthStencilView() { return m_DSV; }
 
 	/// <summary>
 	/// スクリーンサイズの取得
@@ -100,6 +112,8 @@ private:
 
 	ID3D11Device* m_device;					//描画デバイス
 	ID3D11DeviceContext* m_context;			//描画コンテキスト
+	ID3D11RenderTargetView* m_RTV;
+	ID3D11DepthStencilView* m_DSV;
 	RECT m_screenSize;						//スクリーンサイズ
 	unique_ptr<CommonStates> m_states;		//D3Dステートオブジェクト
 	unique_ptr<EffectFactory> m_fxFactory;	//エフェクトヘルパーオブジェクト
