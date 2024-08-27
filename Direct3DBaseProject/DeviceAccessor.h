@@ -79,18 +79,6 @@ public:
 	EffectFactory* GetEffectFactory() { return m_fxFactory.get(); }
 
 	/// <summary>
-	/// 入力セマンティクスの取得
-	/// </summary>
-	/// <returns>D3D11_ELEMENT_DESC*</returns>
-	const D3D11_INPUT_ELEMENT_DESC* GetInputElements() { return m_inputElements; }
-
-	/// <summary>
-	/// 入力セマンティクスのサイズ取得
-	/// </summary>
-	/// <returns>size_t</returns>
-	size_t GetInputElementSize() { return size(m_inputElements); }
-
-	/// <summary>
 	/// 経過時間の設定
 	/// </summary>
 	/// <param name="elapsedTime">経過時間 float*</param>
@@ -119,15 +107,5 @@ private:
 	unique_ptr<EffectFactory> m_fxFactory;	//エフェクトヘルパーオブジェクト
 	float* m_elapsedTime;					//経過時間
 	unique_ptr<GamePad> m_gamePad;			//ゲームパッド
-
-	/// <summary>
-	/// 入力セマンティクス定義
-	/// </summary>
-	static constexpr const D3D11_INPUT_ELEMENT_DESC m_inputElements[] =
-	{
-		{ "SV_Position", 0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "NORMAL",      0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "TEXCOORD",    0, DXGI_FORMAT_R32G32_FLOAT,       0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
-	};
 };
 

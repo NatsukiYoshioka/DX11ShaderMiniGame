@@ -33,14 +33,19 @@ OriginalEffect::OriginalEffect(ID3D11Device* device, PixelType type, bool isSkin
 	case PixelType::Character:
 		psBlob = DX::ReadData(L"CharacterLighting.cso");
 		break;
+	default:
+		break;
 	}
 	DX::ThrowIfFailed(device->CreatePixelShader(psBlob.data(), psBlob.size(), nullptr, m_ps.ReleaseAndGetAddressOf()));
 
 	//シャドウマップ描画用ピクセルシェーダーのロード
+	
 	psBlob = DX::ReadData(L"ObjectShadow.cso");
 	DX::ThrowIfFailed(device->CreatePixelShader(psBlob.data(), psBlob.size(), nullptr, m_objectShadow.ReleaseAndGetAddressOf()));
-	psBlob = DX::ReadData(L"CharacterShadow.cso");
-	DX::ThrowIfFailed(device->CreatePixelShader(psBlob.data(), psBlob.size(), nullptr, m_characterShadow.ReleaseAndGetAddressOf()));
+	psBlob = DX::ReadData(L"Red.cso");
+	DX::ThrowIfFailed(device->CreatePixelShader(psBlob.data(), psBlob.size(), nullptr, m_red.ReleaseAndGetAddressOf()));
+	psBlob = DX::ReadData(L"Blue.cso");
+	DX::ThrowIfFailed(device->CreatePixelShader(psBlob.data(), psBlob.size(), nullptr, m_blue.ReleaseAndGetAddressOf()));
 
 	m_light.range = float(Json::GetInstance()->GetData()["LightRange"]);
 	m_light.angle = XMConvertToRadians(float(Json::GetInstance()->GetData()["LightAngle"]));
@@ -79,20 +84,21 @@ void OriginalEffect::Apply(ID3D11DeviceContext* context)
 
 	//シェーダーの適用
 	context->VSSetShader(m_vs.Get(), nullptr, 0);
-	if (m_isDrawShadow)
+	switch (m_type)
 	{
-		switch (m_type)
-		{
-		case PixelType::Object:
-			context->PSSetShader(m_objectShadow.Get(), nullptr, 0);
-			break;
-		case PixelType::Character:
-			context->PSSetShader(m_characterShadow.Get(), nullptr, 0);
-			break;
-		}
-	}	
-	else context->PSSetShader(m_ps.Get(), nullptr, 0);
-
+	case PixelType::Shadow:
+		context->PSSetShader(m_objectShadow.Get(), nullptr, 0);
+		break;
+	case PixelType::Red:
+		context->PSSetShader(m_red.Get(), nullptr, 0);
+		break;
+	case PixelType::Blue:
+		context->PSSetShader(m_blue.Get(), nullptr, 0);
+		break;
+	default:
+		context->PSSetShader(m_ps.Get(), nullptr, 0);
+		break;
+	}
 }
 
 //頂点シェーダーのバイトコード取得

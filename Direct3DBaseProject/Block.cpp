@@ -123,7 +123,7 @@ void Block::DrawShadow()
 			assert(part != nullptr);
 
 			auto effect = static_cast<OriginalEffect*>(part->effect.get());
-			effect->SetShadow(true);
+			effect->UpdateType(OriginalEffect::PixelType::Shadow);
 		}
 	}
 
@@ -143,7 +143,44 @@ void Block::DrawShadow()
 			assert(part != nullptr);
 
 			auto effect = static_cast<OriginalEffect*>(part->effect.get());
-			effect->SetShadow(false);
+			effect->UpdateType(OriginalEffect::PixelType::Object);
+		}
+	}
+}
+
+void Block::DrawHitCheck()
+{
+	for (const auto& mit : m_modelHandle->meshes)
+	{
+		auto mesh = mit.get();
+		assert(mesh != nullptr);
+		for (const auto& pit : mesh->meshParts)
+		{
+			auto part = pit.get();
+			assert(part != nullptr);
+
+			auto effect = static_cast<OriginalEffect*>(part->effect.get());
+			effect->UpdateType(OriginalEffect::PixelType::Red);
+		}
+	}
+
+	m_modelHandle->Draw(DeviceAccessor::GetInstance()->GetContext(),
+		*DeviceAccessor::GetInstance()->GetStates(),
+		m_world,
+		EnemyAccessor::GetInstance()->GetEnemy()->GetEyeView(),
+		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
+
+	for (const auto& mit : m_modelHandle->meshes)
+	{
+		auto mesh = mit.get();
+		assert(mesh != nullptr);
+		for (const auto& pit : mesh->meshParts)
+		{
+			auto part = pit.get();
+			assert(part != nullptr);
+
+			auto effect = static_cast<OriginalEffect*>(part->effect.get());
+			effect->UpdateType(OriginalEffect::PixelType::Object);
 		}
 	}
 }

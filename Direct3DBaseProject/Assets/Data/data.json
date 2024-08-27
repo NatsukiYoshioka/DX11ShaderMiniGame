@@ -2,42 +2,42 @@
   "Block": [
     [
       "Cube.sdkmesh",
-        [ 0, -0.1, 0, 180 ],
-        [ 1, -0.1, 0, 180 ],
-        [ 2, -0.1, 0, 180 ]
+      [ 0, -0.1, 0, 180 ],
+      [ 1, -0.1, 0, 180 ],
+      [ 2, -0.1, 0, 180 ]
 
     ],
     [
       "Cylinder.sdkmesh",
-        [ 0, -0.1, 3, 180 ]
+      [ 0, -0.1, 3, 180 ]
     ],
     [
       "HalfCylinderBig.sdkmesh",
-        [ 0, -0.1, 6, 0 ]
+      [ 0, -0.1, 6, 0 ]
     ],
     [
       "HalfCylinderSmall.sdkmesh",
-        [ 0, -0.1, 9, 0 ]
+      [ 0, -0.1, 9, 0 ]
     ],
     [
       "NarrowTunnel.sdkmesh",
-        [ 0, -0.1, 12, 180 ]
+      [ 0, -0.1, 12, 180 ]
     ],
     [
       "Rectangular.sdkmesh",
-        [ 0, -0.1, 15, 180 ]
+      [ 0, -0.1, 15, 180 ]
     ],
     [
       "TriangularBig.sdkmesh",
-        [ 0, -0.1, 18, 90 ]
+      [ 0, -0.1, 18, 90 ]
     ],
     [
       "TriangularSmall.sdkmesh",
-        [ 0, -0.1, 21, 90 ]
+      [ 0, -0.1, 21, 90 ]
     ],
     [
       "WideTunnel.sdkmesh",
-        [ 0, -0.1, 24, 180 ]
+      [ 0, -0.1, 24, 180 ]
     ]
   ],
 
@@ -60,7 +60,7 @@
   ],
 
   "CameraDistance": 7.5,
-  "CameraSpeed"   : 1.5,
+  "CameraSpeed": 1.5,
 
   "Player": [
     "Ch09_nonPBR.sdkmesh",
@@ -71,11 +71,11 @@
     "CrouchedWalking.sdkmesh_anim"
   ],
 
-  "PlayerTexture"     : "Ch09_1001_Diffuse.dds",
-  "PlayerPosition"    : [ -1, -0.6, -1, 90 ],
-  "PlayerScale"       : 0.0055,
-  "PlayerSpeed"       : 0.025,
-  "PlayerRunSpeed"    : 0.05,
+  "PlayerTexture": "Ch09_1001_Diffuse.dds",
+  "PlayerPosition": [ -1, -0.6, -1, 90 ],
+  "PlayerScale": 0.0055,
+  "PlayerSpeed": 0.025,
+  "PlayerRunSpeed": 0.05,
   "PlayerCrouchSpeed": 0.0125,
 
   "Enemy": [
@@ -85,13 +85,28 @@
     "LeftSideStep.sdkmesh_anim"
   ],
 
-  "EnemyTexture"    : "Ch46_1001_Diffuse.dds",
-  "EnemyPosition"   : [ 0, -31.5, -40, 180 ],
-  "EnemyEyeHeight"  : 7.5,
-  "EnemyScale"      : 0.325,
-  "EnemyDistance"   : 40,
-  "EnemySpeed"      : 0.5,
+  "EnemyTexture": "Ch46_1001_Diffuse.dds",
+  "EnemyPosition": [ 0, -31.5, -40, 180 ],
+  "EnemyEyeHeight": 7.5,
+  "EnemyScale": 0.325,
+  "EnemyDistance": 40,
+  "EnemySpeed": 0.5,
 
   "LightRange": 1000,
-  "LightAngle": 10
+  "LightAngle": 10,
+
+  "EyeBaseUI": "eyeBase.dds",
+  "EyeFoundUI": "eyeFound.dds",
+
+  "EyeBaseUIPosition": [ 100, 100 ],
+  "EyeBaseUIRotation": 0,
+  "EyeBaseUIScale"   : [ 0.05, 0.05 ],
+  "EyeBaseUIDepth"   : 0.1,
+
+  "EyeFoundUIPosition": [ 100, 100 ],
+  "EyeFoundUIRotation": 0,
+  "EyeFoundUIScale"   : [ 0.05, 0.05 ],
+  "EyeFoundUIDepth"   : 0.2,
+
+  "HitCheckTextureSize": 2000
 }

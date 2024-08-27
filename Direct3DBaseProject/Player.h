@@ -50,13 +50,17 @@ public:
 
 	void DrawShadow();
 
-	void CalcHitInfo();
+	void DrawHitCheck();
+
+	void HitCheck();
 
 	/// <summary>
 	/// オブジェクトの回転量の取得
 	/// </summary>
 	/// <returns>オブジェクトの回転量</returns>
 	float GetRotate()const { return m_rotate; }
+
+	bool GetBeFound()const { return m_beFound; }
 
 private:
 	AnimationState m_nowAnimationState;			//アニメーションの現在の状態
@@ -71,14 +75,20 @@ private:
 	struct HitInfo
 	{
 		int playerPixNum;
-		int hiddenPixNum;
+		int visiblePixNum;
 	};
 	ComPtr<ID3D11Buffer> m_bufferResult;
 	ComPtr<ID3D11UnorderedAccessView> m_hitInfo;
+	ComPtr<ID3D11ComputeShader> m_cs;
+
+	bool m_beFound;
 
 	const float m_scale;
 	const float m_speed;		//プレイヤーの移動スピード
 	const float m_runSpeed;		//プレイヤーのダッシュスピード
 	const float m_crouchSpeed;	//プレイヤーのしゃがみ移動スピード
+
+	unique_ptr<SpriteBatch> batch;
+	unique_ptr<SpriteFont> font;
 };
 

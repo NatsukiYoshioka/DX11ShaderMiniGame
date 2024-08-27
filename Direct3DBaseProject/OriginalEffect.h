@@ -14,10 +14,13 @@ public:
 	enum class PixelType
 	{
 		Object,
-		Character
+		Character,
+		Shadow,
+		Red,
+		Blue
 	};
 
-	void SetShadow(bool value) { m_isDrawShadow = value; }
+	void UpdateType(PixelType value) { m_type = value; }
 
 	/// <summary>
 	/// エフェクトの初期化
@@ -119,7 +122,8 @@ private:
 	ComPtr<ID3D11VertexShader> m_vs;				//頂点シェーダー
 	ComPtr<ID3D11PixelShader> m_ps;					//ピクセルシェーダー
 	ComPtr<ID3D11PixelShader> m_objectShadow;		//オブジェクト深度シャドウ用ピクセルシェーダー
-	ComPtr<ID3D11PixelShader> m_characterShadow;	//キャラクター深度シャドウ用ピクセルシェーダー
+	ComPtr<ID3D11PixelShader> m_red;
+	ComPtr<ID3D11PixelShader> m_blue;
 	vector<uint8_t> m_vsBlob;						//頂点シェーダーのデータ情報
 	ComPtr<ID3D11ShaderResourceView> m_texture;		//テクスチャSRV
 	ComPtr<ID3D11ShaderResourceView> m_normal;		//法線マップSRV

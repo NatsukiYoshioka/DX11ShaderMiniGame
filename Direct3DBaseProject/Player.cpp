@@ -7,12 +7,14 @@
 #include"EnemyAccessor.h"
 #include"OriginalEffect.h"
 #include"GameObject.h"
+#include"ReadData.h"
 #include "Player.h"
 
 extern void ExitGame() noexcept;
 
 Player::Player(const wchar_t* fileName, Vector3 pos, float rotate):
 	m_nowAnimationState(AnimationState::Idle),
+	m_beFound(false),
 	m_scale(float(Json::GetInstance()->GetData()["PlayerScale"])),
 	m_speed(float(Json::GetInstance()->GetData()["PlayerSpeed"])),
 	m_runSpeed(float(Json::GetInstance()->GetData()["PlayerRunSpeed"])),
@@ -31,6 +33,12 @@ Player::Player(const wchar_t* fileName, Vector3 pos, float rotate):
 	//エフェクトの初期化
 	SetCurrentDirectory(L"Assets/Shader");
 	m_effect = make_unique<OriginalEffect>(deviceAccessor->GetDevice(), OriginalEffect::PixelType::Character, true);
+	vector<uint8_t> csBlob;
+	csBlob = DX::ReadData(L"HitCalculation.cso");
+	DX::ThrowIfFailed(deviceAccessor->GetDevice()->CreateComputeShader(csBlob.data(),
+		csBlob.size(),
+		nullptr,
+		m_cs.ReleaseAndGetAddressOf()));
 	SetCurrentDirectory(L"../../");
 
 	//モデルの各メッシュの描画設定
@@ -83,6 +91,23 @@ Player::Player(const wchar_t* fileName, Vector3 pos, float rotate):
 	//座標とY軸回転量の設定
 	m_pos = pos;
 	m_rotate = rotate * XM_PI / 180.f;
+
+	//出力UAV設定
+	D3D11_BUFFER_DESC bufferDesc;
+	ZeroMemory(&bufferDesc, sizeof(D3D11_BUFFER_DESC));
+	bufferDesc.BindFlags = D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_SHADER_RESOURCE;
+	bufferDesc.ByteWidth = sizeof(HitInfo);
+	bufferDesc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+	bufferDesc.StructureByteStride = sizeof(HitInfo);
+	deviceAccessor->GetDevice()->CreateBuffer(&bufferDesc, NULL, m_bufferResult.ReleaseAndGetAddressOf());
+
+	D3D11_UNORDERED_ACCESS_VIEW_DESC UAVDesc;
+	ZeroMemory(&UAVDesc, sizeof(D3D11_UNORDERED_ACCESS_VIEW_DESC));
+	UAVDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
+	UAVDesc.Buffer.FirstElement = 0;
+	UAVDesc.Format = DXGI_FORMAT_UNKNOWN;
+	UAVDesc.Buffer.NumElements = 1;
+	deviceAccessor->GetDevice()->CreateUnorderedAccessView(m_bufferResult.Get(), &UAVDesc, m_hitInfo.ReleaseAndGetAddressOf());
 }
 
 Player::~Player()
@@ -94,7 +119,6 @@ void Player::Update()
 {
 	auto pad = DeviceAccessor::GetInstance()->GetGamePad()->GetState(0);
 
-	
 	bool isMove = false;
 	bool isCrouch = false;
 	float nowSpeed = 0.f;
@@ -194,7 +218,7 @@ void Player::DrawShadow()
 			assert(part != nullptr);
 
 			auto effect = static_cast<OriginalEffect*>(part->effect.get());
-			effect->SetShadow(true);
+			effect->UpdateType(OriginalEffect::PixelType::Shadow);
 		}
 	}
 
@@ -220,40 +244,26 @@ void Player::DrawShadow()
 			assert(part != nullptr);
 
 			auto effect = static_cast<OriginalEffect*>(part->effect.get());
-			effect->SetShadow(false);
+			effect->UpdateType(OriginalEffect::PixelType::Character);
 		}
 	}
 }
 
-void Player::CalcHitInfo()
+void Player::DrawHitCheck()
 {
-	auto deviceAccessor = DeviceAccessor::GetInstance();
-	D3D11_BUFFER_DESC bufferDesc;
-	ZeroMemory(&bufferDesc, sizeof(D3D11_BUFFER_DESC));
-	bufferDesc.BindFlags = D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_SHADER_RESOURCE;
-	bufferDesc.ByteWidth = sizeof(HitInfo);
-	bufferDesc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
-	bufferDesc.StructureByteStride = sizeof(HitInfo);
-	deviceAccessor->GetDevice()->CreateBuffer(&bufferDesc, NULL, m_bufferResult.ReleaseAndGetAddressOf());
+	for (const auto& mit : m_modelHandle->meshes)
+	{
+		auto mesh = mit.get();
+		assert(mesh != nullptr);
+		for (const auto& pit : mesh->meshParts)
+		{
+			auto part = pit.get();
+			assert(part != nullptr);
 
-	D3D11_UNORDERED_ACCESS_VIEW_DESC UAVDesc;
-	ZeroMemory(&UAVDesc, sizeof(D3D11_UNORDERED_ACCESS_VIEW_DESC));
-
-	UAVDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
-	UAVDesc.Buffer.FirstElement = 0;
-	UAVDesc.Format = DXGI_FORMAT_UNKNOWN;
-	UAVDesc.Buffer.NumElements = 1;
-
-	deviceAccessor->GetDevice()->CreateUnorderedAccessView(m_bufferResult.Get(), &UAVDesc, m_hitInfo.ReleaseAndGetAddressOf());
-	
-	ID3D11RenderTargetView* renderTarget = NULL;
-	deviceAccessor->GetContext()->OMSetRenderTargetsAndUnorderedAccessViews(1,
-		&renderTarget,
-		deviceAccessor->GetDepthStencilView(),
-		1,
-		1,
-		m_hitInfo.GetAddressOf(),
-		NULL);
+			auto effect = static_cast<OriginalEffect*>(part->effect.get());
+			effect->UpdateType(OriginalEffect::PixelType::Blue);
+		}
+	}
 
 	size_t nbones = m_modelHandle->bones.size();
 
@@ -264,20 +274,64 @@ void Player::CalcHitInfo()
 		nbones,
 		m_drawBones.get(),
 		m_world,
-		CameraAccessor::GetInstance()->GetCamera()->GetView(),
+		EnemyAccessor::GetInstance()->GetEnemy()->GetEyeView(),
 		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
+
+	for (const auto& mit : m_modelHandle->meshes)
+	{
+		auto mesh = mit.get();
+		assert(mesh != nullptr);
+		for (const auto& pit : mesh->meshParts)
+		{
+			auto part = pit.get();
+			assert(part != nullptr);
+
+			auto effect = static_cast<OriginalEffect*>(part->effect.get());
+			effect->UpdateType(OriginalEffect::PixelType::Character);
+		}
+	}
+}
+
+void Player::HitCheck()
+{
+	auto deviceAccessor = DeviceAccessor::GetInstance();
+	auto size = int(Json::GetInstance()->GetData()["HitCheckTextureSize"]);
 
 	ID3D11Buffer* debugBuffer = NULL;
 	D3D11_BUFFER_DESC BufferDesc;
 	ZeroMemory(&BufferDesc, sizeof(D3D11_BUFFER_DESC));
 	m_bufferResult->GetDesc(&BufferDesc);
-	BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;  // CPU から読み込みできるように設定する
+	BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE | D3D11_CPU_ACCESS_READ;  // CPU から読み込みできるように設定する
 	BufferDesc.Usage = D3D11_USAGE_STAGING;             // GPU から CPU へのデータ転送 (コピー) をサポートするリソース
 	BufferDesc.BindFlags = 0;
 	BufferDesc.MiscFlags = 0;
 	deviceAccessor->GetDevice()->CreateBuffer(&BufferDesc, NULL, &debugBuffer);
-	deviceAccessor->GetContext()->CopyResource(debugBuffer, m_bufferResult.Get());
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	deviceAccessor->GetContext()->Map(debugBuffer, 0, D3D11_MAP_READ, 0, &mappedResource);
+	deviceAccessor->GetContext()->Map(debugBuffer, 0, D3D11_MAP_WRITE, 0, &mappedResource);
 	HitInfo* p = reinterpret_cast<HitInfo*>(mappedResource.pData);
+	p->playerPixNum = 0;
+	p->visiblePixNum = 0;
+	deviceAccessor->GetContext()->Unmap(debugBuffer, 0);
+	deviceAccessor->GetContext()->CopyResource(m_bufferResult.Get(), debugBuffer);
+	
+	deviceAccessor->GetContext()->CSSetUnorderedAccessViews(0, 1, m_hitInfo.GetAddressOf(), 0);
+	deviceAccessor->GetContext()->CSSetShader(m_cs.Get(), nullptr, 0);
+	deviceAccessor->GetContext()->Dispatch(size, size, 1);
+
+	deviceAccessor->GetContext()->CSSetShader(nullptr, nullptr, 0);
+	deviceAccessor->GetContext()->CSSetShaderResources(0, 0, nullptr);
+	deviceAccessor->GetContext()->CSSetUnorderedAccessViews(0, 0, nullptr, nullptr);
+	
+	deviceAccessor->GetContext()->CopyResource(debugBuffer, m_bufferResult.Get());
+	deviceAccessor->GetContext()->Map(debugBuffer, 0, D3D11_MAP_READ, 0, &mappedResource);
+	p = reinterpret_cast<HitInfo*>(mappedResource.pData);
+	deviceAccessor->GetContext()->Unmap(debugBuffer, 0);
+
+	float visibleRatio = float(p->visiblePixNum) / p->playerPixNum;
+	float maxVisibleRatio = 1.f / 4.f;
+	if (visibleRatio > maxVisibleRatio)
+	{
+		m_beFound = true;
+	}
+	else m_beFound = false;
 }

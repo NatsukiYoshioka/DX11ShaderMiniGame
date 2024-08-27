@@ -39,6 +39,8 @@ public:
 
 	void DrawShadow();
 
+	void DrawHitCheck();
+
 private:
 	shared_ptr<OriginalEffect> m_effect;		//モデル描画用エフェクトクラス
 

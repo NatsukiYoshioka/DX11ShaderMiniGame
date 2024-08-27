@@ -53,6 +53,15 @@
     <Filter Include="GameObject\Enemy\EnemyAccessor">
       <UniqueIdentifier>{be8c042e-7e5e-48ab-8f2e-990535420b8e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\UI">
+      <UniqueIdentifier>{5cf257df-470e-4455-8fa3-1769ee318116}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\UI\UIAccessor">
+      <UniqueIdentifier>{8caa05d7-2bba-4abe-ba25-ea2b50c5b493}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\UI\BeFoundUI">
+      <UniqueIdentifier>{7d58065f-a102-478a-9365-7f5d69522944}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -110,6 +119,15 @@
     <ClInclude Include="EnemyAccessor.h">
       <Filter>GameObject\Enemy\EnemyAccessor</Filter>
     </ClInclude>
+    <ClInclude Include="UIBase.h">
+      <Filter>GameObject\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIAccessor.h">
+      <Filter>GameObject\UI\UIAccessor</Filter>
+    </ClInclude>
+    <ClInclude Include="FoundUI.h">
+      <Filter>GameObject\UI\BeFoundUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -162,6 +180,12 @@
     <ClCompile Include="EnemyAccessor.cpp">
       <Filter>GameObject\Enemy\EnemyAccessor</Filter>
     </ClCompile>
+    <ClCompile Include="UIAccessor.cpp">
+      <Filter>GameObject\UI\UIAccessor</Filter>
+    </ClCompile>
+    <ClCompile Include="FoundUI.cpp">
+      <Filter>GameObject\UI\BeFoundUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -204,7 +228,13 @@
     <FxCompile Include="ObjectShadow.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
-    <FxCompile Include="CharacterShadow.hlsl">
+    <FxCompile Include="Red.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Blue.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="HitCalculation.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>

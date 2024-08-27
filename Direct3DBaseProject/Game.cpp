@@ -80,6 +80,9 @@ void Game::Render()
         return;
     }
     auto gameObjectManager = GameObjectManager::GetInstance();
+    //‰e‚Ì•`‰æ
+    m_deviceResources->PIXBeginEvent(L"RenderShadow");
+
     gameObjectManager->ClearObjectShadow();
     gameObjectManager->SetObjectShadowRenderTarget();
     gameObjectManager->DrawObjectShadow();
@@ -88,11 +91,31 @@ void Game::Render()
     gameObjectManager->SetCharacterShadowRenderTarget();
     gameObjectManager->DrawCharacterShadow();
 
+    m_deviceResources->PIXEndEvent();
+
+    //“GŽ‹“_‚©‚ç‚Ì“–‚½‚è”»’è—p•`‰æ
+    m_deviceResources->PIXBeginEvent(L"RenderHitCheck");
+
+    gameObjectManager->ClearHitCheckRenderTarget();
+    gameObjectManager->SetHitCheckRenderTarget();
+    gameObjectManager->DrawHitCheck();
+
+    gameObjectManager->ClearHitCheckCharacterRenderTarget();
+    gameObjectManager->SetHitCheckCharacterRenderTarget();
+    gameObjectManager->DrawHitCheckCharacter();
+
+    m_deviceResources->PIXEndEvent();
+
     Clear();
+    m_deviceResources->PIXBeginEvent(L"Render");
+
+    gameObjectManager->SetHitCheckShaderResource();
+    gameObjectManager->SetHitCheckCharacterShaderResource();
+    gameObjectManager->HitCheck();
+
     gameObjectManager->SetObjectShadowResource();
     gameObjectManager->SetCharacterShadowResource();
 
-    m_deviceResources->PIXBeginEvent(L"Render");
     auto context = m_deviceResources->GetD3DDeviceContext();
 
     // TODO: Add your rendering code here.
