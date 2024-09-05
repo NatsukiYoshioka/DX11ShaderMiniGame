@@ -41,10 +41,18 @@ public:
 
 	void DrawHitCheck();
 
+	vector<XMFLOAT3> GetVertices() { return m_vertices; }
+
+	ComPtr<ID3D11ShaderResourceView> GetVertexBufferSRV() { return m_vertexBufferSRV; }
+
 private:
 	shared_ptr<OriginalEffect> m_effect;		//モデル描画用エフェクトクラス
 
 	float m_rotate;		//モデルのY軸回転量
 	Matrix m_world;		//モデルのワールド座標行列
+
+	vector<XMFLOAT3> m_vertices;
+	ComPtr<ID3D11ShaderResourceView> m_vertexBufferSRV;
+	ComPtr<ID3D11UnorderedAccessView> m_outputBufferUAV;
 };
 

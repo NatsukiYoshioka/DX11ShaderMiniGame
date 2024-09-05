@@ -62,6 +62,8 @@ public:
 
 	bool GetBeFound()const { return m_beFound; }
 
+	void HitCheckObject();
+
 private:
 	AnimationState m_nowAnimationState;			//アニメーションの現在の状態
 	vector<DX::AnimationSDKMESH> m_animations;	//スキニングアニメーションクラスコンテナ
@@ -79,7 +81,16 @@ private:
 	};
 	ComPtr<ID3D11Buffer> m_bufferResult;
 	ComPtr<ID3D11UnorderedAccessView> m_hitInfo;
-	ComPtr<ID3D11ComputeShader> m_cs;
+	ComPtr<ID3D11ComputeShader> m_csForEnemyEye;
+
+	struct Sphere
+	{
+		Vector3 center;
+		float radius;
+	};
+	ComPtr<ID3D11Buffer> m_sphereResult;
+	ComPtr<ID3D11UnorderedAccessView> m_sphereInfo;
+	ComPtr<ID3D11ComputeShader> m_csForCollision;
 
 	bool m_beFound;
 

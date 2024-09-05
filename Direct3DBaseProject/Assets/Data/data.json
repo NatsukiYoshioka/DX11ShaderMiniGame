@@ -2,42 +2,42 @@
   "Block": [
     [
       "Cube.sdkmesh",
-      [ 0, -0.1, 0, 180 ],
-      [ 1, -0.1, 0, 180 ],
-      [ 2, -0.1, 0, 180 ]
+      [ 0, 0.05, 0, 180 ],
+      [ 1.25, 0.05, 0, 180 ],
+      [ 2.5, 0.05, 0, 180 ]
 
     ],
     [
       "Cylinder.sdkmesh",
-      [ 0, -0.1, 3, 180 ]
+        [ 0, 0.05, 3, 180 ]
     ],
     [
       "HalfCylinderBig.sdkmesh",
-      [ 0, -0.1, 6, 0 ]
+        [ 0, 0.05, 6, 0 ]
     ],
     [
       "HalfCylinderSmall.sdkmesh",
-      [ 0, -0.1, 9, 0 ]
+        [ 0, 0.05, 9, 0 ]
     ],
     [
       "NarrowTunnel.sdkmesh",
-      [ 0, -0.1, 12, 180 ]
+        [ 0, 0.05, 12, 180 ]
     ],
     [
       "Rectangular.sdkmesh",
-      [ 0, -0.1, 15, 180 ]
+        [ 0, 0.05, 15, 180 ]
     ],
     [
       "TriangularBig.sdkmesh",
-      [ 0, -0.1, 18, 90 ]
+        [ 0, 0.05, 18, 90 ]
     ],
     [
       "TriangularSmall.sdkmesh",
-      [ 0, -0.1, 21, 90 ]
+        [ 0, 0.05, 21, 90 ]
     ],
     [
       "WideTunnel.sdkmesh",
-      [ 0, -0.1, 24, 180 ]
+        [ 0, 0.05, 24, 180 ]
     ]
   ],
 
@@ -73,7 +73,7 @@
 
   "PlayerTexture": "Ch09_1001_Diffuse.dds",
   "PlayerPosition": [ -1, -0.6, -1, 90 ],
-  "PlayerScale": 0.0055,
+  "PlayerScale": 0.0065,
   "PlayerSpeed": 0.025,
   "PlayerRunSpeed": 0.05,
   "PlayerCrouchSpeed": 0.0125,

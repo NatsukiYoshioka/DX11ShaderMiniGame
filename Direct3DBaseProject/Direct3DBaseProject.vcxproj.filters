@@ -237,5 +237,8 @@
     <FxCompile Include="HitCalculation.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
+    <FxCompile Include="HitMeshSphereCalculation.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
