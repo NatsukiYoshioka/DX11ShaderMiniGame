@@ -95,6 +95,11 @@ public:
 	/// </summary>
 	/// <returns>GamePad*</returns>
 	GamePad* GetGamePad() { return m_gamePad.get(); }
+
+	Keyboard* GetKeyboard() { return m_keyboard.get(); }
+
+	void SetMouse(Mouse* mouse) { m_mouse = mouse; }
+	Mouse* GetMouse() { return m_mouse; }
 private:
 	static DeviceAccessor* m_instance;		//クラスのインスタンス
 
@@ -107,5 +112,7 @@ private:
 	unique_ptr<EffectFactory> m_fxFactory;	//エフェクトヘルパーオブジェクト
 	float* m_elapsedTime;					//経過時間
 	unique_ptr<GamePad> m_gamePad;			//ゲームパッド
+	unique_ptr<Keyboard> m_keyboard;		//キーボード
+	Mouse* m_mouse;							//マウス
 };
 

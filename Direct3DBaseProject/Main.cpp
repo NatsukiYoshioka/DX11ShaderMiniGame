@@ -5,6 +5,7 @@
 #include "pch.h"
 #include "Game.h"
 #include<Windows.h>
+#include"DeviceAccessor.h"
 #include"Keyboard.h"
 #include"Mouse.h"
 
@@ -93,6 +94,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
         g_game->Initialize(hwnd, rc.right - rc.left, rc.bottom - rc.top);
         mouse->SetWindow(hwnd);
     }
+
+    DeviceAccessor::GetInstance()->SetMouse(mouse.get());
 
     // Main message loop
     MSG msg = {};

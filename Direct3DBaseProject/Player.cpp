@@ -129,6 +129,8 @@ Player::~Player()
 void Player::Update()
 {
 	auto pad = DeviceAccessor::GetInstance()->GetGamePad()->GetState(0);
+	auto key = DeviceAccessor::GetInstance()->GetKeyboard()->GetState();
+	auto mouse = DeviceAccessor::GetInstance()->GetMouse()->GetState();
 
 	bool isMove = false;
 	bool isCrouch = false;
@@ -136,18 +138,37 @@ void Player::Update()
 	m_nowAnimationState = AnimationState::Idle;
 	if (pad.IsConnected())
 	{
-		if (pad.IsViewPressed())
+		if (pad.IsViewPressed() || key.Escape)
 		{
 			ExitGame();
 		}
-		if (pad.IsLeftShoulderPressed())
+		if (pad.IsLeftShoulderPressed() || key.LeftControl || mouse.rightButton)
 		{
 			m_nowAnimationState = AnimationState::Crouch;
 			isCrouch = true;
 		}
-		if (pad.thumbSticks.leftX != 0 || pad.thumbSticks.leftY != 0)
+		if (pad.thumbSticks.leftX != 0 || pad.thumbSticks.leftY != 0 || key.W || key.A || key.S || key.D)
 		{
-			m_rotate = atan2f(-pad.thumbSticks.leftX, pad.thumbSticks.leftY);
+			float x = -pad.thumbSticks.leftX;
+			float y = pad.thumbSticks.leftY;
+			if (key.W)
+			{
+				y = 1;
+			}
+			if (key.S)
+			{
+				y = -1;
+			}
+			if (key.A)
+			{
+				x = 1;
+			}
+			if (key.D)
+			{
+				x = -1;
+			}
+			m_rotate = atan2f(x, y);
+			
 			
 			isMove = true;
 			nowSpeed = m_speed;
@@ -158,7 +179,7 @@ void Player::Update()
 				nowSpeed = m_crouchSpeed;
 				m_nowAnimationState = AnimationState::CrouchedWalk;
 			}
-			else if (pad.IsRightShoulderPressed())
+			else if (pad.IsRightShoulderPressed() || key.LeftShift || mouse.leftButton)
 			{
 				nowSpeed = m_runSpeed;
 				m_nowAnimationState = AnimationState::Run;

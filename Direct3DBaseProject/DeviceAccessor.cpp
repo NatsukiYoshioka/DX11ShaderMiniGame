@@ -19,6 +19,7 @@ DeviceAccessor::DeviceAccessor(ID3D11Device* device,
 	m_states = make_unique<CommonStates>(m_device);
 	m_fxFactory = make_unique<EffectFactory>(m_device);
 	m_gamePad = make_unique<GamePad>();
+	m_keyboard = make_unique<Keyboard>();
 }
 
 //ÉfÅ[É^îjä¸

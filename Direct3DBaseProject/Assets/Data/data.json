@@ -59,8 +59,9 @@
     "Wood_Oak-ao.dds"
   ],
 
-  "CameraDistance": 7.5,
-  "CameraSpeed": 1.5,
+  "CameraDistance": 10,
+  "CameraPadSpeed": 1.5,
+  "CameraMouseSpeed": 25,
 
   "Player": [
     "Ch09_nonPBR.sdkmesh",

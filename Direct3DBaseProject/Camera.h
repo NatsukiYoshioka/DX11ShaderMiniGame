@@ -56,5 +56,6 @@ private:
 	float m_yaw;			//ƒJƒƒ‰‚Ì‰¡²‰ñ“]—Ê
 
 	const float m_speed;
+	const float m_mouseSpeed;
 };
 
