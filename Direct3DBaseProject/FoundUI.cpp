@@ -7,11 +7,15 @@
 #include"UIBase.h"
 #include "FoundUI.h"
 
-FoundUI::FoundUI()
+//UI初期化
+FoundUI::FoundUI():
+	m_foundTime(0),
+	m_maxFoundTime(float(Json::GetInstance()->GetData()["MaxFoundTime"]))
 {
 	auto json = Json::GetInstance();
 	auto deviceAccessor = DeviceAccessor::GetInstance();
 
+	//テクスチャのロード
 	SetCurrentDirectory(L"Assets/UI");
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(deviceAccessor->GetDevice(),
 		json->Widen(json->GetData()["EyeBaseUI"]).c_str(),
@@ -23,11 +27,12 @@ FoundUI::FoundUI()
 		m_foundTexture.ReleaseAndGetAddressOf()));
 	SetCurrentDirectory(L"../../");
 
+	//テクスチャ用の設定を初期化
 	m_baseTexturePos = Vector2(float(json->GetData()["EyeBaseUIPosition"].at(0)), float(json->GetData()["EyeBaseUIPosition"].at(1)));
 	m_foundTexturePos = Vector2(float(json->GetData()["EyeFoundUIPosition"].at(0)), float(json->GetData()["EyeFoundUIPosition"].at(1)));
 
-	m_baseTextureRotation = float(json->GetData()["EyeBaseUIRotation"]);
-	m_foundTextureRotation = float(json->GetData()["EyeFoundUIRotation"]);
+	m_baseTextureRotation = float(json->GetData()["EyeBaseUIRotation"]) * XM_PI / 180.f;
+	m_foundTextureRotation = float(json->GetData()["EyeFoundUIRotation"]) * XM_PI / 180.f;
 
 	m_baseTextureScale = Vector2(float(json->GetData()["EyeBaseUIScale"].at(0)), float(json->GetData()["EyeBaseUIScale"].at(1)));
 	m_foundTextureScale = Vector2(float(json->GetData()["EyeFoundUIScale"].at(0)), float(json->GetData()["EyeFoundUIScale"].at(1)));
@@ -46,18 +51,50 @@ FoundUI::FoundUI()
 	tex->GetDesc(&texDesc);
 	m_foundTextureOrigin.x = float(texDesc.Width / 2);
 	m_foundTextureOrigin.y = float(texDesc.Height / 2);
+
+	m_color = Colors::White;
+
+	m_rectangle.left = 0;
+	m_rectangle.right = texDesc.Width;
+	m_rectangle.top = 0;
+	m_rectangle.bottom = 0;
+	m_textureHeight = texDesc.Height;
 }
 
+//データ破棄
 FoundUI::~FoundUI()
 {
-
+	m_baseTexture.Reset();
+	m_baseTextureResource.Reset();
+	m_foundTexture.Reset();
+	m_foundTextureResource.Reset();
 }
 
+//UI更新
 void FoundUI::Update()
 {
-	
+	auto elapsedTime = *DeviceAccessor::GetInstance()->GetElapsedTime();
+	if (PlayerAccessor::GetInstance()->GetPlayer()->GetBeFound())
+	{
+		m_foundTime += elapsedTime;
+	}
+	else
+	{
+		m_foundTime -= elapsedTime;
+	}
+	if (m_foundTime < 0)
+	{
+		m_foundTime = 0;
+	}
+	if (m_foundTime >= m_maxFoundTime)
+	{
+		m_foundTime = m_maxFoundTime;
+	}
+	m_rectangle.bottom = 0 + (m_textureHeight * (m_foundTime / m_maxFoundTime));
+	m_color = Vector4(1, 1.5f - (1 * (m_foundTime / m_maxFoundTime)), 1.5f - (1 * (m_foundTime / m_maxFoundTime)), 1);
 }
 
+//UI描画
 void FoundUI::Draw()
 {
 	auto batch = GameObjectManager::GetInstance()->GetSpriteBatch();
@@ -66,25 +103,22 @@ void FoundUI::Draw()
 		m_baseTexture.Get(),
 		m_baseTexturePos,
 		nullptr,
-		Colors::White,
+		Colors::Black,
 		m_baseTextureRotation,
 		m_baseTextureOrigin,
 		m_baseTextureScale,
 		SpriteEffects_None,
 		m_baseTextureDepth
 	);
-	if (PlayerAccessor::GetInstance()->GetPlayer()->GetBeFound())
-	{
-		batch->Draw(
-			m_foundTexture.Get(),
-			m_foundTexturePos,
-			nullptr,
-			Colors::White,
-			m_foundTextureRotation,
-			m_foundTextureOrigin,
-			m_foundTextureScale,
-			SpriteEffects_None,
-			m_foundTextureDepth
-		);
-	}
+	batch->Draw(
+		m_foundTexture.Get(),
+		m_foundTexturePos,
+		&m_rectangle,
+		m_color,
+		m_foundTextureRotation,
+		m_foundTextureOrigin,
+		m_foundTextureScale,
+		SpriteEffects_None,
+		m_foundTextureDepth
+	);
 }

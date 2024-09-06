@@ -10,6 +10,9 @@ using namespace std;
 class GameObject;
 class OriginalEffect;
 
+/// <summary>
+/// エネミーオブジェクト
+/// </summary>
 class Enemy :public GameObject
 {
 public:
@@ -22,14 +25,46 @@ public:
 		RightWalk,		//右歩き
 		LeftWalk		//左歩き
 	};
+
+	/// <summary>
+	/// オブジェクトの初期化
+	/// </summary>
+	/// <param name="fileName">3Dモデルファイル名</param>
+	/// <param name="pos">初期座標</param>
+	/// <param name="rotate">初期回転量</param>
 	Enemy(const wchar_t* fileName, Vector3 pos, float rotate);
+
+	/// <summary>
+	/// データ破棄
+	/// </summary>
 	~Enemy();
 
+	/// <summary>
+	/// オブジェクトの更新
+	/// </summary>
 	void Update()override;
+
+	/// <summary>
+	/// オブジェクトの描画
+	/// </summary>
 	void Draw()override;
 
+	/// <summary>
+	/// 敵の目の位置を取得
+	/// </summary>
+	/// <returns></returns>
 	Vector3 GetEyePosition()const { return m_eyePos; }
+
+	/// <summary>
+	/// 敵の目の向きを取得
+	/// </summary>
+	/// <returns></returns>
 	Vector3 GetEyeDirection()const { return m_eyeDirection; }
+
+	/// <summary>
+	/// 敵の目のビュー空間行列
+	/// </summary>
+	/// <returns></returns>
 	Matrix GetEyeView()const { return m_eyeView; }
 
 private:

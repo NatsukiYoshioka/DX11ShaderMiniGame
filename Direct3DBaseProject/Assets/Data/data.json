@@ -1,15 +1,39 @@
 {
   "Block": [
     [
-      "Cube.sdkmesh",
-      [ 0, 0.05, 0, 180 ],
-      [ 1.25, 0.05, 0, 180 ],
-      [ 2.5, 0.05, 0, 180 ]
-
+        "Cube.sdkmesh",
+        [ -10, 0.05, -5, 180 ],
+        [ -8.75, 0.05, -5, 180 ],
+        [ -7.5, 0.05, -5, 180 ],
+        [ -6.25, 0.05, -5, 180 ],
+        [ -5, 0.05, -5, 180 ],
+        [ -3.75, 0.05, -5, 180 ],
+        [ -2.5, 0.05, -5, 180 ],
+        [ -1.25, 0.05, -5, 180 ],
+        [ 0, 0.05, -5, 180 ],
+        [ 1.25, 0.05, -5, 180 ],
+        [ 2.5, 0.05, -5, 180 ],
+        [ -11.25, 0.05, -5, 180 ],
+        [ -11.25, 0.05, -3.75, 180 ],
+        [ -11.25, 0.05, -2.5, 180 ],
+        [ -11.25, 0.05, -1.25, 180 ],
+        [ -11.25, 0.05, 0, 180 ],
+        [ -10, 0.05, 0, 180 ],
+        [ -8.75, 0.05, 0, 180 ],
+        [ -7.5, 0.05, 0, 180 ],
+        [ -6.25, 0.05, 0, 180 ],
+        [ -5, 0.05, 0, 180 ],
+        [ -3.75, 0.05, 0, 180 ],
+        [ -2.5, 0.05, 0, 180 ],
+        [ -1.25, 0.05, 0, 180 ],
+        [ 0, 0.05, 0, 180 ],
+        [ 1.25, 0.05, 0, 180 ],
+        [ 2.5, 0.05, 0, 180 ]
     ],
     [
       "Cylinder.sdkmesh",
-        [ 0, 0.05, 3, 180 ]
+        [ 0, 0.05, 3, 180 ],
+        [ -5, 0.05, -2.5, 180 ]
     ],
     [
       "HalfCylinderBig.sdkmesh",
@@ -21,23 +45,21 @@
     ],
     [
       "NarrowTunnel.sdkmesh",
-        [ 0, 0.05, 12, 180 ]
-    ],
-    [
-      "Rectangular.sdkmesh",
-        [ 0, 0.05, 15, 180 ]
+        [ 0, 0.05, 12, 180 ],
+        [ -7.5, 0.05, -3.75, 180 ]
+
     ],
     [
       "TriangularBig.sdkmesh",
-        [ 0, 0.05, 18, 90 ]
+        [ 0, 0.05, 17, 90 ]
     ],
     [
       "TriangularSmall.sdkmesh",
-        [ 0, 0.05, 21, 90 ]
+        [ 0, 0.05, 20, 90 ]
     ],
     [
       "WideTunnel.sdkmesh",
-        [ 0, 0.05, 24, 180 ]
+        [ 0, 0.05, 25, 180 ]
     ]
   ],
 
@@ -73,11 +95,15 @@
   ],
 
   "PlayerTexture": "Ch09_1001_Diffuse.dds",
-  "PlayerPosition": [ -1, -0.6, -1, 90 ],
+  "PlayerPosition": [ -9.25, -0.6, -2.5, 90 ],
   "PlayerScale": 0.0065,
   "PlayerSpeed": 0.025,
   "PlayerRunSpeed": 0.05,
-  "PlayerCrouchSpeed": 0.0125,
+    "PlayerCrouchSpeed": 0.0125,
+
+    "SphereRadius": 0.4,
+    "SphereDefaultHeight": 0.5,
+    "SphereCrouchHeight": -0.6,
 
   "Enemy": [
     "Ch46_nonPBR.sdkmesh",
@@ -99,15 +125,17 @@
   "EyeBaseUI": "eyeBase.dds",
   "EyeFoundUI": "eyeFound.dds",
 
-  "EyeBaseUIPosition": [ 100, 100 ],
+  "EyeBaseUIPosition": [ 200, 200 ],
   "EyeBaseUIRotation": 0,
-  "EyeBaseUIScale"   : [ 0.05, 0.05 ],
+  "EyeBaseUIScale"   : [ 0.1, 0.1 ],
   "EyeBaseUIDepth"   : 0.1,
 
-  "EyeFoundUIPosition": [ 100, 100 ],
-  "EyeFoundUIRotation": 0,
-  "EyeFoundUIScale"   : [ 0.05, 0.05 ],
+  "EyeFoundUIPosition": [ 200, 200 ],
+  "EyeFoundUIRotation": 180,
+  "EyeFoundUIScale"   : [ 0.1, 0.1 ],
   "EyeFoundUIDepth"   : 0.2,
 
-  "HitCheckTextureSize": 2000
+    "HitCheckTextureSize": 2000,
+
+    "MaxFoundTime": 2
 }

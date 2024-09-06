@@ -11,6 +11,9 @@ using namespace std;
 class OriginalEffect :public IEffect, public IEffectMatrices, public IEffectSkinning
 {
 public:
+	/// <summary>
+	/// ピクセルシェーダーのタイプ
+	/// </summary>
 	enum class PixelType
 	{
 		Object,
@@ -20,6 +23,10 @@ public:
 		Blue
 	};
 
+	/// <summary>
+	/// ピクセルシェーダーのタイプ更新
+	/// </summary>
+	/// <param name="value"></param>
 	void UpdateType(PixelType value) { m_type = value; }
 
 	/// <summary>
@@ -107,17 +114,32 @@ public:
 	/// <returns></returns>
 	void __cdecl ResetBoneTransforms()override;
 
+	/// <summary>
+	/// スポットライトの座標設定
+	/// </summary>
+	/// <param name="position"></param>
 	void SetLightPosition(Vector3 position);
 
+	/// <summary>
+	/// スポットライトの向き設定
+	/// </summary>
+	/// <param name="direction"></param>
 	void SetLightDirection(Vector3 direction);
 
+	/// <summary>
+	/// 目の座標設定
+	/// </summary>
+	/// <param name="eyePosition"></param>
 	void SetEyePosition(Vector3 eyePosition);
 
+	/// <summary>
+	/// ライトのビュー空間行列設定
+	/// </summary>
+	/// <param name="view"></param>
 	void SetLightView(Matrix view);
 
 private:
-	PixelType m_type;
-	bool m_isDrawShadow;
+	PixelType m_type;		//ピクセルシェーダーのタイプ
 
 	ComPtr<ID3D11VertexShader> m_vs;				//頂点シェーダー
 	ComPtr<ID3D11PixelShader> m_ps;					//ピクセルシェーダー

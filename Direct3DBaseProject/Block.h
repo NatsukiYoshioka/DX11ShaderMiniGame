@@ -37,12 +37,26 @@ public:
 	/// </summary>
 	void Draw()override;
 
+	/// <summary>
+	/// 影の描画
+	/// </summary>
 	void DrawShadow();
 
+	/// <summary>
+	/// 敵視点での描画
+	/// </summary>
 	void DrawHitCheck();
 
+	/// <summary>
+	/// 頂点座標の取得
+	/// </summary>
+	/// <returns></returns>
 	vector<XMFLOAT3> GetVertices() { return m_vertices; }
 
+	/// <summary>
+	/// 頂点座標のSRV取得
+	/// </summary>
+	/// <returns></returns>
 	ComPtr<ID3D11ShaderResourceView> GetVertexBufferSRV() { return m_vertexBufferSRV; }
 
 private:
@@ -51,8 +65,8 @@ private:
 	float m_rotate;		//モデルのY軸回転量
 	Matrix m_world;		//モデルのワールド座標行列
 
-	vector<XMFLOAT3> m_vertices;
-	ComPtr<ID3D11ShaderResourceView> m_vertexBufferSRV;
-	ComPtr<ID3D11UnorderedAccessView> m_outputBufferUAV;
+	vector<XMFLOAT3> m_vertices;		//モデルの頂点座標
+	ComPtr<ID3D11ShaderResourceView> m_vertexBufferSRV;		//頂点バッファSRV
+	ComPtr<ID3D11UnorderedAccessView> m_outputBufferUAV;	//出力バッファUAV
 };
 

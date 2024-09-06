@@ -55,7 +55,7 @@ private:
 	float m_pitch;			//カメラの縦軸回転量
 	float m_yaw;			//カメラの横軸回転量
 
-	const float m_speed;
-	const float m_mouseSpeed;
+	const float m_speed;		//カメラのデフォルトスピード
+	const float m_mouseSpeed;	//カメラのマウススピード
 };
 

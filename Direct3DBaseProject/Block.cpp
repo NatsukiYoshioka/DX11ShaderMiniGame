@@ -153,12 +153,6 @@ void Block::Update()
 			effect->SetLightView(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeView());
 		}
 	}
-
-	//ワールド座標行列の設定
-	/*m_world = Matrix::Identity;
-	m_world = XMMatrixMultiply(m_world, Matrix::CreateScale(0.01f));
-	m_world = XMMatrixMultiply(m_world, Matrix::CreateRotationY(m_rotate));
-	m_world = XMMatrixMultiply(m_world, XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));*/
 }
 
 //オブジェクトの描画
@@ -171,8 +165,10 @@ void Block::Draw()
 		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
 }
 
+//影の描画
 void Block::DrawShadow()
 {
+	//シェーダーを影用に変更
 	for (const auto& mit : m_modelHandle->meshes)
 	{
 		auto mesh = mit.get();
@@ -187,12 +183,14 @@ void Block::DrawShadow()
 		}
 	}
 
+	//描画
 	m_modelHandle->Draw(DeviceAccessor::GetInstance()->GetContext(),
 		*DeviceAccessor::GetInstance()->GetStates(),
 		m_world,
 		EnemyAccessor::GetInstance()->GetEnemy()->GetEyeView(),
 		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
 
+	//シェーダーを元に戻す
 	for (const auto& mit : m_modelHandle->meshes)
 	{
 		auto mesh = mit.get();
@@ -208,6 +206,7 @@ void Block::DrawShadow()
 	}
 }
 
+//敵視点での描画
 void Block::DrawHitCheck()
 {
 	for (const auto& mit : m_modelHandle->meshes)

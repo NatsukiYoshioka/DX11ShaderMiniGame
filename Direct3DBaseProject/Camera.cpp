@@ -12,7 +12,7 @@ Camera::Camera():
 	m_mouseSpeed(float(Json::GetInstance()->GetData()["CameraMouseSpeed"])),
 	m_distance(float(Json::GetInstance()->GetData()["CameraDistance"])),
 	m_pitch(0),
-	m_yaw(0)
+	m_yaw(30)
 {
 	m_modelHandle = nullptr;
 
@@ -36,6 +36,7 @@ void Camera::Update()
 
 	if (pad.IsConnected())
 	{
+		//‹“_ˆÚ“®ˆ—
 		if (pad.thumbSticks.rightX != 0 || pad.thumbSticks.rightY != 0 || mouseState.x != 0 || mouseState.y != 0)
 		{
 			float x = pad.thumbSticks.rightX;

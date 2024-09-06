@@ -14,9 +14,13 @@
 
 extern void ExitGame() noexcept;
 
+//オブジェクトの初期化
 Player::Player(const wchar_t* fileName, Vector3 pos, float rotate):
 	m_nowAnimationState(AnimationState::Idle),
 	m_beFound(false),
+	m_sphereRadius(float(Json::GetInstance()->GetData()["SphereRadius"])),
+	m_sphereDefaultHeight(float(Json::GetInstance()->GetData()["SphereDefaultHeight"])),
+	m_sphereCrouchHeight(float(Json::GetInstance()->GetData()["SphereCrouchHeight"])),
 	m_scale(float(Json::GetInstance()->GetData()["PlayerScale"])),
 	m_speed(float(Json::GetInstance()->GetData()["PlayerSpeed"])),
 	m_runSpeed(float(Json::GetInstance()->GetData()["PlayerRunSpeed"])),
@@ -98,8 +102,9 @@ Player::Player(const wchar_t* fileName, Vector3 pos, float rotate):
 	//座標とY軸回転量の設定
 	m_pos = pos;
 	m_rotate = rotate * XM_PI / 180.f;
+	m_sphereHeight = m_sphereDefaultHeight;
 
-	//出力UAV設定
+	//入出力UAV設定
 	D3D11_BUFFER_DESC bufferDesc;
 	ZeroMemory(&bufferDesc, sizeof(D3D11_BUFFER_DESC));
 	bufferDesc.BindFlags = D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_SHADER_RESOURCE;
@@ -121,11 +126,13 @@ Player::Player(const wchar_t* fileName, Vector3 pos, float rotate):
 	deviceAccessor->GetDevice()->CreateUnorderedAccessView(m_sphereResult.Get(), &UAVDesc, m_sphereInfo.ReleaseAndGetAddressOf());
 }
 
+//データ破棄
 Player::~Player()
 {
 	m_modelHandle.reset();
 }
 
+//オブジェクト更新
 void Player::Update()
 {
 	auto pad = DeviceAccessor::GetInstance()->GetGamePad()->GetState(0);
@@ -135,7 +142,10 @@ void Player::Update()
 	bool isMove = false;
 	bool isCrouch = false;
 	float nowSpeed = 0.f;
+	m_sphereHeight = m_sphereDefaultHeight;
 	m_nowAnimationState = AnimationState::Idle;
+
+	//移動処理
 	if (pad.IsConnected())
 	{
 		if (pad.IsViewPressed() || key.Escape)
@@ -145,6 +155,7 @@ void Player::Update()
 		if (pad.IsLeftShoulderPressed() || key.LeftControl || mouse.rightButton)
 		{
 			m_nowAnimationState = AnimationState::Crouch;
+			m_sphereHeight = m_sphereCrouchHeight;
 			isCrouch = true;
 		}
 		if (pad.thumbSticks.leftX != 0 || pad.thumbSticks.leftY != 0 || key.W || key.A || key.S || key.D)
@@ -189,6 +200,7 @@ void Player::Update()
 
 	if (isMove)
 	{
+		//座標計算処理
 		auto cameraPitch = CameraAccessor::GetInstance()->GetCamera()->GetPitch();
 		auto radian = cameraPitch * XM_PI / 180;
 		m_rotate += radian;
@@ -197,6 +209,7 @@ void Player::Update()
 		m_pos.x += -sin(m_rotate) * nowSpeed;
 	}
 
+	//ライト用情報設定
 	for (const auto& mit : m_modelHandle->meshes)
 	{
 		auto mesh = mit.get();
@@ -214,6 +227,7 @@ void Player::Update()
 		}
 	}
 
+	//当たり判定処理
 	HitCheckObject();
 
 	//ワールド座標行列の更新
@@ -225,6 +239,7 @@ void Player::Update()
 	m_animations.at(static_cast<int>(m_nowAnimationState)).Update(*DeviceAccessor::GetInstance()->GetElapsedTime());
 }
 
+//オブジェクト描画
 void Player::Draw()
 {
 	size_t nbones = m_modelHandle->bones.size();
@@ -240,6 +255,7 @@ void Player::Draw()
 		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
 }
 
+//オブジェクトの影用描画
 void Player::DrawShadow()
 {
 	for (const auto& mit : m_modelHandle->meshes)
@@ -283,6 +299,7 @@ void Player::DrawShadow()
 	}
 }
 
+//見つかり判定用描画
 void Player::DrawHitCheck()
 {
 	for (const auto& mit : m_modelHandle->meshes)
@@ -326,6 +343,7 @@ void Player::DrawHitCheck()
 	}
 }
 
+//見つかり判定処理
 void Player::HitCheck()
 {
 	auto deviceAccessor = DeviceAccessor::GetInstance();
@@ -341,6 +359,7 @@ void Player::HitCheck()
 	BufferDesc.MiscFlags = 0;
 	deviceAccessor->GetDevice()->CreateBuffer(&BufferDesc, NULL, &debugBuffer);
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	assert(debugBuffer);
 	deviceAccessor->GetContext()->Map(debugBuffer, 0, D3D11_MAP_WRITE, 0, &mappedResource);
 	HitInfo* p = reinterpret_cast<HitInfo*>(mappedResource.pData);
 	p->playerPixNum = 0;
@@ -370,6 +389,7 @@ void Player::HitCheck()
 	else m_beFound = false;
 }
 
+//当たり判定処理
 void Player::HitCheckObject()
 {
 	auto device = DeviceAccessor::GetInstance()->GetDevice();
@@ -378,6 +398,8 @@ void Player::HitCheckObject()
 
 	for (int i = 0;i < blocks.size();i++)
 	{
+		auto blockPos = blocks.at(i)->GetPos();
+		if (Vector2(blockPos.x - m_pos.x, blockPos.z - m_pos.z).Length() > 5.f)continue;
 		ID3D11Buffer* debugBuffer = NULL;
 		D3D11_BUFFER_DESC BufferDesc;
 		ZeroMemory(&BufferDesc, sizeof(D3D11_BUFFER_DESC));
@@ -388,17 +410,18 @@ void Player::HitCheckObject()
 		BufferDesc.MiscFlags = 0;
 		device->CreateBuffer(&BufferDesc, NULL, &debugBuffer);
 		D3D11_MAPPED_SUBRESOURCE mappedResource;
+		assert(debugBuffer);
 		context->Map(debugBuffer, 0, D3D11_MAP_WRITE, 0, &mappedResource);
 		Sphere* p = reinterpret_cast<Sphere*>(mappedResource.pData);
 		p->center = m_pos;
-		p->radius = 0.3f;
+		p->center.y = m_sphereHeight;
+		p->radius = 0.4f;
 		context->Unmap(debugBuffer, 0);
 		context->CopyResource(m_sphereResult.Get(), debugBuffer);
 		
 		context->CSSetUnorderedAccessViews(0, 1, m_sphereInfo.GetAddressOf(), 0);
 		context->CSSetShaderResources(0, 1, blocks.at(i)->GetVertexBufferSRV().GetAddressOf());
 		context->CSSetShader(m_csForCollision.Get(), nullptr, 0);
-		auto size = blocks.at(i)->GetVertices().size();
 		context->Dispatch(blocks.at(i)->GetVertices().size(), 1, 1);
 		
 		context->CSSetShader(nullptr, nullptr, 0);

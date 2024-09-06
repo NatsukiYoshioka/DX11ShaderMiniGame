@@ -13,6 +13,7 @@
 #include<math.h>
 #include "Enemy.h"
 
+//オブジェクト初期化
 Enemy::Enemy(const wchar_t* fileName, Vector3 pos, float rotate):
 	m_nowAnimationState(AnimationState::Idle),
 	m_posAngle(0),
@@ -91,11 +92,13 @@ Enemy::Enemy(const wchar_t* fileName, Vector3 pos, float rotate):
 	m_rotate = rotate * XM_PI / 180.f;
 }
 
+//データ破棄
 Enemy::~Enemy()
 {
 	m_modelHandle.reset();
 }
 
+//オブジェクト更新
 void Enemy::Update()
 {
 	std::random_device random;
@@ -104,6 +107,7 @@ void Enemy::Update()
 	dist_type distribution(0, 99);
 	dist_type::param_type animationParam(0, 2);
 
+	//ランダムで敵の挙動を決定
 	switch (distribution(generator))
 	{
 	case 0:
@@ -134,6 +138,7 @@ void Enemy::Update()
 		m_posAngle -= m_speed;
 	}
 
+	//向きと座標の計算
 	auto deskPos = DeskAccessor::GetInstance()->GetDesk()->GetPos();
 	float radian = m_posAngle * XM_PI / 180;
 	float x = deskPos.x + sin(radian) * m_distance;
@@ -149,6 +154,7 @@ void Enemy::Update()
 	auto playerPos = PlayerAccessor::GetInstance()->GetPlayer()->GetPos();
 	m_rotate = atan2f(m_pos.x - playerPos.x, m_pos.z - playerPos.z);
 
+	//敵視点のビュー空間行列生成
 	m_eyeView = Matrix::CreateLookAt(m_eyePos, playerPos, Vector3::Up);
 
 	m_eyeDirection = playerPos - m_eyePos;
@@ -180,6 +186,7 @@ void Enemy::Update()
 	m_animations.at(static_cast<int>(m_nowAnimationState)).Update(*DeviceAccessor::GetInstance()->GetElapsedTime());
 }
 
+//オブジェクト描画
 void Enemy::Draw()
 {
 	size_t nbones = m_modelHandle->bones.size();

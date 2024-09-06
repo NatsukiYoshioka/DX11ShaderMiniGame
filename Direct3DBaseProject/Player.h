@@ -48,10 +48,19 @@ public:
 	/// </summary>
 	void Draw()override;
 
+	/// <summary>
+	/// 影用描画
+	/// </summary>
 	void DrawShadow();
 
+	/// <summary>
+	/// 見つかり判定用描画
+	/// </summary>
 	void DrawHitCheck();
 
+	/// <summary>
+	/// 見つかり判定処理
+	/// </summary>
 	void HitCheck();
 
 	/// <summary>
@@ -60,8 +69,15 @@ public:
 	/// <returns>オブジェクトの回転量</returns>
 	float GetRotate()const { return m_rotate; }
 
+	/// <summary>
+	/// 敵に見つかったかどうか取得
+	/// </summary>
+	/// <returns></returns>
 	bool GetBeFound()const { return m_beFound; }
 
+	/// <summary>
+	/// 当たり判定処理
+	/// </summary>
 	void HitCheckObject();
 
 private:
@@ -74,32 +90,40 @@ private:
 	float m_rotate;		//モデルのY軸回転量
 	Matrix m_world;		//モデルのワールド行列
 
+	/// <summary>
+	/// 見つかり判定情報
+	/// </summary>
 	struct HitInfo
 	{
-		int playerPixNum;
-		int visiblePixNum;
+		int playerPixNum;	//見つかった時のプレイヤーのピクセル数
+		int visiblePixNum;	//デフォルトピクセル数
 	};
-	ComPtr<ID3D11Buffer> m_bufferResult;
-	ComPtr<ID3D11UnorderedAccessView> m_hitInfo;
-	ComPtr<ID3D11ComputeShader> m_csForEnemyEye;
+	ComPtr<ID3D11Buffer> m_bufferResult;			//見つかり判定入出力用バッファ
+	ComPtr<ID3D11UnorderedAccessView> m_hitInfo;	//見つかり判定用UAV
+	ComPtr<ID3D11ComputeShader> m_csForEnemyEye;	//見つかり判定用コンピュートシェーダー
 
+	/// <summary>
+	/// 当たり判定用スフィア
+	/// </summary>
 	struct Sphere
 	{
 		Vector3 center;
 		float radius;
 	};
-	ComPtr<ID3D11Buffer> m_sphereResult;
-	ComPtr<ID3D11UnorderedAccessView> m_sphereInfo;
-	ComPtr<ID3D11ComputeShader> m_csForCollision;
+	ComPtr<ID3D11Buffer> m_sphereResult;			//スフィアの入出力バッファ
+	ComPtr<ID3D11UnorderedAccessView> m_sphereInfo;	//スフィア用UAV
+	ComPtr<ID3D11ComputeShader> m_csForCollision;	//当たり判定用コンピュートシェーダー
 
-	bool m_beFound;
+	float m_sphereHeight;
+	const float m_sphereRadius;
+	const float m_sphereDefaultHeight;
+	const float m_sphereCrouchHeight;
+
+	bool m_beFound;		//見つかったかどうか
 
 	const float m_scale;
 	const float m_speed;		//プレイヤーの移動スピード
 	const float m_runSpeed;		//プレイヤーのダッシュスピード
 	const float m_crouchSpeed;	//プレイヤーのしゃがみ移動スピード
-
-	unique_ptr<SpriteBatch> batch;
-	unique_ptr<SpriteFont> font;
 };
 

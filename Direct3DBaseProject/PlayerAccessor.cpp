@@ -5,6 +5,7 @@
 
 PlayerAccessor* PlayerAccessor::m_instance = nullptr;
 
+//モデルの生成
 PlayerAccessor::PlayerAccessor()
 {
 	auto json = Json::GetInstance();
@@ -15,17 +16,20 @@ PlayerAccessor::PlayerAccessor()
 		float(json->GetData()["PlayerPosition"].at(3)));
 }
 
+//データ破棄
 PlayerAccessor::~PlayerAccessor()
 {
 	delete(m_player);
 }
 
+//インスタンス生成
 void PlayerAccessor::CreateInstance()
 {
 	if (m_instance)return;
 	m_instance = new PlayerAccessor();
 }
 
+//インスタンス破棄
 void PlayerAccessor::DestroyInstance()
 {
 	if (!m_instance)return;

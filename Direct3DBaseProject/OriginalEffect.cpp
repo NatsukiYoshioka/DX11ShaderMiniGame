@@ -6,7 +6,6 @@
 //エフェクトの初期化
 OriginalEffect::OriginalEffect(ID3D11Device* device, PixelType type, bool isSkinning):
 	m_type(type),
-	m_isDrawShadow(false),
 	m_matrixBuffer(device),
 	m_skinnedBuffer(device),
 	m_lightBuffer(device),
@@ -181,21 +180,25 @@ void OriginalEffect::ResetBoneTransforms()
 	}
 }
 
+//スポットライトの座標設定
 void OriginalEffect::SetLightPosition(Vector3 position)
 {
 	m_light.position = position;
 }
 
+//スポットライトの向き設定
 void OriginalEffect::SetLightDirection(Vector3 direction)
 {
 	m_light.direction = direction;
 }
 
+//目の座標設定
 void OriginalEffect::SetEyePosition(Vector3 eyePosition)
 {
 	m_light.eyePosition = eyePosition;
 }
 
+//ライトの空間行列設定
 void OriginalEffect::SetLightView(Matrix view)
 {
 	m_lightView = view;

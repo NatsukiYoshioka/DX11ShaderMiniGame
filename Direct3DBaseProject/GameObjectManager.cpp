@@ -191,6 +191,7 @@ void GameObjectManager::Draw()
 	m_batch->End();
 }
 
+//オブジェクトの影の初期化
 void GameObjectManager::ClearObjectShadow()
 {
 	auto context = DeviceAccessor::GetInstance()->GetContext();
@@ -198,6 +199,7 @@ void GameObjectManager::ClearObjectShadow()
 	context->ClearDepthStencilView(m_objectShadowDepthView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 }
 
+//プレイヤーの影の初期化
 void GameObjectManager::ClearCharacterShadow()
 {
 	auto context = DeviceAccessor::GetInstance()->GetContext();
@@ -205,6 +207,7 @@ void GameObjectManager::ClearCharacterShadow()
 	context->ClearDepthStencilView(m_characterShadowDepthView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 }
 
+//オブジェクトの影のレンダーターゲット設定
 void GameObjectManager::SetObjectShadowRenderTarget()
 {
 	auto context = DeviceAccessor::GetInstance()->GetContext();
@@ -218,6 +221,7 @@ void GameObjectManager::SetObjectShadowRenderTarget()
 	context->RSSetViewports(1, &view);
 }
 
+//プレイヤーの影のレンダーターゲット設定
 void GameObjectManager::SetCharacterShadowRenderTarget()
 {
 	auto context = DeviceAccessor::GetInstance()->GetContext();
@@ -231,6 +235,7 @@ void GameObjectManager::SetCharacterShadowRenderTarget()
 	context->RSSetViewports(1, &view);
 }
 
+//オブジェクトSRV設定
 void GameObjectManager::SetObjectShadowResource()
 {
 	auto context = DeviceAccessor::GetInstance()->GetContext();
@@ -238,6 +243,7 @@ void GameObjectManager::SetObjectShadowResource()
 	context->PSSetShaderResources(10, 1, m_objectShadowView.GetAddressOf());
 }
 
+//プレイヤーSRV設定
 void GameObjectManager::SetCharacterShadowResource()
 {
 	auto context = DeviceAccessor::GetInstance()->GetContext();
@@ -245,6 +251,7 @@ void GameObjectManager::SetCharacterShadowResource()
 	context->PSSetShaderResources(11, 1, m_characterShadowView.GetAddressOf());
 }
 
+//オブジェクトの影描画
 void GameObjectManager::DrawObjectShadow()
 {
 	for (int i = 0; i < BlockAccessor::GetInstance()->GetBlocks().size(); i++)
@@ -253,11 +260,13 @@ void GameObjectManager::DrawObjectShadow()
 	}
 }
 
+//プレイヤー影描画
 void GameObjectManager::DrawCharacterShadow()
 {
 	PlayerAccessor::GetInstance()->GetPlayer()->DrawShadow();
 }
 
+//敵視点の見つかり判定用レンダリングターゲット初期化
 void GameObjectManager::ClearHitCheckRenderTarget()
 {
 	auto context = DeviceAccessor::GetInstance()->GetContext();
@@ -266,6 +275,7 @@ void GameObjectManager::ClearHitCheckRenderTarget()
 	context->ClearDepthStencilView(m_hitCheckDSV.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 }
 
+//敵視点の見つかり判定用プレイヤーレンダリングターゲット初期化
 void GameObjectManager::ClearHitCheckCharacterRenderTarget()
 {
 	auto context = DeviceAccessor::GetInstance()->GetContext();
@@ -274,6 +284,7 @@ void GameObjectManager::ClearHitCheckCharacterRenderTarget()
 	context->ClearDepthStencilView(m_hitCheckDSV.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 }
 
+//敵視点の見つかり判定用レンダリングターゲット設定
 void GameObjectManager::SetHitCheckRenderTarget()
 {
 	auto context = DeviceAccessor::GetInstance()->GetContext();
@@ -286,6 +297,7 @@ void GameObjectManager::SetHitCheckRenderTarget()
 	context->RSSetViewports(1, &view);
 }
 
+//敵視点の見つかり判定用プレイヤーレンダリングターゲット設定
 void GameObjectManager::SetHitCheckCharacterRenderTarget()
 {
 	auto context = DeviceAccessor::GetInstance()->GetContext();
@@ -298,6 +310,7 @@ void GameObjectManager::SetHitCheckCharacterRenderTarget()
 	context->RSSetViewports(1, &view);
 }
 
+//見つかり判定用テクスチャSRV設定
 void GameObjectManager::SetHitCheckShaderResource()
 {
 	auto context = DeviceAccessor::GetInstance()->GetContext();
@@ -305,6 +318,7 @@ void GameObjectManager::SetHitCheckShaderResource()
 	context->CSSetShaderResources(1, 1, m_hitCheckShaderResourceView.GetAddressOf());
 }
 
+//見つかり判定用プレイヤーテクスチャSRV設定
 void GameObjectManager::SetHitCheckCharacterShaderResource()
 {
 	auto context = DeviceAccessor::GetInstance()->GetContext();
@@ -312,6 +326,7 @@ void GameObjectManager::SetHitCheckCharacterShaderResource()
 	context->CSSetShaderResources(0, 1, m_hitCheckCharacterSRV.GetAddressOf());
 }
 
+//見つかり判定用オブジェクト描画
 void GameObjectManager::DrawHitCheck()
 {
 	for (int i = 0; i < BlockAccessor::GetInstance()->GetBlocks().size(); i++)
@@ -321,11 +336,13 @@ void GameObjectManager::DrawHitCheck()
 	PlayerAccessor::GetInstance()->GetPlayer()->DrawHitCheck();
 }
 
+//見つかり判定用プレイヤー描画
 void GameObjectManager::DrawHitCheckCharacter()
 {
 	PlayerAccessor::GetInstance()->GetPlayer()->DrawHitCheck();
 }
 
+//見つかり判定処理
 void GameObjectManager::HitCheck()
 {
 	PlayerAccessor::GetInstance()->GetPlayer()->HitCheck();

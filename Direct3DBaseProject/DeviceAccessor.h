@@ -56,8 +56,16 @@ public:
 	/// <returns>描画コンテキスト</returns>
 	ID3D11DeviceContext* GetContext() { return m_context; }
 
+	/// <summary>
+	/// デフォルトのレンダーターゲットを取得
+	/// </summary>
+	/// <returns></returns>
 	ID3D11RenderTargetView* GetRenderTargetView() { return m_RTV; }
 
+	/// <summary>
+	/// デフォルトの深度テストデバイスを取得
+	/// </summary>
+	/// <returns></returns>
 	ID3D11DepthStencilView* GetDepthStencilView() { return m_DSV; }
 
 	/// <summary>
@@ -96,9 +104,22 @@ public:
 	/// <returns>GamePad*</returns>
 	GamePad* GetGamePad() { return m_gamePad.get(); }
 
+	/// <summary>
+	/// キーボード制御クラス取得
+	/// </summary>
+	/// <returns></returns>
 	Keyboard* GetKeyboard() { return m_keyboard.get(); }
 
+	/// <summary>
+	/// マウス制御クラスの設定
+	/// </summary>
+	/// <param name="mouse"></param>
 	void SetMouse(Mouse* mouse) { m_mouse = mouse; }
+
+	/// <summary>
+	/// まうっ制御クラスの取得
+	/// </summary>
+	/// <returns></returns>
 	Mouse* GetMouse() { return m_mouse; }
 private:
 	static DeviceAccessor* m_instance;		//クラスのインスタンス

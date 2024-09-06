@@ -12,12 +12,12 @@ void main(uint3 DTid : SV_DispatchThreadID)
 {
     float3 vertex = vertices[DTid.x];
     float3 direction = outputVertices[0].sphereCenter - vertex;
-    float distance = length(direction) - 0.25f;
+    float distance = length(direction);
 
     if (distance < outputVertices[0].sphereRadius)
     {
         float3 pushDirection = normalize(direction);
-        float pushDistance = outputVertices[0].sphereRadius - distance;
+        float pushDistance = outputVertices[0].sphereRadius - distance + 0.04f;
         outputVertices[0].sphereCenter.xz += pushDirection.xz * pushDistance;
     }
 }
