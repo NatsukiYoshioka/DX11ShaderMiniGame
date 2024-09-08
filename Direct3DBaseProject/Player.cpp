@@ -146,55 +146,52 @@ void Player::Update()
 	m_nowAnimationState = AnimationState::Idle;
 
 	//à⁄ìÆèàóù
-	if (pad.IsConnected())
+	if (pad.IsViewPressed() || key.Escape)
 	{
-		if (pad.IsViewPressed() || key.Escape)
+		ExitGame();
+	}
+	if (pad.IsLeftShoulderPressed() || key.LeftControl || mouse.rightButton)
+	{
+		m_nowAnimationState = AnimationState::Crouch;
+		m_sphereHeight = m_sphereCrouchHeight;
+		isCrouch = true;
+	}
+	if (pad.thumbSticks.leftX != 0 || pad.thumbSticks.leftY != 0 || key.W || key.A || key.S || key.D)
+	{
+		float x = -pad.thumbSticks.leftX;
+		float y = pad.thumbSticks.leftY;
+		if (key.W)
 		{
-			ExitGame();
+			y = 1;
 		}
-		if (pad.IsLeftShoulderPressed() || key.LeftControl || mouse.rightButton)
+		if (key.S)
 		{
-			m_nowAnimationState = AnimationState::Crouch;
-			m_sphereHeight = m_sphereCrouchHeight;
-			isCrouch = true;
+			y = -1;
 		}
-		if (pad.thumbSticks.leftX != 0 || pad.thumbSticks.leftY != 0 || key.W || key.A || key.S || key.D)
+		if (key.A)
 		{
-			float x = -pad.thumbSticks.leftX;
-			float y = pad.thumbSticks.leftY;
-			if (key.W)
-			{
-				y = 1;
-			}
-			if (key.S)
-			{
-				y = -1;
-			}
-			if (key.A)
-			{
-				x = 1;
-			}
-			if (key.D)
-			{
-				x = -1;
-			}
-			m_rotate = atan2f(x, y);
-			
-			
-			isMove = true;
-			nowSpeed = m_speed;
-			m_nowAnimationState = AnimationState::Walk;
+			x = 1;
+		}
+		if (key.D)
+		{
+			x = -1;
+		}
+		m_rotate = atan2f(x, y);
 
-			if (isCrouch)
-			{
-				nowSpeed = m_crouchSpeed;
-				m_nowAnimationState = AnimationState::CrouchedWalk;
-			}
-			else if (pad.IsRightShoulderPressed() || key.LeftShift || mouse.leftButton)
-			{
-				nowSpeed = m_runSpeed;
-				m_nowAnimationState = AnimationState::Run;
-			}
+
+		isMove = true;
+		nowSpeed = m_speed;
+		m_nowAnimationState = AnimationState::Walk;
+
+		if (isCrouch)
+		{
+			nowSpeed = m_crouchSpeed;
+			m_nowAnimationState = AnimationState::CrouchedWalk;
+		}
+		else if (pad.IsRightShoulderPressed() || key.LeftShift || mouse.leftButton)
+		{
+			nowSpeed = m_runSpeed;
+			m_nowAnimationState = AnimationState::Run;
 		}
 	}
 

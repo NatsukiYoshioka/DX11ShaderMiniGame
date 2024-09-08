@@ -36,29 +36,26 @@ void Camera::Update()
 	mouse->SetMode(Mouse::MODE_RELATIVE);
 	auto mouseState = mouse->GetState();
 
-	if (pad.IsConnected())
+	//‹“_ˆÚ“®ˆ—
+	if (pad.thumbSticks.rightX != 0 || pad.thumbSticks.rightY != 0 || mouseState.x != 0 || mouseState.y != 0)
 	{
-		//‹“_ˆÚ“®ˆ—
-		if (pad.thumbSticks.rightX != 0 || pad.thumbSticks.rightY != 0 || mouseState.x != 0 || mouseState.y != 0)
+		float x = pad.thumbSticks.rightX;
+		float y = pad.thumbSticks.rightY;
+		float pitchSpeed = m_speed;
+		float yawSpeed = m_speed;
+		if (mouseState.x != 0 || mouseState.y != 0)
 		{
-			float x = pad.thumbSticks.rightX;
-			float y = pad.thumbSticks.rightY;
-			float pitchSpeed = m_speed;
-			float yawSpeed = m_speed;
-			if (mouseState.x != 0|| mouseState.y != 0)
-			{
-				x = mouseState.x;
-				y = -mouseState.y;
-				pitchSpeed = m_speed * (x / m_mouseSpeed);
-				if (pitchSpeed < 0)pitchSpeed *= -1;
-				yawSpeed = m_speed * (y / m_mouseSpeed);
-				if (yawSpeed < 0)yawSpeed *= -1;
-			}
-			auto moveDirection = Vector2(x, y);
-			moveDirection.Normalize();
-			m_pitch += -moveDirection.x * pitchSpeed;
-			m_yaw += -moveDirection.y * yawSpeed;
+			x = mouseState.x;
+			y = -mouseState.y;
+			pitchSpeed = m_speed * (x / m_mouseSpeed);
+			if (pitchSpeed < 0)pitchSpeed *= -1;
+			yawSpeed = m_speed * (y / m_mouseSpeed);
+			if (yawSpeed < 0)yawSpeed *= -1;
 		}
+		auto moveDirection = Vector2(x, y);
+		moveDirection.Normalize();
+		m_pitch += -moveDirection.x * pitchSpeed;
+		m_yaw += -moveDirection.y * yawSpeed;
 	}
 	
 	if (m_yaw < m_minYaw)
