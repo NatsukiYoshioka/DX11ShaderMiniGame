@@ -82,6 +82,8 @@ private:
 	float m_rotate;		//モデルのY軸回転量
 	Matrix m_world;		//モデルのワールド行列
 
+	bool m_isStartMoving;
+
 	const float m_scale;	//モデルのスケール
 	const float m_distance;	//モデルの距離
 	const float m_speed;	//モデルの移動スピード

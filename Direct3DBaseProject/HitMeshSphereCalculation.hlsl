@@ -18,6 +18,6 @@ void main(uint3 DTid : SV_DispatchThreadID)
     {
         float3 pushDirection = normalize(direction);
         float pushDistance = outputVertices[0].sphereRadius - distance + 0.04f;
-        outputVertices[0].sphereCenter.xz += pushDirection.xz * pushDistance;
+        outputVertices[0].sphereCenter += pushDirection * pushDistance;
     }
 }

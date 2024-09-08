@@ -57,5 +57,8 @@ private:
 
 	const float m_speed;		//カメラのデフォルトスピード
 	const float m_mouseSpeed;	//カメラのマウススピード
+
+	const float m_minYaw;
+	const float m_maxYaw;
 };
 

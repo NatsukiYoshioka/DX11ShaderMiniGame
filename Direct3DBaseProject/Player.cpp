@@ -381,7 +381,7 @@ void Player::HitCheck()
 	deviceAccessor->GetContext()->Unmap(debugBuffer, 0);
 
 	float visibleRatio = float(p->visiblePixNum) / p->playerPixNum;
-	float maxVisibleRatio = 1.f / 4.f;
+	float maxVisibleRatio = 1.f / 2.f;
 	if (visibleRatio > maxVisibleRatio)
 	{
 		m_beFound = true;
@@ -399,7 +399,7 @@ void Player::HitCheckObject()
 	for (int i = 0;i < blocks.size();i++)
 	{
 		auto blockPos = blocks.at(i)->GetPos();
-		if (Vector2(blockPos.x - m_pos.x, blockPos.z - m_pos.z).Length() > 5.f)continue;
+		if (Vector2(blockPos.x - m_pos.x, blockPos.z - m_pos.z).Length() > 3.f)continue;
 		ID3D11Buffer* debugBuffer = NULL;
 		D3D11_BUFFER_DESC BufferDesc;
 		ZeroMemory(&BufferDesc, sizeof(D3D11_BUFFER_DESC));
@@ -415,7 +415,7 @@ void Player::HitCheckObject()
 		Sphere* p = reinterpret_cast<Sphere*>(mappedResource.pData);
 		p->center = m_pos;
 		p->center.y = m_sphereHeight;
-		p->radius = 0.4f;
+		p->radius = m_sphereRadius;
 		context->Unmap(debugBuffer, 0);
 		context->CopyResource(m_sphereResult.Get(), debugBuffer);
 		

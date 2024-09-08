@@ -11,8 +11,10 @@ Camera::Camera():
 	m_speed(float(Json::GetInstance()->GetData()["CameraPadSpeed"])),
 	m_mouseSpeed(float(Json::GetInstance()->GetData()["CameraMouseSpeed"])),
 	m_distance(float(Json::GetInstance()->GetData()["CameraDistance"])),
-	m_pitch(0),
-	m_yaw(30)
+	m_minYaw(float(Json::GetInstance()->GetData()["CameraMinYaw"])),
+	m_maxYaw(float(Json::GetInstance()->GetData()["CameraMaxYaw"])),
+	m_pitch(20),
+	m_yaw(40)
 {
 	m_modelHandle = nullptr;
 
@@ -59,13 +61,13 @@ void Camera::Update()
 		}
 	}
 	
-	if (m_yaw < 10)
+	if (m_yaw < m_minYaw)
 	{
-		m_yaw = 10;
+		m_yaw = m_minYaw;
 	}
-	if (m_yaw > 45)
+	if (m_yaw > m_maxYaw)
 	{
-		m_yaw = 45;
+		m_yaw = m_maxYaw;
 	}
 
 	auto playerPos = PlayerAccessor::GetInstance()->GetPlayer()->GetPos();
@@ -74,7 +76,7 @@ void Camera::Update()
 
 	float z = playerPos.z + cos(radianX) * m_distance;
 	float x = playerPos.x + sin(radianX) * m_distance;
-	float y = playerPos.y + tan(radianY) * m_distance;
+	float y = playerPos.y+0.5f + tan(radianY) * m_distance;
 	m_pos = Vector3(x, y, z);
 
 	m_view = Matrix::CreateLookAt(m_pos, playerPos, Vector3::Up);

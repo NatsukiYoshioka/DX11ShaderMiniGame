@@ -19,6 +19,7 @@ Enemy::Enemy(const wchar_t* fileName, Vector3 pos, float rotate):
 	m_posAngle(0),
 	m_eyeDirection(Vector3::Zero),
 	m_eyeView(),
+	m_isStartMoving(false),
 	m_scale(float(Json::GetInstance()->GetData()["EnemyScale"])),
 	m_distance(float(Json::GetInstance()->GetData()["EnemyDistance"])),
 	m_speed(float(Json::GetInstance()->GetData()["EnemySpeed"]))
@@ -107,26 +108,34 @@ void Enemy::Update()
 	dist_type distribution(0, 99);
 	dist_type::param_type animationParam(0, 2);
 
-	//ランダムで敵の挙動を決定
-	switch (distribution(generator))
+	//プレイヤーがスタート位置から離れたら動き始める
+	if (Json::GetInstance()->GetData()["EnemyStartMovingPlayerPosition"].at(0) < PlayerAccessor::GetInstance()->GetPlayer()->GetPos().x)
 	{
-	case 0:
-		distribution.param(animationParam);
+		m_isStartMoving = true;
+	}
+	if (m_isStartMoving)
+	{
+		//ランダムで敵の挙動を決定
 		switch (distribution(generator))
 		{
 		case 0:
-			m_nowAnimationState = AnimationState::Idle;
+			distribution.param(animationParam);
+			switch (distribution(generator))
+			{
+			case 0:
+				m_nowAnimationState = AnimationState::Idle;
+				break;
+			case 1:
+				m_nowAnimationState = AnimationState::RightWalk;
+				break;
+			case 2:
+				m_nowAnimationState = AnimationState::LeftWalk;
+				break;
+			}
 			break;
-		case 1:
-			m_nowAnimationState = AnimationState::RightWalk;
-			break;
-		case 2:
-			m_nowAnimationState = AnimationState::LeftWalk;
+		default:
 			break;
 		}
-		break;
-	default :
-		break;
 	}
 
 	if (m_nowAnimationState == AnimationState::LeftWalk)
