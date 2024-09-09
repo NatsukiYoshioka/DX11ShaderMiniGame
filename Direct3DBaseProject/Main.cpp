@@ -93,6 +93,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
         g_game->Initialize(hwnd, rc.right - rc.left, rc.bottom - rc.top);
         mouse->SetWindow(hwnd);
+        mouse->SetMode(Mouse::MODE_RELATIVE);
     }
 
     DeviceAccessor::GetInstance()->SetMouse(mouse.get());
