@@ -20,6 +20,20 @@ public:
 	/// </summary>
 	~Camera();
 
+	void InitializeTitle()override;
+
+	/// <summary>
+	/// タイトルシーンオブジェクトの更新
+	/// </summary>
+	void UpdateTitle()override;
+
+	/// <summary>
+	/// タイトルシーンオブジェクトの描画(描画なし)
+	/// </summary>
+	void DrawTitle()override;
+
+	void Initialize()override;
+
 	/// <summary>
 	/// オブジェクトの更新
 	/// </summary>
@@ -29,6 +43,18 @@ public:
 	/// オブジェクトの描画(カメラなので描画処理は無し)
 	/// </summary>
 	void Draw()override;
+
+	void InitializeResult()override;
+
+	/// <summary>
+	/// リザルトシーンオブジェクトの更新
+	/// </summary>
+	void UpdateResult()override;
+
+	/// <summary>
+	/// リザルトシーンオブジェクトの描画(描画なし)
+	/// </summary>
+	void DrawResult()override;
 
 	/// <summary>
 	/// カメラビュー行列の取得

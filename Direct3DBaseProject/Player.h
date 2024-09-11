@@ -22,7 +22,8 @@ public:
 		Walk,			//歩き
 		Run,			//走り
 		Crouch,			//しゃがみ
-		CrouchedWalk	//しゃがみ歩き
+		CrouchedWalk,	//しゃがみ歩き
+		Die				//ゲームオーバー
 	};
 
 	/// <summary>
@@ -31,12 +32,32 @@ public:
 	/// <param name="fileName">3Dモデルファイル名</param>
 	/// <param name="pos">初期座標</param>
 	/// <param name="rotate">オブジェクトのY軸回転量(XM_PI / rotate)</param>
-	Player(const wchar_t* fileName, Vector3 pos, float rotate);
+	Player(const wchar_t* fileName);
 
 	/// <summary>
 	/// データ破棄
 	/// </summary>
 	~Player();
+
+	/// <summary>
+	/// タイトルシーンオブジェクトの初期化
+	/// </summary>
+	void InitializeTitle()override;
+
+	/// <summary>
+	/// タイトルシーンオブジェクトの更新
+	/// </summary>
+	void UpdateTitle()override;
+
+	/// <summary>
+	/// タイトルシーンオブジェクトの描画
+	/// </summary>
+	void DrawTitle()override;
+
+	/// <summary>
+	/// オブジェクトの初期化
+	/// </summary>
+	void Initialize()override;
 
 	/// <summary>
 	/// オブジェクトの更新
@@ -47,6 +68,21 @@ public:
 	/// オブジェクトの描画
 	/// </summary>
 	void Draw()override;
+
+	/// <summary>
+	/// リザルトシーンオブジェクトの初期化
+	/// </summary>
+	void InitializeResult()override;
+
+	/// <summary>
+	/// リザルトシーンオブジェクトの更新
+	/// </summary>
+	void UpdateResult()override;
+
+	/// <summary>
+	/// リザルトシーンオブジェクトの描画
+	/// </summary>
+	void DrawResult()override;
 
 	/// <summary>
 	/// 影用描画
@@ -121,9 +157,16 @@ private:
 
 	bool m_beFound;		//見つかったかどうか
 
-	const float m_scale;
-	const float m_speed;		//プレイヤーの移動スピード
-	const float m_runSpeed;		//プレイヤーのダッシュスピード
-	const float m_crouchSpeed;	//プレイヤーのしゃがみ移動スピード
+	const Vector3 m_initializeTitlePos;
+	const float m_titleRotateX;
+	const float m_titleRotateY;
+	const float m_titleScale;
+
+	const Vector3 m_initializePos;		//ゲームシーンのオブジェクト初期座標
+	const float m_initializeRotate;		//ゲームシーンのオブジェクト初期回転量
+	const float m_scale;				//プレイヤーのスケール
+	const float m_speed;				//プレイヤーの移動スピード
+	const float m_runSpeed;				//プレイヤーのダッシュスピード
+	const float m_crouchSpeed;			//プレイヤーのしゃがみ移動スピード
 };
 

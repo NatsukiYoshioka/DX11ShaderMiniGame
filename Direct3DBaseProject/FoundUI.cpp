@@ -10,6 +10,7 @@
 //UI初期化
 FoundUI::FoundUI():
 	m_foundTime(0),
+	m_isFound(false),
 	m_maxFoundTime(float(Json::GetInstance()->GetData()["MaxFoundTime"]))
 {
 	auto json = Json::GetInstance();
@@ -70,6 +71,30 @@ FoundUI::~FoundUI()
 	m_foundTextureResource.Reset();
 }
 
+//タイトルシーンオブジェクトの初期化
+void FoundUI::InitializeTitle()
+{
+
+}
+
+//タイトルシーンオブジェクトの更新
+void FoundUI::UpdateTitle()
+{
+
+}
+
+//タイトルシーンオブジェクトの描画
+void FoundUI::DrawTitle()
+{
+
+}
+
+//UI初期化
+void FoundUI::Initialize()
+{
+
+}
+
 //UI更新
 void FoundUI::Update()
 {
@@ -86,9 +111,10 @@ void FoundUI::Update()
 	{
 		m_foundTime = 0;
 	}
-	if (m_foundTime >= m_maxFoundTime)
+	if (m_foundTime >= m_maxFoundTime && !m_isFound)
 	{
 		m_foundTime = m_maxFoundTime;
+		m_isFound = true;
 	}
 	m_rectangle.bottom = 0 + (m_textureHeight * (m_foundTime / m_maxFoundTime));
 	m_color = Vector4(1, 1.5f - (1 * (m_foundTime / m_maxFoundTime)), 1.5f - (1 * (m_foundTime / m_maxFoundTime)), 1);
@@ -121,4 +147,22 @@ void FoundUI::Draw()
 		SpriteEffects_None,
 		m_foundTextureDepth
 	);
+}
+
+//リザルトシーンオブジェクトの初期化
+void FoundUI::InitializeResult()
+{
+
+}
+
+//リザルトシーンオブジェクトの更新
+void FoundUI::UpdateResult()
+{
+
+}
+
+//リザルトシーンオブジェクトの描画
+void FoundUI::DrawResult()
+{
+
 }

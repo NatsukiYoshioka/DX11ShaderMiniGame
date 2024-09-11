@@ -7,6 +7,9 @@
 #include"EnemyAccessor.h"
 #include"Block.h"
 #include"BlockAccessor.h"
+#include"UIBase.h"
+#include"FoundUI.h"
+#include"UIAccessor.h"
 #include"OriginalEffect.h"
 #include"GameObject.h"
 #include"ReadData.h"
@@ -15,9 +18,19 @@
 extern void ExitGame() noexcept;
 
 //オブジェクトの初期化
-Player::Player(const wchar_t* fileName, Vector3 pos, float rotate):
+Player::Player(const wchar_t* fileName):
 	m_nowAnimationState(AnimationState::Idle),
 	m_beFound(false),
+	m_initializeTitlePos(Vector3(Json::GetInstance()->GetData()["PlayerTitlePosition"].at(0),
+		Json::GetInstance()->GetData()["PlayerTitlePosition"].at(1),
+		Json::GetInstance()->GetData()["PlayerTitlePosition"].at(2))),
+	m_titleRotateX(float(Json::GetInstance()->GetData()["PlayerTitleRotateX"])),
+	m_titleRotateY(float()),
+	m_titleScale(float(Json::GetInstance()->GetData()["PlayerTitleScale"])),
+	m_initializePos(Vector3(Json::GetInstance()->GetData()["PlayerPosition"].at(0),
+		Json::GetInstance()->GetData()["PlayerPosition"].at(1),
+		Json::GetInstance()->GetData()["PlayerPosition"].at(2))),
+	m_initializeRotate(float(Json::GetInstance()->GetData()["PlayerPosition"].at(3))* XM_PI / 180.f),
 	m_sphereRadius(float(Json::GetInstance()->GetData()["SphereRadius"])),
 	m_sphereDefaultHeight(float(Json::GetInstance()->GetData()["SphereDefaultHeight"])),
 	m_sphereCrouchHeight(float(Json::GetInstance()->GetData()["SphereCrouchHeight"])),
@@ -100,8 +113,6 @@ Player::Player(const wchar_t* fileName, Vector3 pos, float rotate):
 	m_effect->SetTexture(texture.Get());
 
 	//座標とY軸回転量の設定
-	m_pos = pos;
-	m_rotate = rotate * XM_PI / 180.f;
 	m_sphereHeight = m_sphereDefaultHeight;
 
 	//入出力UAV設定
@@ -132,6 +143,61 @@ Player::~Player()
 	m_modelHandle.reset();
 }
 
+//タイトルシーンオブジェクトの初期化
+void Player::InitializeTitle()
+{
+	m_pos = m_initializeTitlePos;
+	m_world = Matrix::Identity;
+	m_world = XMMatrixMultiply(m_world, Matrix::CreateScale(m_titleScale));
+	m_world = XMMatrixMultiply(m_world, Matrix::CreateRotationX(m_titleRotateX));
+	m_world = XMMatrixMultiply(m_world, XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
+}
+
+//タイトルシーンオブジェクトの更新
+void Player::UpdateTitle()
+{
+	//ライト用情報設定
+	for (const auto& mit : m_modelHandle->meshes)
+	{
+		auto mesh = mit.get();
+		assert(mesh != nullptr);
+		for (const auto& pit : mesh->meshParts)
+		{
+			auto part = pit.get();
+			assert(part != nullptr);
+
+			auto effect = static_cast<OriginalEffect*>(part->effect.get());
+			effect->SetLightPosition(EnemyAccessor::GetInstance()->GetEnemy()->GetEyePosition());
+			effect->SetLightDirection(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeDirection());
+			effect->SetEyePosition(CameraAccessor::GetInstance()->GetCamera()->GetPos());
+			effect->SetLightView(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeView());
+		}
+	}
+}
+
+//タイトルシーンオブジェクトの描画
+void Player::DrawTitle()
+{
+	size_t nbones = m_modelHandle->bones.size();
+
+	m_animations.at(static_cast<int>(m_nowAnimationState)).Apply(*m_modelHandle, nbones, m_drawBones.get());
+
+	m_modelHandle->DrawSkinned(DeviceAccessor::GetInstance()->GetContext(),
+		*DeviceAccessor::GetInstance()->GetStates(),
+		nbones,
+		m_drawBones.get(),
+		m_world,
+		CameraAccessor::GetInstance()->GetCamera()->GetView(),
+		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
+}
+
+//オブジェクト初期化
+void Player::Initialize()
+{
+	m_pos = m_initializePos;
+	m_rotate = m_initializeRotate;
+}
+
 //オブジェクト更新
 void Player::Update()
 {
@@ -150,49 +216,63 @@ void Player::Update()
 	{
 		ExitGame();
 	}
-	if (pad.IsLeftShoulderPressed() || key.LeftControl || mouse.rightButton)
+	FoundUI* foundUI = nullptr;
+	for (int i = 0; i < UIAccessor::GetInstance()->GetUIs().size(); i++)
 	{
-		m_nowAnimationState = AnimationState::Crouch;
-		m_sphereHeight = m_sphereCrouchHeight;
-		isCrouch = true;
+		foundUI = dynamic_cast<FoundUI*>(UIAccessor::GetInstance()->GetUIs().at(i));
+		if (foundUI)break;
 	}
-	if (pad.thumbSticks.leftX != 0 || pad.thumbSticks.leftY != 0 || key.W || key.A || key.S || key.D)
+	//完全に見つかっていなければ移動処理を行う
+	if (foundUI && !foundUI->GetIsFound())
 	{
-		float x = -pad.thumbSticks.leftX;
-		float y = pad.thumbSticks.leftY;
-		if (key.W)
+		if (pad.IsLeftShoulderPressed() || key.LeftControl || mouse.rightButton)
 		{
-			y = 1;
+			m_nowAnimationState = AnimationState::Crouch;
+			m_sphereHeight = m_sphereCrouchHeight;
+			isCrouch = true;
 		}
-		if (key.S)
+		if (pad.thumbSticks.leftX != 0 || pad.thumbSticks.leftY != 0 || key.W || key.A || key.S || key.D)
 		{
-			y = -1;
-		}
-		if (key.A)
-		{
-			x = 1;
-		}
-		if (key.D)
-		{
-			x = -1;
-		}
-		m_rotate = atan2f(x, y);
+			float x = -pad.thumbSticks.leftX;
+			float y = pad.thumbSticks.leftY;
+			if (key.W)
+			{
+				y = 1;
+			}
+			if (key.S)
+			{
+				y = -1;
+			}
+			if (key.A)
+			{
+				x = 1;
+			}
+			if (key.D)
+			{
+				x = -1;
+			}
+			m_rotate = atan2f(x, y);
 
 
-		isMove = true;
-		nowSpeed = m_speed;
-		m_nowAnimationState = AnimationState::Walk;
+			isMove = true;
+			nowSpeed = m_speed;
+			m_nowAnimationState = AnimationState::Walk;
 
-		if (isCrouch)
-		{
-			nowSpeed = m_crouchSpeed;
-			m_nowAnimationState = AnimationState::CrouchedWalk;
+			if (isCrouch)
+			{
+				nowSpeed = m_crouchSpeed;
+				m_nowAnimationState = AnimationState::CrouchedWalk;
+			}
+			else if (pad.IsRightShoulderPressed() || key.LeftShift || mouse.leftButton)
+			{
+				nowSpeed = m_runSpeed;
+				m_nowAnimationState = AnimationState::Run;
+			}
 		}
-		else if (pad.IsRightShoulderPressed() || key.LeftShift || mouse.leftButton)
-		{
-			nowSpeed = m_runSpeed;
-			m_nowAnimationState = AnimationState::Run;
-		}
+	}
+	else
+	{
+		m_nowAnimationState = AnimationState::Die;
 	}
 
 	if (isMove)
@@ -233,7 +313,14 @@ void Player::Update()
 	m_world = XMMatrixMultiply(m_world, Matrix::CreateRotationY(m_rotate));
 	m_world = XMMatrixMultiply(m_world, XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
 
-	m_animations.at(static_cast<int>(m_nowAnimationState)).Update(*DeviceAccessor::GetInstance()->GetElapsedTime());
+	if (m_nowAnimationState == AnimationState::Die)
+	{
+		m_animations.at(static_cast<int>(m_nowAnimationState)).Update(*DeviceAccessor::GetInstance()->GetElapsedTime()/2.5);
+	}
+	else
+	{
+		m_animations.at(static_cast<int>(m_nowAnimationState)).Update(*DeviceAccessor::GetInstance()->GetElapsedTime());
+	}
 }
 
 //オブジェクト描画
@@ -250,6 +337,24 @@ void Player::Draw()
 		m_world,
 		CameraAccessor::GetInstance()->GetCamera()->GetView(),
 		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
+}
+
+//リザルトシーンオブジェクトの初期化
+void Player::InitializeResult()
+{
+
+}
+
+//リザルトシーンオブジェクトの更新
+void Player::UpdateResult()
+{
+
+}
+
+//リザルトシーンオブジェクトの描画
+void Player::DrawResult()
+{
+
 }
 
 //オブジェクトの影用描画

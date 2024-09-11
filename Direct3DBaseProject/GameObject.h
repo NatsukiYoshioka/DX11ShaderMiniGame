@@ -20,6 +20,26 @@ public:
 	~GameObject(){}
 
 	/// <summary>
+	/// 純粋仮想関数(タイトルシーンオブジェクト初期化関数)
+	/// </summary>
+	virtual void InitializeTitle() = 0;
+
+	/// <summary>
+	/// 純粋仮想関数(タイトルシーンオブジェクト更新関数)
+	/// </summary>
+	virtual void UpdateTitle() = 0;
+
+	/// <summary>
+	/// 純粋仮想関数(タイトルシーンオブジェクト描画関数)
+	/// </summary>
+	virtual void DrawTitle() = 0;
+
+	/// <summary>
+	/// 純粋仮想関数(オブジェクト初期化関数)
+	/// </summary>
+	virtual void Initialize() = 0;
+
+	/// <summary>
 	/// 純粋仮想関数(オブジェクト更新関数)
 	/// </summary>
 	virtual void Update() = 0;
@@ -28,6 +48,21 @@ public:
 	/// 純粋仮想関数(オブジェクト描画関数)
 	/// </summary>
 	virtual void Draw() = 0;
+
+	/// <summary>
+	/// 純粋仮想関数(リザルトシーンオブジェクト初期化関数)
+	/// </summary>
+	virtual void InitializeResult() = 0;
+
+	/// <summary>
+	/// 純粋仮想関数(リザルトシーンオブジェクト更新関数)
+	/// </summary>
+	virtual void UpdateResult() = 0;
+
+	/// <summary>
+	/// 純粋仮想関数(リザルトシーンオブジェクト描画関数)
+	/// </summary>
+	virtual void DrawResult() = 0;
 
 	/// <summary>
 	/// 座標の取得

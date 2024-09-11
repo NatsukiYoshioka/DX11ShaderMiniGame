@@ -21,6 +21,26 @@ public:
 	~FoundUI();
 
 	/// <summary>
+	/// タイトルシーンUI初期化
+	/// </summary>
+	void InitializeTitle()override;
+
+	/// <summary>
+	/// タイトルシーンUI更新
+	/// </summary>
+	void UpdateTitle()override;
+
+	/// <summary>
+	/// タイトルシーンUI描画
+	/// </summary>
+	void DrawTitle()override;
+
+	/// <summary>
+	/// UI初期化
+	/// </summary>
+	void Initialize()override;
+
+	/// <summary>
 	/// UI更新
 	/// </summary>
 	void Update()override;
@@ -29,6 +49,27 @@ public:
 	/// UI描画
 	/// </summary>
 	void Draw()override;
+
+	/// <summary>
+	/// リザルトシーンUI初期化
+	/// </summary>
+	void InitializeResult()override;
+
+	/// <summary>
+	/// リザルトシーンUI更新
+	/// </summary>
+	void UpdateResult()override;
+
+	/// <summary>
+	/// リザルトシーンUI描画
+	/// </summary>
+	void DrawResult()override;
+
+	/// <summary>
+	/// 完全に見つかったかどうか取得
+	/// </summary>
+	/// <returns></returns>
+	bool GetIsFound()const { return m_isFound; }
 
 private:
 	ComPtr<ID3D11ShaderResourceView> m_baseTexture;		//デフォルトのテクスチャ
@@ -59,5 +100,7 @@ private:
 
 	XMVECTOR m_color;		//テクスチャのカラー
 	float m_textureHeight;	//テクスチャの高さ
+
+	bool m_isFound;			//完全に見つかったかどうか
 };
 

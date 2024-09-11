@@ -83,10 +83,6 @@ Block::Block(const wchar_t* fileName, Vector3 pos, float rotate)
 				XMStoreFloat3(&pos, worldPosition);
 				m_vertices.push_back(pos);
 			}
-			/*for (int i = 0;i < vbufferDesc.ByteWidth / vbufferDesc.StructureByteStride % 3;i++)
-			{
-				m_vertices.pop_back();
-			}*/
 		}
 	}
 
@@ -134,6 +130,30 @@ Block::~Block()
 	m_modelHandle.reset();
 }
 
+//タイトルシーンオブジェクトの初期化
+void Block::InitializeTitle()
+{
+
+}
+
+//タイトルシーンオブジェクトの更新
+void Block::UpdateTitle()
+{
+
+}
+
+//タイトルシーンオブジェクトの描画
+void Block::DrawTitle()
+{
+
+}
+
+//オブジェクトの初期化
+void Block::Initialize()
+{
+
+}
+
 //オブジェクトの更新
 void Block::Update()
 {
@@ -163,6 +183,24 @@ void Block::Draw()
 		m_world,
 		CameraAccessor::GetInstance()->GetCamera()->GetView(),
 		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
+}
+
+//リザルトシーンオブジェクトの初期化
+void Block::InitializeResult()
+{
+
+}
+
+//リザルトシーンオブジェクトの更新
+void Block::UpdateResult()
+{
+
+}
+
+//リザルトシーンオブジェクトの描画
+void Block::DrawResult()
+{
+
 }
 
 //影の描画

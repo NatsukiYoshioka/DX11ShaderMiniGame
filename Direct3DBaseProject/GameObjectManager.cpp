@@ -11,6 +11,8 @@
 #include"PlayerAccessor.h"
 #include"Enemy.h"
 #include"EnemyAccessor.h"
+#include"GiftBox.h"
+#include"GiftBoxAccessor.h"
 #include"UIBase.h"
 #include"UIAccessor.h"
 #include"DeviceAccessor.h"
@@ -26,11 +28,13 @@ GameObjectManager::GameObjectManager()
 	EnemyAccessor::CreateInstance();
 	CameraAccessor::CreateInstance();
 	BlockAccessor::CreateInstance();
+	GiftBoxAccessor::CreateInstance();
 	DeskAccessor::CreateInstance();
 	PlayerAccessor::CreateInstance();
 	UIAccessor::CreateInstance();
 
 	m_gameObjects.push_back(dynamic_cast<GameObject*>(EnemyAccessor::GetInstance()->GetEnemy()));
+	m_gameObjects.push_back(dynamic_cast<GameObject*>(GiftBoxAccessor::GetInstance()->GetGiftBox()));
 	m_gameObjects.push_back(dynamic_cast<GameObject*>(CameraAccessor::GetInstance()->GetCamera()));
 	for (int i = 0; i < BlockAccessor::GetInstance()->GetBlocks().size(); i++)
 	{
@@ -152,6 +156,7 @@ GameObjectManager::~GameObjectManager()
 
 	CameraAccessor::DestroyInstance();
 	BlockAccessor::DestroyInstance();
+	GiftBoxAccessor::DestroyInstance();
 	DeskAccessor::DestroyInstance();
 	PlayerAccessor::DestroyInstance();
 	EnemyAccessor::DestroyInstance();
@@ -169,6 +174,44 @@ void GameObjectManager::DestroyInstance()
 {
 	if (!m_instance)return;
 	delete(m_instance);
+}
+
+//タイトルシーンオブジェクトの初期化
+void GameObjectManager::InitializeTitle()
+{
+	for (int i = 0; i < m_gameObjects.size(); i++)
+	{
+		m_gameObjects.at(i)->InitializeTitle();
+	}
+}
+
+//タイトルシーンオブジェクトの更新
+void GameObjectManager::UpdateTitle()
+{
+	for (int i = 0; i < m_gameObjects.size(); i++)
+	{
+		m_gameObjects.at(i)->UpdateTitle();
+	}
+}
+
+//タイトルシーンオブジェクトの描画
+void GameObjectManager::DrawTitle()
+{
+	m_batch->Begin(SpriteSortMode_BackToFront);
+	for (int i = 0; i < m_gameObjects.size(); i++)
+	{
+		m_gameObjects.at(i)->DrawTitle();
+	}
+	m_batch->End();
+}
+
+//オブジェクトの初期化
+void GameObjectManager::Initialize()
+{
+	for (int i = 0; i < m_gameObjects.size(); i++)
+	{
+		m_gameObjects.at(i)->Initialize();
+	}
 }
 
 //オブジェクトの更新
@@ -189,6 +232,33 @@ void GameObjectManager::Draw()
 		m_gameObjects.at(i)->Draw();
 	}
 	m_batch->End();
+}
+
+//リザルトシーンオブジェクトの初期化
+void GameObjectManager::InitializeResult()
+{
+	for (int i = 0; i < m_gameObjects.size(); i++)
+	{
+		m_gameObjects.at(i)->InitializeResult();
+	}
+}
+
+//リザルトシーンオブジェクトの更新
+void GameObjectManager::UpdateResult()
+{
+	for (int i = 0; i < m_gameObjects.size(); i++)
+	{
+		m_gameObjects.at(i)->UpdateResult();
+	}
+}
+
+//リザルトシーンオブジェクトの描画
+void GameObjectManager::DrawResult()
+{
+	for (int i = 0; i < m_gameObjects.size(); i++)
+	{
+		m_gameObjects.at(i)->DrawResult();
+	}
 }
 
 //オブジェクトの影の初期化

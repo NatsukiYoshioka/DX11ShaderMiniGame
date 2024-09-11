@@ -62,6 +62,27 @@
     <Filter Include="GameObject\UI\BeFoundUI">
       <UniqueIdentifier>{7d58065f-a102-478a-9365-7f5d69522944}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{4095d9df-0e38-4e38-b9d5-04698abc3a58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\SceneManager">
+      <UniqueIdentifier>{a6da239c-149c-408c-94e7-6608af5c3510}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\TitleScene">
+      <UniqueIdentifier>{c761dbb4-0e80-4cea-a742-d6c38efdbc7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\GameScene">
+      <UniqueIdentifier>{9fe24557-b9d2-4f3a-9a9e-37fbd5f761da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\ResultScene">
+      <UniqueIdentifier>{d0343d72-0ba1-4ad9-8835-84cf0b43cb35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\GiftBox">
+      <UniqueIdentifier>{cb8b05aa-1ba4-4050-ae96-6267c96cd927}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\GiftBox\GiftBoxAccessor">
+      <UniqueIdentifier>{7898cfba-45d1-4177-8784-073d47358550}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -128,6 +149,27 @@
     <ClInclude Include="FoundUI.h">
       <Filter>GameObject\UI\BeFoundUI</Filter>
     </ClInclude>
+    <ClInclude Include="BaseScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Scene\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>Scene\GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultScene.h">
+      <Filter>Scene\ResultScene</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScene.h">
+      <Filter>Scene\TitleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="GiftBox.h">
+      <Filter>GameObject\GiftBox</Filter>
+    </ClInclude>
+    <ClInclude Include="GiftBoxAccessor.h">
+      <Filter>GameObject\GiftBox\GiftBoxAccessor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -167,9 +209,6 @@
     <ClCompile Include="DeskAccessor.cpp">
       <Filter>GameObject\Desk\DeskAccessor</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>GameObject\Player</Filter>
-    </ClCompile>
     <ClCompile Include="PlayerAccessor.cpp">
       <Filter>GameObject\Player\PlayerAccessor</Filter>
     </ClCompile>
@@ -185,6 +224,27 @@
     </ClCompile>
     <ClCompile Include="FoundUI.cpp">
       <Filter>GameObject\UI\BeFoundUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>GameObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Scene\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>Scene\TitleScene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>Scene\GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultScene.cpp">
+      <Filter>Scene\ResultScene</Filter>
+    </ClCompile>
+    <ClCompile Include="GiftBox.cpp">
+      <Filter>GameObject\GiftBox</Filter>
+    </ClCompile>
+    <ClCompile Include="GiftBoxAccessor.cpp">
+      <Filter>GameObject\GiftBox\GiftBoxAccessor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

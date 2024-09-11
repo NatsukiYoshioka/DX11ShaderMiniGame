@@ -14,12 +14,20 @@
 #include "Enemy.h"
 
 //オブジェクト初期化
-Enemy::Enemy(const wchar_t* fileName, Vector3 pos, float rotate):
+Enemy::Enemy(const wchar_t* fileName):
 	m_nowAnimationState(AnimationState::Idle),
 	m_posAngle(0),
 	m_eyeDirection(Vector3::Zero),
 	m_eyeView(),
 	m_isStartMoving(false),
+	m_initializeTitlePos(Vector3(Json::GetInstance()->GetData()["EnemyTitlePosition"].at(0),
+		Json::GetInstance()->GetData()["EnemyTitlePosition"].at(1),
+		Json::GetInstance()->GetData()["EnemyTitlePosition"].at(2))),
+	m_initializePos(Vector3(Json::GetInstance()->GetData()["EnemyPosition"].at(0),
+		Json::GetInstance()->GetData()["EnemyPosition"].at(1),
+		Json::GetInstance()->GetData()["EnemyPosition"].at(2))),
+	m_initializeTitleRotate(float(Json::GetInstance()->GetData()["EnemyTitlePosition"].at(3))* XM_PI / 180.f),
+	m_initializeRotate(float(Json::GetInstance()->GetData()["EnemyPosition"].at(3))* XM_PI / 180.f),
 	m_scale(float(Json::GetInstance()->GetData()["EnemyScale"])),
 	m_distance(float(Json::GetInstance()->GetData()["EnemyDistance"])),
 	m_speed(float(Json::GetInstance()->GetData()["EnemySpeed"]))
@@ -85,18 +93,89 @@ Enemy::Enemy(const wchar_t* fileName, Vector3 pos, float rotate):
 
 	//テクスチャの設定
 	m_effect->SetTexture(texture.Get());
-
-	//座標とY軸回転量の設定
-	m_pos = pos;
-	m_eyePos = m_pos;
-	m_eyePos.y = float(json->GetData()["EnemyEyeHeight"]);
-	m_rotate = rotate * XM_PI / 180.f;
 }
 
 //データ破棄
 Enemy::~Enemy()
 {
 	m_modelHandle.reset();
+}
+
+//タイトルシーンオブジェクトの初期化
+void Enemy::InitializeTitle()
+{
+	m_pos = m_initializeTitlePos;
+	m_eyePos = m_pos;
+	m_eyePos.y = float(Json::GetInstance()->GetData()["EnemyTitleEyeHeight"]);
+	m_rotate = m_initializeTitleRotate;
+
+	m_nowAnimationState = AnimationState::Idle;
+}
+
+//タイトルシーンオブジェクトの更新
+void Enemy::UpdateTitle()
+{
+	//向きの計算
+	auto playerPos = PlayerAccessor::GetInstance()->GetPlayer()->GetPos();
+
+	m_rotate = atan2f(m_pos.x - playerPos.x, m_pos.z - playerPos.z);
+
+	//敵視点のビュー空間行列生成
+	m_eyeView = Matrix::CreateLookAt(m_eyePos, playerPos, Vector3::Up);
+
+	m_eyeDirection = playerPos - m_eyePos;
+	m_eyeDirection.Normalize();
+
+	for (const auto& mit : m_modelHandle->meshes)
+	{
+		auto mesh = mit.get();
+		assert(mesh != nullptr);
+		for (const auto& pit : mesh->meshParts)
+		{
+			auto part = pit.get();
+			assert(part != nullptr);
+
+			auto effect = static_cast<OriginalEffect*>(part->effect.get());
+			effect->SetLightPosition(m_eyePos);
+			effect->SetLightDirection(m_eyeDirection);
+			effect->SetEyePosition(CameraAccessor::GetInstance()->GetCamera()->GetPos());
+			effect->SetLightView(m_eyeView);
+		}
+	}
+
+	//ワールド座標行列の更新
+	m_world = Matrix::Identity;
+	m_world = XMMatrixMultiply(m_world, Matrix::CreateScale(m_scale));
+	m_world = XMMatrixMultiply(m_world, Matrix::CreateRotationY(m_rotate));
+	m_world = XMMatrixMultiply(m_world, XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
+
+	m_animations.at(static_cast<int>(m_nowAnimationState)).Update(*DeviceAccessor::GetInstance()->GetElapsedTime());
+}
+
+//タイトルシーンオブジェクトの描画
+void Enemy::DrawTitle()
+{
+	size_t nbones = m_modelHandle->bones.size();
+
+	m_animations.at(static_cast<int>(m_nowAnimationState)).Apply(*m_modelHandle, nbones, m_drawBones.get());
+
+	m_modelHandle->DrawSkinned(DeviceAccessor::GetInstance()->GetContext(),
+		*DeviceAccessor::GetInstance()->GetStates(),
+		nbones,
+		m_drawBones.get(),
+		m_world,
+		CameraAccessor::GetInstance()->GetCamera()->GetView(),
+		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
+}
+
+//オブジェクト初期化
+void Enemy::Initialize()
+{
+	//座標とY軸回転量の設定
+	m_pos = m_initializePos;
+	m_eyePos = m_pos;
+	m_eyePos.y = float(Json::GetInstance()->GetData()["EnemyEyeHeight"]);
+	m_rotate = m_initializeRotate;
 }
 
 //オブジェクト更新
@@ -209,4 +288,22 @@ void Enemy::Draw()
 		m_world,
 		CameraAccessor::GetInstance()->GetCamera()->GetView(),
 		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
+}
+
+//リザルトシーンオブジェクトの初期化
+void Enemy::InitializeResult()
+{
+
+}
+
+//リザルトシーンオブジェクトの更新
+void Enemy::UpdateResult()
+{
+
+}
+
+//リザルトシーンオブジェクトの描画
+void Enemy::DrawResult()
+{
+
 }

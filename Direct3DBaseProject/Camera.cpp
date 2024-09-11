@@ -2,6 +2,8 @@
 #include"Json.h"
 #include"GameObject.h"
 #include"DeviceAccessor.h"
+#include"GiftBox.h"
+#include"GiftBoxAccessor.h"
 #include"Player.h"
 #include"PlayerAccessor.h"
 #include "Camera.h"
@@ -24,6 +26,35 @@ Camera::Camera():
 
 //データ破棄
 Camera::~Camera()
+{
+
+}
+
+//タイトルシーンオブジェクトの初期化
+void Camera::InitializeTitle()
+{
+	m_pos = Vector3(Vector3(Json::GetInstance()->GetData()["CameraTitleEyePosition"].at(0),
+		Json::GetInstance()->GetData()["CameraTitleEyePosition"].at(1),
+		Json::GetInstance()->GetData()["CameraTitleEyePosition"].at(2)));
+	m_view = Matrix::CreateLookAt(
+		m_pos,
+		Vector3::Zero, Vector3::Up);
+}
+
+//タイトルシーンオブジェクトの更新
+void Camera::UpdateTitle()
+{
+
+}
+
+//タイトルシーンオブジェクトの描画(カメラの描画処理は無し)
+void Camera::DrawTitle()
+{
+
+}
+
+//カメラの初期化
+void Camera::Initialize()
 {
 
 }
@@ -73,7 +104,7 @@ void Camera::Update()
 
 	float z = playerPos.z + cos(radianX) * m_distance;
 	float x = playerPos.x + sin(radianX) * m_distance;
-	float y = playerPos.y+0.5f + tan(radianY) * m_distance;
+	float y = playerPos.y + tan(radianY) * m_distance;
 	m_pos = Vector3(x, y, z);
 
 	m_view = Matrix::CreateLookAt(m_pos, playerPos, Vector3::Up);
@@ -81,6 +112,24 @@ void Camera::Update()
 
 //オブジェクトの描画(カメラの描画処理は無し)
 void Camera::Draw()
+{
+
+}
+
+//リザルトシーンオブジェクトの初期化
+void Camera::InitializeResult()
+{
+
+}
+
+//リザルトシーンオブジェクトの更新
+void Camera::UpdateResult()
+{
+
+}
+
+//リザルトシーンオブジェクトの描画(カメラの描画処理は無し)
+void Camera::DrawResult()
 {
 
 }

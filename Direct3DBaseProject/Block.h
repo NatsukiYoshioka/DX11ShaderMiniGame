@@ -28,6 +28,26 @@ public:
 	~Block();
 
 	/// <summary>
+	/// タイトルシーンオブジェクトの初期化
+	/// </summary>
+	void InitializeTitle()override;
+
+	/// <summary>
+	/// タイトルシーンオブジェクトの更新
+	/// </summary>
+	void UpdateTitle()override;
+
+	/// <summary>
+	/// タイトルシーンオブジェクトの描画
+	/// </summary>
+	void DrawTitle()override;
+
+	/// <summary>
+	/// オブジェクトの初期化
+	/// </summary>
+	void Initialize()override;
+
+	/// <summary>
 	/// オブジェクトの更新
 	/// </summary>
 	void Update()override;
@@ -36,6 +56,21 @@ public:
 	/// オブジェクトの描画
 	/// </summary>
 	void Draw()override;
+
+	/// <summary>
+	/// リザルトシーンオブジェクトの初期化
+	/// </summary>
+	void InitializeResult()override;
+
+	/// <summary>
+	/// リザルトシーンオブジェクトの更新
+	/// </summary>
+	void UpdateResult()override;
+
+	/// <summary>
+	/// リザルトシーンオブジェクトの描画
+	/// </summary>
+	void DrawResult()override;
 
 	/// <summary>
 	/// 影の描画

@@ -1,4 +1,5 @@
 #pragma once
+using namespace DirectX;
 using namespace std;
 using namespace Microsoft::WRL;
 
@@ -37,6 +38,26 @@ public:
 	static GameObjectManager* GetInstance() { return m_instance; }
 
 	/// <summary>
+	/// タイトルシーンオブジェクトの初期化
+	/// </summary>
+	void InitializeTitle();
+
+	/// <summary>
+	/// タイトルシーンオブジェクトの更新
+	/// </summary>
+	void UpdateTitle();
+
+	/// <summary>
+	/// タイトルシーンオブジェクトの描画
+	/// </summary>
+	void DrawTitle();
+
+	/// <summary>
+	/// オブジェクトの描画
+	/// </summary>
+	void Initialize();
+
+	/// <summary>
 	/// オブジェクトの更新
 	/// </summary>
 	void Update();
@@ -45,6 +66,21 @@ public:
 	/// オブジェクトの描画
 	/// </summary>
 	void Draw();
+
+	/// <summary>
+	/// リザルトシーンオブジェクトの初期化
+	/// </summary>
+	void InitializeResult();
+
+	/// <summary>
+	/// リザルトシーンオブジェクトの更新
+	/// </summary>
+	void UpdateResult();
+
+	/// <summary>
+	/// リザルトシーンオブジェクトの描画
+	/// </summary>
+	void DrawResult();
 
 	/// <summary>
 	/// UI描画用デバイスの取得

@@ -9,11 +9,7 @@ PlayerAccessor* PlayerAccessor::m_instance = nullptr;
 PlayerAccessor::PlayerAccessor()
 {
 	auto json = Json::GetInstance();
-	m_player = new Player(json->Widen(json->GetData()["Player"].at(0)).c_str(),
-		Vector3(json->GetData()["PlayerPosition"].at(0),
-			json->GetData()["PlayerPosition"].at(1),
-			json->GetData()["PlayerPosition"].at(2)),
-		float(json->GetData()["PlayerPosition"].at(3)));
+	m_player = new Player(json->Widen(json->GetData()["Player"].at(0)).c_str());
 }
 
 //ƒf[ƒ^”jŠü
