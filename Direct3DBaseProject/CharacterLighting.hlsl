@@ -62,7 +62,7 @@ float4 main(PSOutput pout) : SV_Target0
     diffuseLight *= affect;
     
     //スポットライトの反射光を最終的な反射光に足し算する
-    float3 ambientLight = 0.3f;
+    float3 ambientLight = 0.5f;
     float3 finalLight = ambientLight + diffuseLight;
     
     float2 shadowMapUV = pout.PosInLVP.xy / pout.PosInLVP.w;

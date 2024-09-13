@@ -158,3 +158,43 @@ void Desk::DrawResult()
 {
 
 }
+
+void Desk::DrawShadow()
+{
+	//シェーダーを影用に変更
+	for (const auto& mit : m_modelHandle->meshes)
+	{
+		auto mesh = mit.get();
+		assert(mesh != nullptr);
+		for (const auto& pit : mesh->meshParts)
+		{
+			auto part = pit.get();
+			assert(part != nullptr);
+
+			auto effect = static_cast<OriginalEffect*>(part->effect.get());
+			effect->UpdateType(OriginalEffect::PixelType::Shadow);
+		}
+	}
+
+	//描画
+	m_modelHandle->Draw(DeviceAccessor::GetInstance()->GetContext(),
+		*DeviceAccessor::GetInstance()->GetStates(),
+		m_world,
+		EnemyAccessor::GetInstance()->GetEnemy()->GetEyeView(),
+		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
+
+	//シェーダーを元に戻す
+	for (const auto& mit : m_modelHandle->meshes)
+	{
+		auto mesh = mit.get();
+		assert(mesh != nullptr);
+		for (const auto& pit : mesh->meshParts)
+		{
+			auto part = pit.get();
+			assert(part != nullptr);
+
+			auto effect = static_cast<OriginalEffect*>(part->effect.get());
+			effect->UpdateType(OriginalEffect::PixelType::Object);
+		}
+	}
+}

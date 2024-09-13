@@ -13,6 +13,8 @@
 #include"EnemyAccessor.h"
 #include"GiftBox.h"
 #include"GiftBoxAccessor.h"
+#include"Room.h"
+#include"RoomAccessor.h"
 #include"UIBase.h"
 #include"UIAccessor.h"
 #include"DeviceAccessor.h"
@@ -31,6 +33,7 @@ GameObjectManager::GameObjectManager()
 	GiftBoxAccessor::CreateInstance();
 	DeskAccessor::CreateInstance();
 	PlayerAccessor::CreateInstance();
+	RoomAccessor::CreateInstance();
 	UIAccessor::CreateInstance();
 
 	m_gameObjects.push_back(dynamic_cast<GameObject*>(EnemyAccessor::GetInstance()->GetEnemy()));
@@ -42,6 +45,7 @@ GameObjectManager::GameObjectManager()
 	}
 	m_gameObjects.push_back(dynamic_cast<GameObject*>(DeskAccessor::GetInstance()->GetDesk()));
 	m_gameObjects.push_back(dynamic_cast<GameObject*>(PlayerAccessor::GetInstance()->GetPlayer()));
+	m_gameObjects.push_back(dynamic_cast<GameObject*>(RoomAccessor::GetInstance()->GetRoom()));
 	for (int i = 0; i < UIAccessor::GetInstance()->GetUIs().size(); i++)
 	{
 		m_gameObjects.push_back(dynamic_cast<GameObject*>(UIAccessor::GetInstance()->GetUIs().at(i)));
@@ -160,6 +164,7 @@ GameObjectManager::~GameObjectManager()
 	DeskAccessor::DestroyInstance();
 	PlayerAccessor::DestroyInstance();
 	EnemyAccessor::DestroyInstance();
+	RoomAccessor::DestroyInstance();
 }
 
 //インスタンス生成
@@ -324,10 +329,12 @@ void GameObjectManager::SetCharacterShadowResource()
 //オブジェクトの影描画
 void GameObjectManager::DrawObjectShadow()
 {
+	RoomAccessor::GetInstance()->GetRoom()->DrawShadow();
 	for (int i = 0; i < BlockAccessor::GetInstance()->GetBlocks().size(); i++)
 	{
 		BlockAccessor::GetInstance()->GetBlocks().at(i)->DrawShadow();
 	}
+	DeskAccessor::GetInstance()->GetDesk()->DrawShadow();
 }
 
 //プレイヤー影描画

@@ -21,7 +21,7 @@ Camera::Camera():
 	m_modelHandle = nullptr;
 
 	auto size = DeviceAccessor::GetInstance()->GetScreenSize();
-	m_projection = Matrix::CreatePerspectiveFieldOfView(XM_PI / 4.f, float(size.right) / float(size.bottom), 1.f, 500.f);
+	m_projection = Matrix::CreatePerspectiveFieldOfView(XM_PI / 4.f, float(size.right) / float(size.bottom), 1.f, 5000.f);
 }
 
 //ÉfÅ[É^îjä¸

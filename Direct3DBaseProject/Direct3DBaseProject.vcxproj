@@ -209,6 +209,8 @@
     <ClInclude Include="PlayerAccessor.h" />
     <ClInclude Include="ReadData.h" />
     <ClInclude Include="ResultScene.h" />
+    <ClInclude Include="Room.h" />
+    <ClInclude Include="RoomAccessor.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="StepTimer.h" />
     <ClInclude Include="TitleScene.h" />
@@ -246,6 +248,8 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerAccessor.cpp" />
     <ClCompile Include="ResultScene.cpp" />
+    <ClCompile Include="Room.cpp" />
+    <ClCompile Include="RoomAccessor.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="UIAccessor.cpp" />

@@ -83,6 +83,12 @@
     <Filter Include="GameObject\GiftBox\GiftBoxAccessor">
       <UniqueIdentifier>{7898cfba-45d1-4177-8784-073d47358550}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Room">
+      <UniqueIdentifier>{d563eb4f-4562-4b17-9e2d-6b86eb605b23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Room\RoomAccessor">
+      <UniqueIdentifier>{4b11f83c-6205-4a84-80a6-dcb27c8d68f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -170,6 +176,12 @@
     <ClInclude Include="GiftBoxAccessor.h">
       <Filter>GameObject\GiftBox\GiftBoxAccessor</Filter>
     </ClInclude>
+    <ClInclude Include="Room.h">
+      <Filter>GameObject\Room</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomAccessor.h">
+      <Filter>GameObject\Room\RoomAccessor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -245,6 +257,12 @@
     </ClCompile>
     <ClCompile Include="GiftBoxAccessor.cpp">
       <Filter>GameObject\GiftBox\GiftBoxAccessor</Filter>
+    </ClCompile>
+    <ClCompile Include="Room.cpp">
+      <Filter>GameObject\Room</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomAccessor.cpp">
+      <Filter>GameObject\Room\RoomAccessor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
