@@ -1,5 +1,6 @@
 #include "pch.h"
 #include"UIBase.h"
+#include"Transition.h"
 #include"FoundUI.h"
 #include "UIAccessor.h"
 
@@ -9,6 +10,7 @@ UIAccessor* UIAccessor::m_instance = nullptr;
 UIAccessor::UIAccessor()
 {
 	m_UIs.push_back(new FoundUI());
+	m_UIs.push_back(new Transition());
 }
 
 //ÉfÅ[É^îjä¸

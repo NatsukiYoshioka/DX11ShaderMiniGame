@@ -5,6 +5,7 @@
 
 ResultScene::ResultScene()
 {
+	m_isChangeScene = false;
 	auto gameObjectManager = GameObjectManager::GetInstance();
 	gameObjectManager->InitializeResult();
 }

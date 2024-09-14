@@ -2,6 +2,11 @@
 #include"DeviceAccessor.h"
 #include"BaseScene.h"
 #include"SceneManager.h"
+#include"UIBase.h"
+#include"Transition.h"
+#include"UIAccessor.h"
+#include"Enemy.h"
+#include"EnemyAccessor.h"
 #include"Player.h"
 #include"PlayerAccessor.h"
 #include"GiftBox.h"
@@ -9,8 +14,12 @@
 #include"GameObjectManager.h"
 #include "TitleScene.h"
 
-TitleScene::TitleScene()
+extern void ExitGame() noexcept;
+
+TitleScene::TitleScene():
+	m_isStartGame(false)
 {
+	m_isChangeScene = false;
 	auto gameObjectManager = GameObjectManager::GetInstance();
 	gameObjectManager->InitializeTitle();
 }
@@ -23,12 +32,31 @@ TitleScene::~TitleScene()
 void TitleScene::Update()
 {
 	auto key = DeviceAccessor::GetInstance()->GetKeyboard()->GetState();
-	if (key.Enter)
-	{
-		SceneManager::ChangeScene(SceneManager::Scene::Game);
-	}
+
 	auto gameObjectManager = GameObjectManager::GetInstance();
 	gameObjectManager->UpdateTitle();
+
+	if (key.Escape)
+	{
+		ExitGame();
+	}
+	if (key.Enter)
+	{
+		m_isStartGame = true;
+	}
+	if (EnemyAccessor::GetInstance()->GetEnemy()->GetNowAnimationState() == Enemy::AnimationState::PickUp)
+	{
+		m_isChangeScene = true;
+		for (int i = 0;i < UIAccessor::GetInstance()->GetUIs().size();i++)
+		{
+			auto transition = dynamic_cast<Transition*>(UIAccessor::GetInstance()->GetUIs().at(i));
+			if (transition && transition->GetIsFinishFadeout())
+			{
+				SceneManager::ChangeScene(SceneManager::Scene::Game);
+				break;
+			}
+		}
+	}
 }
 
 void TitleScene::Draw()
@@ -52,4 +80,5 @@ void TitleScene::DrawOffScreen()
 	gameObjectManager->ClearCharacterShadow();
 	gameObjectManager->SetCharacterShadowRenderTarget();
 	PlayerAccessor::GetInstance()->GetPlayer()->DrawShadow();
+	EnemyAccessor::GetInstance()->GetEnemy()->DrawShadow();
 }

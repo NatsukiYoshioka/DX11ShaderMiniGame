@@ -214,6 +214,7 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="StepTimer.h" />
     <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="Transition.h" />
     <ClInclude Include="UIAccessor.h" />
     <ClInclude Include="UIBase.h" />
   </ItemGroup>
@@ -252,6 +253,7 @@
     <ClCompile Include="RoomAccessor.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="Transition.cpp" />
     <ClCompile Include="UIAccessor.cpp" />
   </ItemGroup>
   <ItemGroup>

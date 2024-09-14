@@ -1,5 +1,8 @@
 #include "pch.h"
 #include"Json.h"
+#include"BaseScene.h"
+#include"TitleScene.h"
+#include"SceneManager.h"
 #include"GameObject.h"
 #include"DeviceAccessor.h"
 #include"GiftBox.h"
@@ -15,6 +18,13 @@ Camera::Camera():
 	m_distance(float(Json::GetInstance()->GetData()["CameraDistance"])),
 	m_minYaw(float(Json::GetInstance()->GetData()["CameraMinYaw"])),
 	m_maxYaw(float(Json::GetInstance()->GetData()["CameraMaxYaw"])),
+	m_titleFinalPos(Vector3(
+		Json::GetInstance()->GetData()["CameraTitleFinalEyePos"].at(0),
+		Json::GetInstance()->GetData()["CameraTitleFinalEyePos"].at(1),
+		Json::GetInstance()->GetData()["CameraTitleFinalEyePos"].at(2))
+	),
+	m_titleSpeed(float(Json::GetInstance()->GetData()["CameraTitleMoveSpeed"])),
+	m_isFinishMoving(false),
 	m_pitch(210),
 	m_yaw(40)
 {
@@ -36,15 +46,26 @@ void Camera::InitializeTitle()
 	m_pos = Vector3(Vector3(Json::GetInstance()->GetData()["CameraTitleEyePosition"].at(0),
 		Json::GetInstance()->GetData()["CameraTitleEyePosition"].at(1),
 		Json::GetInstance()->GetData()["CameraTitleEyePosition"].at(2)));
-	m_view = Matrix::CreateLookAt(
-		m_pos,
-		Vector3::Zero, Vector3::Up);
 }
 
 //タイトルシーンオブジェクトの更新
 void Camera::UpdateTitle()
 {
-
+	auto title = dynamic_cast<TitleScene*>(SceneManager::GetInstance()->GetNowScene());
+	if (title&&title->GetIsStartGame())
+	{
+		auto direction = m_titleFinalPos - m_pos;
+		direction.Normalize();
+		m_pos += direction * m_titleSpeed;
+		if (m_pos.LengthSquared() >= m_titleFinalPos.LengthSquared())
+		{
+			m_pos = m_titleFinalPos;
+			m_isFinishMoving = true;
+		}
+	}
+	m_view = Matrix::CreateLookAt(
+		m_pos,
+		PlayerAccessor::GetInstance()->GetPlayer()->GetPos(), Vector3::Up);
 }
 
 //タイトルシーンオブジェクトの描画(カメラの描画処理は無し)

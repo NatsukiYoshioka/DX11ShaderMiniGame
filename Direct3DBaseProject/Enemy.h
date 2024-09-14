@@ -23,7 +23,8 @@ public:
 	{
 		Idle,			//待機
 		RightWalk,		//右歩き
-		LeftWalk		//左歩き
+		LeftWalk,		//左歩き
+		PickUp,			//拾う
 	};
 
 	/// <summary>
@@ -84,6 +85,8 @@ public:
 	/// </summary>
 	void DrawResult()override;
 
+	void DrawShadow();
+
 	/// <summary>
 	/// 敵の目の位置を取得
 	/// </summary>
@@ -101,6 +104,8 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	Matrix GetEyeView()const { return m_eyeView; }
+
+	AnimationState GetNowAnimationState()const { return m_nowAnimationState; }
 
 private:
 	AnimationState m_nowAnimationState;			//アニメーションの現在の状態

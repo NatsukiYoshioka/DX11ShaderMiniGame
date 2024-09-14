@@ -74,6 +74,8 @@ public:
 	/// <returns>カメラのピッチ</returns>
 	float GetPitch()const  { return m_pitch; }
 
+	bool GetIsFinishMoving()const { return m_isFinishMoving; }
+
 private:
 	Matrix m_view;			//カメラのビュー行列
 	Matrix m_projection;	//カメラのプロジェクション行列
@@ -86,5 +88,10 @@ private:
 
 	const float m_minYaw;
 	const float m_maxYaw;
+
+	bool m_isStartGame;
+	bool m_isFinishMoving;
+	const Vector3 m_titleFinalPos;
+	const float m_titleSpeed;
 };
 

@@ -149,7 +149,15 @@ void Enemy::UpdateTitle()
 	m_world = XMMatrixMultiply(m_world, Matrix::CreateRotationY(m_rotate));
 	m_world = XMMatrixMultiply(m_world, XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
 
-	m_animations.at(static_cast<int>(m_nowAnimationState)).Update(*DeviceAccessor::GetInstance()->GetElapsedTime());
+	if (CameraAccessor::GetInstance()->GetCamera()->GetIsFinishMoving())
+	{
+		m_nowAnimationState = AnimationState::PickUp;
+		m_animations.at(static_cast<int>(m_nowAnimationState)).Update(*DeviceAccessor::GetInstance()->GetElapsedTime() / 1.5);
+	}
+	else
+	{
+		m_animations.at(static_cast<int>(m_nowAnimationState)).Update(*DeviceAccessor::GetInstance()->GetElapsedTime());
+	}
 }
 
 //タイトルシーンオブジェクトの描画
@@ -172,6 +180,7 @@ void Enemy::DrawTitle()
 void Enemy::Initialize()
 {
 	//座標とY軸回転量の設定
+	m_nowAnimationState = AnimationState::Idle;
 	m_pos = m_initializePos;
 	m_eyePos = m_pos;
 	m_eyePos.y = float(Json::GetInstance()->GetData()["EnemyEyeHeight"]);
@@ -306,4 +315,47 @@ void Enemy::UpdateResult()
 void Enemy::DrawResult()
 {
 
+}
+
+void Enemy::DrawShadow()
+{
+	for (const auto& mit : m_modelHandle->meshes)
+	{
+		auto mesh = mit.get();
+		assert(mesh != nullptr);
+		for (const auto& pit : mesh->meshParts)
+		{
+			auto part = pit.get();
+			assert(part != nullptr);
+
+			auto effect = static_cast<OriginalEffect*>(part->effect.get());
+			effect->UpdateType(OriginalEffect::PixelType::Shadow);
+		}
+	}
+
+	size_t nbones = m_modelHandle->bones.size();
+
+	m_animations.at(static_cast<int>(m_nowAnimationState)).Apply(*m_modelHandle, nbones, m_drawBones.get());
+
+	m_modelHandle->DrawSkinned(DeviceAccessor::GetInstance()->GetContext(),
+		*DeviceAccessor::GetInstance()->GetStates(),
+		nbones,
+		m_drawBones.get(),
+		m_world,
+		m_eyeView,
+		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
+
+	for (const auto& mit : m_modelHandle->meshes)
+	{
+		auto mesh = mit.get();
+		assert(mesh != nullptr);
+		for (const auto& pit : mesh->meshParts)
+		{
+			auto part = pit.get();
+			assert(part != nullptr);
+
+			auto effect = static_cast<OriginalEffect*>(part->effect.get());
+			effect->UpdateType(OriginalEffect::PixelType::Character);
+		}
+	}
 }

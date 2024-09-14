@@ -89,6 +89,12 @@
     <Filter Include="GameObject\Room\RoomAccessor">
       <UniqueIdentifier>{4b11f83c-6205-4a84-80a6-dcb27c8d68f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DeviceAccessor">
+      <UniqueIdentifier>{aaa6f803-97dc-4b17-b27f-54922a9039b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\UI\Transition">
+      <UniqueIdentifier>{338724a0-7a3c-4cc2-98dc-d291d38b7fe1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -114,7 +120,6 @@
     <ClInclude Include="BlockAccessor.h">
       <Filter>GameObject\Block\BlockAccessor</Filter>
     </ClInclude>
-    <ClInclude Include="DeviceAccessor.h" />
     <ClInclude Include="Camera.h">
       <Filter>GameObject\Camera</Filter>
     </ClInclude>
@@ -182,6 +187,12 @@
     <ClInclude Include="RoomAccessor.h">
       <Filter>GameObject\Room\RoomAccessor</Filter>
     </ClInclude>
+    <ClInclude Include="DeviceAccessor.h">
+      <Filter>DeviceAccessor</Filter>
+    </ClInclude>
+    <ClInclude Include="Transition.h">
+      <Filter>GameObject\UI\Transition</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -202,7 +213,6 @@
     <ClCompile Include="BlockAccessor.cpp">
       <Filter>GameObject\Block\BlockAccessor</Filter>
     </ClCompile>
-    <ClCompile Include="DeviceAccessor.cpp" />
     <ClCompile Include="Camera.cpp">
       <Filter>GameObject\Camera</Filter>
     </ClCompile>
@@ -263,6 +273,12 @@
     </ClCompile>
     <ClCompile Include="RoomAccessor.cpp">
       <Filter>GameObject\Room\RoomAccessor</Filter>
+    </ClCompile>
+    <ClCompile Include="DeviceAccessor.cpp">
+      <Filter>DeviceAccessor</Filter>
+    </ClCompile>
+    <ClCompile Include="Transition.cpp">
+      <Filter>GameObject\UI\Transition</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

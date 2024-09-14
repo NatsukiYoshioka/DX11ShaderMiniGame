@@ -173,7 +173,7 @@
 
   "GiftBox": [
     "Gift.sdkmesh",
-    [ -10, -30, -10, 0 ]
+    [ 0, -31, 0, 0 ]
   ],
 
   "GiftBoxTexture": [
@@ -181,7 +181,9 @@
     "gift_N.dds"
   ],
 
-  "CameraTitleEyePosition": [ 0, 5, -0.01 ],
+    "CameraTitleEyePosition": [ 12, 5, 9.9 ],
+    "CameraTitleFinalEyePos": [ 12, -5,-62.5 ],
+    "CameraTitleMoveSpeed": 1,
   "CameraDistance": 10,
   "CameraPadSpeed": 1.5,
   "CameraMouseSpeed": 25,
@@ -199,7 +201,7 @@
   ],
 
   "PlayerTexture": "Ch09_1001_Diffuse.dds",
-  "PlayerTitlePosition": [ 2, -27.5, 0 ],
+  "PlayerTitlePosition": [ 12, -28.5, 10 ],
   "PlayerTitleRotateX": 90,
   "PlayerTitleScale": 0.0325,
   "PlayerPosition": [ -9.25, -0.6, -2.5, 90 ],
@@ -216,11 +218,12 @@
     "Ch46_nonPBR.sdkmesh",
     "OrcIdle.sdkmesh_anim",
     "RightSideStep.sdkmesh_anim",
-    "LeftSideStep.sdkmesh_anim"
+    "LeftSideStep.sdkmesh_anim",
+    "PickingUp.sdkmesh_anim"
   ],
 
   "EnemyTexture": "Ch46_1001_Diffuse.dds",
-  "EnemyTitlePosition": [ 25, 20, 0, 0 ],
+  "EnemyTitlePosition": [ 12, -31.5, 25, 0 ],
   "EnemyPosition": [ 0, -31.5, -40, 180 ],
   "EnemyStartMovingPlayerPosition": [ -7.5, -0.6, 0 ],
   "EnemyTitleEyeHeight": 50,
@@ -243,7 +246,12 @@
   "EyeFoundUIPosition": [ 200, 200 ],
   "EyeFoundUIRotation": 180,
   "EyeFoundUIScale": [ 0.1, 0.1 ],
-  "EyeFoundUIDepth": 0.2,
+    "EyeFoundUIDepth": 0.2,
+
+    "TransitionTexture": "Transition.dds",
+    "TransitionScale": 3,
+    "TransitionLayerDepth": 0.5,
+    "TransitionAlphaAdd": 0.005,
 
   "HitCheckTextureSize": 2000,
 
