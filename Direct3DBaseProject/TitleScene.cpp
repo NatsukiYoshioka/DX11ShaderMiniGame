@@ -31,30 +31,34 @@ TitleScene::~TitleScene()
 
 void TitleScene::Update()
 {
+	auto pad = DeviceAccessor::GetInstance()->GetGamePad()->GetState(0);
 	auto key = DeviceAccessor::GetInstance()->GetKeyboard()->GetState();
 
 	auto gameObjectManager = GameObjectManager::GetInstance();
 	gameObjectManager->UpdateTitle();
 
-	if (key.Escape)
+	if (pad.IsViewPressed() || key.Escape)
 	{
 		ExitGame();
 	}
-	if (key.Enter)
+	for (int i = 0; i < UIAccessor::GetInstance()->GetUIs().size(); i++)
 	{
-		m_isStartGame = true;
-	}
-	if (EnemyAccessor::GetInstance()->GetEnemy()->GetNowAnimationState() == Enemy::AnimationState::PickUp)
-	{
-		m_isChangeScene = true;
-		for (int i = 0;i < UIAccessor::GetInstance()->GetUIs().size();i++)
+		auto transition = dynamic_cast<Transition*>(UIAccessor::GetInstance()->GetUIs().at(i));
+		if (transition && transition->GetIsFinishFadein())
 		{
-			auto transition = dynamic_cast<Transition*>(UIAccessor::GetInstance()->GetUIs().at(i));
-			if (transition && transition->GetIsFinishFadeout())
+			if (EnemyAccessor::GetInstance()->GetEnemy()->GetNowAnimationState() == Enemy::AnimationState::PickUp)
 			{
-				SceneManager::ChangeScene(SceneManager::Scene::Game);
-				break;
+				m_isChangeScene = true;
 			}
+			if (key.Enter || pad.IsBPressed())
+			{
+				m_isStartGame = true;
+			}
+		}
+		if (transition && transition->GetIsFinishFadeout())
+		{
+			SceneManager::ChangeScene(SceneManager::Scene::Game);
+			break;
 		}
 	}
 }

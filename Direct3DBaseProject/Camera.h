@@ -89,9 +89,11 @@ private:
 	const float m_minYaw;
 	const float m_maxYaw;
 
-	bool m_isStartGame;
 	bool m_isFinishMoving;
 	const Vector3 m_titleFinalPos;
 	const float m_titleSpeed;
+
+	const float m_initializePitch;
+	const float m_initializeYaw;
 };
 

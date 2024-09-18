@@ -82,12 +82,14 @@ void Transition::Initialize()
 //UIXV
 void Transition::Update()
 {
+	auto scene = SceneManager::GetInstance()->GetNowScene();
 	auto isChangeScene = SceneManager::GetInstance()->GetNowScene()->GetIsChangeScene();
 	if (isChangeScene)
 	{
 		if (!m_isFinishFadeout)
 		{
-			m_alpha += m_alphaAdd * 2.f;
+			m_alpha += m_alphaAdd;
+			m_isFinishFadein = false;
 		}
 		if (m_alpha >= 1.f)
 		{
@@ -97,12 +99,12 @@ void Transition::Update()
 	else
 	{
 		m_isFinishFadeout = false;
-	}
-	m_alpha -= m_alphaAdd;
-	if (m_alpha <= 0.f)
-	{
-		m_alpha = 0.f;
-		m_isFinishFadein = true;
+		m_alpha -= m_alphaAdd;
+		if (m_alpha <= 0.f)
+		{
+			m_alpha = 0.f;
+			m_isFinishFadein = true;
+		}
 	}
 }
 

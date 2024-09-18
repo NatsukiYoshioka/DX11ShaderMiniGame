@@ -181,12 +181,14 @@
     "gift_N.dds"
   ],
 
-    "CameraTitleEyePosition": [ 12, 5, 9.9 ],
-    "CameraTitleFinalEyePos": [ 12, -5,-62.5 ],
-    "CameraTitleMoveSpeed": 1,
+  "CameraTitleEyePosition": [ 12, 5, 9.9 ],
+  "CameraTitleFinalEyePos": [ 12, -5, -62.5 ],
+  "CameraTitleMoveSpeed": 1,
   "CameraDistance": 10,
   "CameraPadSpeed": 1.5,
   "CameraMouseSpeed": 25,
+  "CameraInitializePitch": 210,
+  "CameraInitializeYaw": 40,
   "CameraMinYaw": 22,
   "CameraMaxYaw": 55,
 
@@ -246,12 +248,12 @@
   "EyeFoundUIPosition": [ 200, 200 ],
   "EyeFoundUIRotation": 180,
   "EyeFoundUIScale": [ 0.1, 0.1 ],
-    "EyeFoundUIDepth": 0.2,
+  "EyeFoundUIDepth": 0.2,
 
-    "TransitionTexture": "Transition.dds",
-    "TransitionScale": 3,
-    "TransitionLayerDepth": 0.5,
-    "TransitionAlphaAdd": 0.005,
+  "TransitionTexture": "Transition.dds",
+  "TransitionScale": 3,
+  "TransitionLayerDepth": 0.5,
+  "TransitionAlphaAdd": 0.005,
 
   "HitCheckTextureSize": 2000,
 

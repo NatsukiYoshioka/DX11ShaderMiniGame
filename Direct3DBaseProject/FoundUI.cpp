@@ -92,7 +92,8 @@ void FoundUI::DrawTitle()
 //UI‰Šú‰»
 void FoundUI::Initialize()
 {
-
+	m_foundTime = 0;
+	m_isFound = false;
 }
 
 //UIXV

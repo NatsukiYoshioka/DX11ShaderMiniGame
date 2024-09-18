@@ -110,6 +110,7 @@ void Enemy::InitializeTitle()
 	m_rotate = m_initializeTitleRotate;
 
 	m_nowAnimationState = AnimationState::Idle;
+	m_animations.at(static_cast<int>(AnimationState::PickUp)).ResetAnimTime();
 }
 
 //タイトルシーンオブジェクトの更新

@@ -250,6 +250,11 @@ void AnimationSDKMESH::Apply(
     }
 }
 
+void AnimationSDKMESH::ResetAnimTime()
+{
+    m_animTime = 0;
+}
+
 
 //--------------------------------------------------------------------------------------
 // Visual Studio Starter Kit CMO animation

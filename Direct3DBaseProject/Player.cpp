@@ -15,8 +15,6 @@
 #include"ReadData.h"
 #include "Player.h"
 
-extern void ExitGame() noexcept;
-
 //オブジェクトの初期化
 Player::Player(const wchar_t* fileName):
 	m_nowAnimationState(AnimationState::Idle),
@@ -151,6 +149,8 @@ void Player::InitializeTitle()
 	m_world = XMMatrixMultiply(m_world, Matrix::CreateScale(m_titleScale));
 	m_world = XMMatrixMultiply(m_world, Matrix::CreateRotationX(m_titleRotateX));
 	m_world = XMMatrixMultiply(m_world, XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
+	m_nowAnimationState = AnimationState::Idle;
+	m_animations.at(static_cast<int>(AnimationState::Die)).ResetAnimTime();
 }
 
 //タイトルシーンオブジェクトの更新
@@ -212,10 +212,6 @@ void Player::Update()
 	m_nowAnimationState = AnimationState::Idle;
 
 	//移動処理
-	if (pad.IsViewPressed() || key.Escape)
-	{
-		ExitGame();
-	}
 	FoundUI* foundUI = nullptr;
 	for (int i = 0; i < UIAccessor::GetInstance()->GetUIs().size(); i++)
 	{

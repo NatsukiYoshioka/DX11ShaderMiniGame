@@ -50,6 +50,8 @@ namespace DX
             size_t nbones,
             _Out_writes_(nbones) DirectX::XMMATRIX* boneTransforms) const;
 
+        void ResetAnimTime();
+
     private:
         double                              m_animTime;
         std::unique_ptr<uint8_t[]>          m_animData;

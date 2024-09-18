@@ -25,13 +25,15 @@ Camera::Camera():
 	),
 	m_titleSpeed(float(Json::GetInstance()->GetData()["CameraTitleMoveSpeed"])),
 	m_isFinishMoving(false),
-	m_pitch(210),
-	m_yaw(40)
+	m_initializePitch(float(Json::GetInstance()->GetData()["CameraInitializePitch"])),
+	m_initializeYaw(float(Json::GetInstance()->GetData()["CameraInitializeYaw"]))
 {
 	m_modelHandle = nullptr;
 
 	auto size = DeviceAccessor::GetInstance()->GetScreenSize();
 	m_projection = Matrix::CreatePerspectiveFieldOfView(XM_PI / 4.f, float(size.right) / float(size.bottom), 1.f, 5000.f);
+	m_pitch = m_initializePitch;
+	m_yaw = m_initializeYaw;
 }
 
 //データ破棄
@@ -46,6 +48,7 @@ void Camera::InitializeTitle()
 	m_pos = Vector3(Vector3(Json::GetInstance()->GetData()["CameraTitleEyePosition"].at(0),
 		Json::GetInstance()->GetData()["CameraTitleEyePosition"].at(1),
 		Json::GetInstance()->GetData()["CameraTitleEyePosition"].at(2)));
+	m_isFinishMoving = false;
 }
 
 //タイトルシーンオブジェクトの更新
@@ -77,7 +80,8 @@ void Camera::DrawTitle()
 //カメラの初期化
 void Camera::Initialize()
 {
-
+	m_pitch = m_initializePitch;
+	m_yaw = m_initializeYaw;
 }
 
 //カメラの更新
