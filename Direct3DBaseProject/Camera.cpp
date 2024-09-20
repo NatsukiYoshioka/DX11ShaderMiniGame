@@ -7,6 +7,8 @@
 #include"DeviceAccessor.h"
 #include"GiftBox.h"
 #include"GiftBoxAccessor.h"
+#include"Desk.h"
+#include"DeskAccessor.h"
 #include"Player.h"
 #include"PlayerAccessor.h"
 #include "Camera.h"
@@ -26,7 +28,8 @@ Camera::Camera():
 	m_titleSpeed(float(Json::GetInstance()->GetData()["CameraTitleMoveSpeed"])),
 	m_isFinishMoving(false),
 	m_initializePitch(float(Json::GetInstance()->GetData()["CameraInitializePitch"])),
-	m_initializeYaw(float(Json::GetInstance()->GetData()["CameraInitializeYaw"]))
+	m_initializeYaw(float(Json::GetInstance()->GetData()["CameraInitializeYaw"])),
+	m_resultCameraHeight(float(Json::GetInstance()->GetData()["CameraResultHeight"]))
 {
 	m_modelHandle = nullptr;
 
@@ -144,13 +147,40 @@ void Camera::Draw()
 //リザルトシーンオブジェクトの初期化
 void Camera::InitializeResult()
 {
-
+	auto json = Json::GetInstance();
+	if (PlayerAccessor::GetInstance()->GetPlayer()->GetIsClear())
+	{
+		m_pitch = float(json->GetData()["CameraInitializeClearPitch"]);
+		m_yaw = float(json->GetData()["CameraInitializeClearYaw"]);
+		m_distance = float(json->GetData()["CameraClearDistance"]);
+	}
+	else
+	{
+		m_pos = Vector3(json->GetData()["CameraGameOverPos"].at(0),
+			json->GetData()["CameraGameOverPos"].at(1),
+			json->GetData()["CameraGameOverPos"].at(2));
+		m_view= Matrix::CreateLookAt(m_pos, DeskAccessor::GetInstance()->GetDesk()->GetPos(), Vector3::Up);
+	}
 }
 
 //リザルトシーンオブジェクトの更新
 void Camera::UpdateResult()
 {
+	if (PlayerAccessor::GetInstance()->GetPlayer()->GetIsClear())
+	{
+		float radianX = m_pitch * XM_PI / 180;
+		float radianY = m_yaw * XM_PI / 180;
 
+		auto playerPos = PlayerAccessor::GetInstance()->GetPlayer()->GetPos();
+		float z = playerPos.z + cos(radianX) * m_distance;
+		float x = playerPos.x + sin(radianX) * m_distance;
+		float y = playerPos.y + tan(radianY) * m_distance;
+		m_pos = Vector3(x, y, z);
+
+		auto targetPos = playerPos;
+		targetPos.y += m_resultCameraHeight;
+		m_view = Matrix::CreateLookAt(m_pos, targetPos, Vector3::Up);
+	}
 }
 
 //リザルトシーンオブジェクトの描画(カメラの描画処理は無し)

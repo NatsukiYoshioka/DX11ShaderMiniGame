@@ -19,6 +19,7 @@
 Player::Player(const wchar_t* fileName):
 	m_nowAnimationState(AnimationState::Idle),
 	m_beFound(false),
+	m_isClear(false),
 	m_initializeTitlePos(Vector3(Json::GetInstance()->GetData()["PlayerTitlePosition"].at(0),
 		Json::GetInstance()->GetData()["PlayerTitlePosition"].at(1),
 		Json::GetInstance()->GetData()["PlayerTitlePosition"].at(2))),
@@ -35,7 +36,10 @@ Player::Player(const wchar_t* fileName):
 	m_scale(float(Json::GetInstance()->GetData()["PlayerScale"])),
 	m_speed(float(Json::GetInstance()->GetData()["PlayerSpeed"])),
 	m_runSpeed(float(Json::GetInstance()->GetData()["PlayerRunSpeed"])),
-	m_crouchSpeed(float(Json::GetInstance()->GetData()["PlayerCrouchSpeed"]))
+	m_crouchSpeed(float(Json::GetInstance()->GetData()["PlayerCrouchSpeed"])),
+	m_clearPos(Vector3(Json::GetInstance()->GetData()["PlayerClearPosition"].at(0),
+		Json::GetInstance()->GetData()["PlayerClearPosition"].at(1),
+		Json::GetInstance()->GetData()["PlayerClearPosition"].at(2)))
 {
 	auto deviceAccessor = DeviceAccessor::GetInstance();
 
@@ -196,6 +200,7 @@ void Player::Initialize()
 {
 	m_pos = m_initializePos;
 	m_rotate = m_initializeRotate;
+	m_isClear = false;
 }
 
 //オブジェクト更新
@@ -219,7 +224,7 @@ void Player::Update()
 		if (foundUI)break;
 	}
 	//完全に見つかっていなければ移動処理を行う
-	if (foundUI && !foundUI->GetIsFound())
+	if (foundUI && !foundUI->GetIsFound() && !m_isClear)
 	{
 		if (pad.IsLeftShoulderPressed() || key.LeftControl || mouse.rightButton)
 		{
@@ -266,7 +271,7 @@ void Player::Update()
 			}
 		}
 	}
-	else
+	else if(foundUI && foundUI->GetIsFound())
 	{
 		m_nowAnimationState = AnimationState::Die;
 	}
@@ -280,6 +285,11 @@ void Player::Update()
 
 		m_pos.z += -cos(m_rotate) * nowSpeed;
 		m_pos.x += -sin(m_rotate) * nowSpeed;
+	}
+
+	if (m_pos.x > m_clearPos.x)
+	{
+		m_isClear = true;
 	}
 
 	//ライト用情報設定
@@ -338,19 +348,54 @@ void Player::Draw()
 //リザルトシーンオブジェクトの初期化
 void Player::InitializeResult()
 {
-
+	m_nowAnimationState = AnimationState::Run;
+	m_pos = Vector3(
+		Json::GetInstance()->GetData()["PlayerResultPosition"].at(0),
+		Json::GetInstance()->GetData()["PlayerResultPosition"].at(1),
+		Json::GetInstance()->GetData()["PlayerResultPosition"].at(2)
+	);
+	m_rotate = float(Json::GetInstance()->GetData()["PlayerResultRotationY"]) * XM_PI / 180;
 }
 
 //リザルトシーンオブジェクトの更新
 void Player::UpdateResult()
 {
+	if (!m_isClear)return;
+	m_pos.z += -cos(m_rotate) * m_runSpeed;
+	m_pos.x += -sin(m_rotate) * m_runSpeed;
 
+	//ライト用情報設定
+	for (const auto& mit : m_modelHandle->meshes)
+	{
+		auto mesh = mit.get();
+		assert(mesh != nullptr);
+		for (const auto& pit : mesh->meshParts)
+		{
+			auto part = pit.get();
+			assert(part != nullptr);
+
+			auto effect = static_cast<OriginalEffect*>(part->effect.get());
+			effect->SetLightPosition(EnemyAccessor::GetInstance()->GetEnemy()->GetEyePosition());
+			effect->SetLightDirection(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeDirection());
+			effect->SetEyePosition(CameraAccessor::GetInstance()->GetCamera()->GetPos());
+			effect->SetLightView(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeView());
+		}
+	}
+
+	//ワールド座標行列の更新
+	m_world = Matrix::Identity;
+	m_world = XMMatrixMultiply(m_world, Matrix::CreateScale(m_scale));
+	m_world = XMMatrixMultiply(m_world, Matrix::CreateRotationY(m_rotate));
+	m_world = XMMatrixMultiply(m_world, XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
+
+	m_animations.at(static_cast<int>(m_nowAnimationState)).Update(*DeviceAccessor::GetInstance()->GetElapsedTime());
 }
 
 //リザルトシーンオブジェクトの描画
 void Player::DrawResult()
 {
-
+	if (!m_isClear)return;
+	Draw();
 }
 
 //オブジェクトの影用描画

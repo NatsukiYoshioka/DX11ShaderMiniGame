@@ -95,5 +95,6 @@ private:
 
 	const float m_initializePitch;
 	const float m_initializeYaw;
+	const float m_resultCameraHeight;
 };
 

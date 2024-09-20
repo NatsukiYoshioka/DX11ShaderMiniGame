@@ -158,12 +158,12 @@ void Room::InitializeResult()
 
 void Room::UpdateResult()
 {
-
+	Update();
 }
 
 void Room::DrawResult()
 {
-
+	Draw();
 }
 
 void Room::DrawShadow()

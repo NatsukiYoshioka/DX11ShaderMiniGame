@@ -5,6 +5,8 @@
 #include"CameraAccessor.h"
 #include"Player.h"
 #include"PlayerAccessor.h"
+#include"DollHead.h"
+#include"DollHeadAccessor.h"
 #include"Desk.h"
 #include"DeskAccessor.h"
 #include"OriginalEffect.h"
@@ -23,11 +25,14 @@ Enemy::Enemy(const wchar_t* fileName):
 	m_initializeTitlePos(Vector3(Json::GetInstance()->GetData()["EnemyTitlePosition"].at(0),
 		Json::GetInstance()->GetData()["EnemyTitlePosition"].at(1),
 		Json::GetInstance()->GetData()["EnemyTitlePosition"].at(2))),
-	m_initializePos(Vector3(Json::GetInstance()->GetData()["EnemyPosition"].at(0),
-		Json::GetInstance()->GetData()["EnemyPosition"].at(1),
-		Json::GetInstance()->GetData()["EnemyPosition"].at(2))),
+	m_initializeGameClearPos(Vector3(Json::GetInstance()->GetData()["EnemyGameClearPosition"].at(0),
+		Json::GetInstance()->GetData()["EnemyGameClearPosition"].at(1),
+		Json::GetInstance()->GetData()["EnemyGameClearPosition"].at(2))),
+	m_initializeGameOverPos(Vector3(Json::GetInstance()->GetData()["EnemyGameOverPosition"].at(0),
+		Json::GetInstance()->GetData()["EnemyGameOverPosition"].at(1),
+		Json::GetInstance()->GetData()["EnemyGameOverPosition"].at(2))),
 	m_initializeTitleRotate(float(Json::GetInstance()->GetData()["EnemyTitlePosition"].at(3))* XM_PI / 180.f),
-	m_initializeRotate(float(Json::GetInstance()->GetData()["EnemyPosition"].at(3))* XM_PI / 180.f),
+	m_initializeRotate(),
 	m_scale(float(Json::GetInstance()->GetData()["EnemyScale"])),
 	m_distance(float(Json::GetInstance()->GetData()["EnemyDistance"])),
 	m_speed(float(Json::GetInstance()->GetData()["EnemySpeed"]))
@@ -164,17 +169,7 @@ void Enemy::UpdateTitle()
 //タイトルシーンオブジェクトの描画
 void Enemy::DrawTitle()
 {
-	size_t nbones = m_modelHandle->bones.size();
-
-	m_animations.at(static_cast<int>(m_nowAnimationState)).Apply(*m_modelHandle, nbones, m_drawBones.get());
-
-	m_modelHandle->DrawSkinned(DeviceAccessor::GetInstance()->GetContext(),
-		*DeviceAccessor::GetInstance()->GetStates(),
-		nbones,
-		m_drawBones.get(),
-		m_world,
-		CameraAccessor::GetInstance()->GetCamera()->GetView(),
-		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
+	Draw();
 }
 
 //オブジェクト初期化
@@ -182,7 +177,6 @@ void Enemy::Initialize()
 {
 	//座標とY軸回転量の設定
 	m_nowAnimationState = AnimationState::Idle;
-	m_pos = m_initializePos;
 	m_eyePos = m_pos;
 	m_eyePos.y = float(Json::GetInstance()->GetData()["EnemyEyeHeight"]);
 	m_rotate = m_initializeRotate;
@@ -303,19 +297,73 @@ void Enemy::Draw()
 //リザルトシーンオブジェクトの初期化
 void Enemy::InitializeResult()
 {
-
+	if (PlayerAccessor::GetInstance()->GetPlayer()->GetIsClear())
+	{
+		m_nowAnimationState = AnimationState::Search;
+		m_pos = m_initializeGameClearPos;
+	}
+	else
+	{
+		m_nowAnimationState = AnimationState::Idle;
+		m_pos = m_initializeGameOverPos;
+	}
+	m_eyePos.x = m_pos.x;
+	m_eyePos.z = m_pos.z;
 }
 
 //リザルトシーンオブジェクトの更新
 void Enemy::UpdateResult()
 {
+	//向きの計算
+	auto deskPos = DeskAccessor::GetInstance()->GetDesk()->GetPos();
+	auto dollHeadPos = DollHeadAccessor::GetInstance()->GetDollHead()->GetPos();
 
+	m_rotate = atan2f(m_pos.x - deskPos.x, m_pos.z - deskPos.z);
+
+	//敵視点のビュー空間行列生成
+	if (PlayerAccessor::GetInstance()->GetPlayer()->GetIsClear())
+	{
+		m_eyeView = Matrix::CreateLookAt(m_eyePos, deskPos, Vector3::Up);
+		m_eyeDirection = deskPos - m_eyePos;
+	}
+	else
+	{
+		m_eyeView = Matrix::CreateLookAt(m_eyePos, dollHeadPos, Vector3::Up);
+		m_eyeDirection = dollHeadPos - m_eyePos;
+	}
+	
+	m_eyeDirection.Normalize();
+
+	for (const auto& mit : m_modelHandle->meshes)
+	{
+		auto mesh = mit.get();
+		assert(mesh != nullptr);
+		for (const auto& pit : mesh->meshParts)
+		{
+			auto part = pit.get();
+			assert(part != nullptr);
+
+			auto effect = static_cast<OriginalEffect*>(part->effect.get());
+			effect->SetLightPosition(m_eyePos);
+			effect->SetLightDirection(m_eyeDirection);
+			effect->SetEyePosition(CameraAccessor::GetInstance()->GetCamera()->GetPos());
+			effect->SetLightView(m_eyeView);
+		}
+	}
+
+	//ワールド座標行列の更新
+	m_world = Matrix::Identity;
+	m_world = XMMatrixMultiply(m_world, Matrix::CreateScale(m_scale));
+	m_world = XMMatrixMultiply(m_world, Matrix::CreateRotationY(m_rotate));
+	m_world = XMMatrixMultiply(m_world, XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
+
+	m_animations.at(static_cast<int>(m_nowAnimationState)).Update(*DeviceAccessor::GetInstance()->GetElapsedTime());
 }
 
 //リザルトシーンオブジェクトの描画
 void Enemy::DrawResult()
 {
-
+	Draw();
 }
 
 void Enemy::DrawShadow()

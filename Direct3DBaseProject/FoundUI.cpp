@@ -100,7 +100,7 @@ void FoundUI::Initialize()
 void FoundUI::Update()
 {
 	auto elapsedTime = *DeviceAccessor::GetInstance()->GetElapsedTime();
-	if (PlayerAccessor::GetInstance()->GetPlayer()->GetBeFound())
+	if (PlayerAccessor::GetInstance()->GetPlayer()->GetBeFound() && !PlayerAccessor::GetInstance()->GetPlayer()->GetIsClear())
 	{
 		m_foundTime += elapsedTime;
 	}

@@ -1,5 +1,7 @@
 #include "pch.h"
 #include"DeviceAccessor.h"
+#include"Player.h"
+#include"PlayerAccessor.h"
 #include"UIBase.h"
 #include"FoundUI.h"
 #include"Transition.h"
@@ -28,13 +30,13 @@ void GameScene::Update()
     auto pad = DeviceAccessor::GetInstance()->GetGamePad()->GetState(0);
     auto key = DeviceAccessor::GetInstance()->GetKeyboard()->GetState();
 
-    if (pad.IsViewPressed() || key.Escape)
-    {
-        ExitGame();
-    }
-
 	auto gameObjectManager = GameObjectManager::GetInstance();
 	gameObjectManager->Update();
+
+    if (PlayerAccessor::GetInstance()->GetPlayer()->GetIsClear())
+    {
+        m_isChangeScene = true;
+    }
 
     for (int i = 0; i < UIAccessor::GetInstance()->GetUIs().size(); i++)
     {
@@ -46,11 +48,13 @@ void GameScene::Update()
         auto transition = dynamic_cast<Transition*>(UIAccessor::GetInstance()->GetUIs().at(i));
         if (transition && transition->GetIsFinishFadeout())
         {
-            if (key.Enter || pad.IsBPressed())
-            {
-                SceneManager::GetInstance()->ChangeScene(SceneManager::Scene::Title);
-            }
+            SceneManager::GetInstance()->ChangeScene(SceneManager::Scene::Result);
         }
+    }
+
+    if (pad.IsViewPressed() || key.Escape)
+    {
+        ExitGame();
     }
 }
 

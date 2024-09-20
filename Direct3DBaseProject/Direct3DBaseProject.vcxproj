@@ -185,6 +185,8 @@
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="BaseScene.h" />
+    <ClInclude Include="DollHead.h" />
+    <ClInclude Include="DollHeadAccessor.h" />
     <ClInclude Include="FoundUI.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="BlockAccessor.h" />
@@ -220,6 +222,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="DollHead.cpp" />
+    <ClCompile Include="DollHeadAccessor.cpp" />
     <ClCompile Include="FoundUI.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BlockAccessor.cpp" />

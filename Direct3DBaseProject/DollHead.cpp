@@ -1,19 +1,28 @@
 #include "pch.h"
 #include"Json.h"
-#include"GameObject.h"
-#include"OriginalEffect.h"
 #include"DeviceAccessor.h"
-#include"Camera.h"
-#include"CameraAccessor.h"
+#include"OriginalEffect.h"
+#include"Player.h"
+#include"PlayerAccessor.h"
 #include"Enemy.h"
 #include"EnemyAccessor.h"
-#include "Desk.h"
+#include"Camera.h"
+#include"CameraAccessor.h"
+#include "DollHead.h"
 
-//デスクの初期化
-Desk::Desk(const wchar_t* fileName, Vector3 pos, float rotate)
+DollHead::DollHead(const wchar_t* fileName, Vector3 pos):
+	m_finalPos(Vector3(Json::GetInstance()->GetData()["PlayerHeadFinalPos"].at(0),
+		Json::GetInstance()->GetData()["PlayerHeadFinalPos"].at(1),
+		Json::GetInstance()->GetData()["PlayerHeadFinalPos"].at(2))),
+	m_speed(),
+	m_firstSpeed(float(Json::GetInstance()->GetData()["PlayerHeadFirstSpeed"])),
+	m_subSpeed(float(Json::GetInstance()->GetData()["PlayerHeadSubSpeed"])),
+	m_rotate(),
+	m_rotationSpeed(),
+	m_firstRotationSpeed(float(Json::GetInstance()->GetData()["PlayerHeadRotationFirstSpeed"])),
+	m_subRotationSpeed(float(Json::GetInstance()->GetData()["PlayerHeadRotationSubSpeed"]))
 {
 	auto deviceAccessor = DeviceAccessor::GetInstance();
-
 	//モデルのロード
 	SetCurrentDirectory(L"Assets/Models");
 	m_modelHandle = Model::CreateFromSDKMESH(deviceAccessor->GetDevice(),
@@ -22,9 +31,9 @@ Desk::Desk(const wchar_t* fileName, Vector3 pos, float rotate)
 		ModelLoader_Clockwise);
 	SetCurrentDirectory(L"../../");
 
-	//エフェクトの初期化
+	//シェーダーの初期化
 	SetCurrentDirectory(L"Assets/Shader");
-	m_effect = make_unique<OriginalEffect>(deviceAccessor->GetDevice(), OriginalEffect::PixelType::Object);
+	m_effect = make_unique<OriginalEffect>(deviceAccessor->GetDevice(), OriginalEffect::PixelType::Character);
 	SetCurrentDirectory(L"../../");
 
 	//モデルの各メッシュの描画設定
@@ -33,7 +42,6 @@ Desk::Desk(const wchar_t* fileName, Vector3 pos, float rotate)
 		auto mesh = mit.get();
 		assert(mesh != nullptr);
 
-		mesh->PrepareForRendering(deviceAccessor->GetContext(), *deviceAccessor->GetStates());
 		for (const auto& pit : mesh->meshParts)
 		{
 			auto part = pit.get();
@@ -43,70 +51,69 @@ Desk::Desk(const wchar_t* fileName, Vector3 pos, float rotate)
 			part->ModifyEffect(deviceAccessor->GetDevice(), m_effect, false);
 		}
 	}
+	m_modelHandle->Modified();
 
-	//テクスチャのロード
 	auto json = Json::GetInstance();
+	//テクスチャのロード
 	ComPtr<ID3D11ShaderResourceView> texture;
-	ComPtr<ID3D11ShaderResourceView> normal;
-	ComPtr<ID3D11ShaderResourceView> ao;
 	SetCurrentDirectory(L"Assets/Models");
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(deviceAccessor->GetDevice(),
-		json->Widen(json->GetData()["DeskTexture"].at(0)).c_str(),
+		json->Widen(json->GetData()["PlayerTexture"]).c_str(),
 		nullptr,
 		texture.ReleaseAndGetAddressOf()));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(deviceAccessor->GetDevice(),
-		json->Widen(json->GetData()["DeskTexture"].at(1)).c_str(),
-		nullptr,
-		normal.ReleaseAndGetAddressOf()));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(deviceAccessor->GetDevice(),
-		json->Widen(json->GetData()["DeskTexture"].at(2)).c_str(),
-		nullptr,
-		ao.ReleaseAndGetAddressOf()));
 	SetCurrentDirectory(L"../../");
 
 	//テクスチャの設定
 	m_effect->SetTexture(texture.Get());
-	m_effect->SetNormal(normal.Get());
-	m_effect->SetAO(ao.Get());
 
-	//座標とY軸回転量の設定
 	m_pos = pos;
-	m_rotate = rotate * XM_PI / 180.f;
 }
 
-//データ破棄
-Desk::~Desk()
+DollHead::~DollHead()
 {
 	m_modelHandle.reset();
 }
 
-//タイトルシーンオブジェクトの初期化
-void Desk::InitializeTitle()
+void DollHead::InitializeTitle()
 {
 
 }
 
-//タイトルシーンオブジェクトの更新
-void Desk::UpdateTitle()
+void DollHead::UpdateTitle()
 {
 
 }
 
-//タイトルシーンオブジェクトの描画
-void Desk::DrawTitle()
+void DollHead::DrawTitle()
 {
 
 }
 
-//オブジェクトの初期化
-void Desk::Initialize()
+void DollHead::Initialize()
 {
 
 }
 
-//オブジェクトの更新
-void Desk::Update()
+void DollHead::Update()
 {
+
+}
+
+void DollHead::Draw()
+{
+
+}
+
+void DollHead::InitializeResult()
+{
+	m_speed = m_firstSpeed;
+	m_rotationSpeed = m_firstRotationSpeed;
+	m_rotate = float(Json::GetInstance()->GetData()["PlayerHeadFirstRotate"]);
+}
+
+void DollHead::UpdateResult()
+{
+	if (PlayerAccessor::GetInstance()->GetPlayer()->GetIsClear())return;
 	for (const auto& mit : m_modelHandle->meshes)
 	{
 		auto mesh = mit.get();
@@ -124,16 +131,25 @@ void Desk::Update()
 		}
 	}
 
+	if (m_pos.x > m_finalPos.x && m_speed > 0)
+	{
+		m_speed -= m_subSpeed;
+		m_pos.x -= m_speed;
+		m_rotationSpeed -= m_subRotationSpeed;
+		m_rotate += m_rotationSpeed;
+	}
+
 	//ワールド座標行列の更新
 	m_world = Matrix::Identity;
-	m_world = XMMatrixMultiply(m_world, Matrix::CreateScale(0.2f));
-	m_world = XMMatrixMultiply(m_world, Matrix::CreateRotationY(m_rotate));
+	m_world = XMMatrixMultiply(m_world, Matrix::CreateScale(0.05f));
+	m_world = XMMatrixMultiply(m_world, Matrix::CreateRotationX(90.f * XM_PI / 180.f));
+	m_world = XMMatrixMultiply(m_world, Matrix::CreateRotationZ(m_rotate * XM_PI / 180.f));
 	m_world = XMMatrixMultiply(m_world, XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
 }
 
-//オブジェクトの描画
-void Desk::Draw()
+void DollHead::DrawResult()
 {
+	if (PlayerAccessor::GetInstance()->GetPlayer()->GetIsClear())return;
 	m_modelHandle->Draw(DeviceAccessor::GetInstance()->GetContext(),
 		*DeviceAccessor::GetInstance()->GetStates(),
 		m_world,
@@ -141,25 +157,7 @@ void Desk::Draw()
 		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
 }
 
-//リザルトシーンオブジェクトの初期化
-void Desk::InitializeResult()
-{
-
-}
-
-//リザルトシーンオブジェクトの更新
-void Desk::UpdateResult()
-{
-	Update();
-}
-
-//リザルトシーンオブジェクトの描画
-void Desk::DrawResult()
-{
-	Draw();
-}
-
-void Desk::DrawShadow()
+void DollHead::DrawShadow()
 {
 	//シェーダーを影用に変更
 	for (const auto& mit : m_modelHandle->meshes)
@@ -194,7 +192,7 @@ void Desk::DrawShadow()
 			assert(part != nullptr);
 
 			auto effect = static_cast<OriginalEffect*>(part->effect.get());
-			effect->UpdateType(OriginalEffect::PixelType::Object);
+			effect->UpdateType(OriginalEffect::PixelType::Character);
 		}
 	}
 }

@@ -36,7 +36,7 @@ void TitleScene::Update()
 
 	auto gameObjectManager = GameObjectManager::GetInstance();
 	gameObjectManager->UpdateTitle();
-
+	
 	if (pad.IsViewPressed() || key.Escape)
 	{
 		ExitGame();
@@ -50,7 +50,7 @@ void TitleScene::Update()
 			{
 				m_isChangeScene = true;
 			}
-			if (key.Enter || pad.IsBPressed())
+			if (key.Enter || pad.IsAPressed())
 			{
 				m_isStartGame = true;
 			}
@@ -84,5 +84,4 @@ void TitleScene::DrawOffScreen()
 	gameObjectManager->ClearCharacterShadow();
 	gameObjectManager->SetCharacterShadowRenderTarget();
 	PlayerAccessor::GetInstance()->GetPlayer()->DrawShadow();
-	EnemyAccessor::GetInstance()->GetEnemy()->DrawShadow();
 }

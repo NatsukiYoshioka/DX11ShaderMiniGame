@@ -111,6 +111,8 @@ public:
 	/// <returns></returns>
 	bool GetBeFound()const { return m_beFound; }
 
+	bool GetIsClear()const { return m_isClear; }
+
 	/// <summary>
 	/// 当たり判定処理
 	/// </summary>
@@ -156,6 +158,7 @@ private:
 	const float m_sphereCrouchHeight;
 
 	bool m_beFound;		//見つかったかどうか
+	bool m_isClear;		//クリアしたかどうか
 
 	const Vector3 m_initializeTitlePos;
 	const float m_titleRotateX;
@@ -168,5 +171,7 @@ private:
 	const float m_speed;				//プレイヤーの移動スピード
 	const float m_runSpeed;				//プレイヤーのダッシュスピード
 	const float m_crouchSpeed;			//プレイヤーのしゃがみ移動スピード
+
+	const Vector3 m_clearPos;
 };
 

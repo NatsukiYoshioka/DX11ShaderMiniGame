@@ -9,6 +9,8 @@
 #include"DeskAccessor.h"
 #include"Player.h"
 #include"PlayerAccessor.h"
+#include"DollHead.h"
+#include"DollHeadAccessor.h"
 #include"Enemy.h"
 #include"EnemyAccessor.h"
 #include"GiftBox.h"
@@ -33,6 +35,7 @@ GameObjectManager::GameObjectManager()
 	GiftBoxAccessor::CreateInstance();
 	DeskAccessor::CreateInstance();
 	PlayerAccessor::CreateInstance();
+	DollHeadAccessor::CreateInstance();
 	RoomAccessor::CreateInstance();
 	UIAccessor::CreateInstance();
 
@@ -45,6 +48,7 @@ GameObjectManager::GameObjectManager()
 	}
 	m_gameObjects.push_back(dynamic_cast<GameObject*>(DeskAccessor::GetInstance()->GetDesk()));
 	m_gameObjects.push_back(dynamic_cast<GameObject*>(PlayerAccessor::GetInstance()->GetPlayer()));
+	m_gameObjects.push_back(dynamic_cast<GameObject*>(DollHeadAccessor::GetInstance()->GetDollHead()));
 	m_gameObjects.push_back(dynamic_cast<GameObject*>(RoomAccessor::GetInstance()->GetRoom()));
 	for (int i = 0; i < UIAccessor::GetInstance()->GetUIs().size(); i++)
 	{
@@ -163,6 +167,7 @@ GameObjectManager::~GameObjectManager()
 	GiftBoxAccessor::DestroyInstance();
 	DeskAccessor::DestroyInstance();
 	PlayerAccessor::DestroyInstance();
+	DollHeadAccessor::DestroyInstance();
 	EnemyAccessor::DestroyInstance();
 	RoomAccessor::DestroyInstance();
 }
@@ -260,10 +265,12 @@ void GameObjectManager::UpdateResult()
 //リザルトシーンオブジェクトの描画
 void GameObjectManager::DrawResult()
 {
+	m_batch->Begin(SpriteSortMode_BackToFront);
 	for (int i = 0; i < m_gameObjects.size(); i++)
 	{
 		m_gameObjects.at(i)->DrawResult();
 	}
+	m_batch->End();
 }
 
 //オブジェクトの影の初期化

@@ -95,6 +95,12 @@
     <Filter Include="GameObject\UI\Transition">
       <UniqueIdentifier>{338724a0-7a3c-4cc2-98dc-d291d38b7fe1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\DollHead">
+      <UniqueIdentifier>{1ee1ebbc-2354-4293-b912-269aef4460d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\DollHead\DollHeadAccessor">
+      <UniqueIdentifier>{3f1b8444-a7be-4d0f-aa80-bb2f12adfd94}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -193,6 +199,12 @@
     <ClInclude Include="Transition.h">
       <Filter>GameObject\UI\Transition</Filter>
     </ClInclude>
+    <ClInclude Include="DollHead.h">
+      <Filter>GameObject\DollHead</Filter>
+    </ClInclude>
+    <ClInclude Include="DollHeadAccessor.h">
+      <Filter>GameObject\DollHead\DollHeadAccessor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -279,6 +291,12 @@
     </ClCompile>
     <ClCompile Include="Transition.cpp">
       <Filter>GameObject\UI\Transition</Filter>
+    </ClCompile>
+    <ClCompile Include="DollHead.cpp">
+      <Filter>GameObject\DollHead</Filter>
+    </ClCompile>
+    <ClCompile Include="DollHeadAccessor.cpp">
+      <Filter>GameObject\DollHead\DollHeadAccessor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
