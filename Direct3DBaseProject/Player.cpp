@@ -552,8 +552,6 @@ void Player::HitCheckObject()
 
 	for (int i = 0;i < blocks.size();i++)
 	{
-		auto blockPos = blocks.at(i)->GetPos();
-		if (Vector2::Distance(Vector2(blockPos.x, blockPos.z), Vector2(m_pos.x, m_pos.z)) > 4.f)continue;
 		ID3D11Buffer* debugBuffer = NULL;
 		D3D11_BUFFER_DESC BufferDesc;
 		ZeroMemory(&BufferDesc, sizeof(D3D11_BUFFER_DESC));

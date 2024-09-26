@@ -19,6 +19,7 @@ OriginalEffect::OriginalEffect(ID3D11Device* device, PixelType type, bool isSkin
 
 	//頂点シェーダーのロード
 	if (isSkinning)m_vsBlob = DX::ReadData(L"SkinningVertex.cso");
+	else if(m_type==PixelType::Block) m_vsBlob = DX::ReadData(L"BlockVertex.cso");
 	else m_vsBlob = DX::ReadData(L"VertexShader.cso");
 	DX::ThrowIfFailed(device->CreateVertexShader(m_vsBlob.data(), m_vsBlob.size(), nullptr, m_vs.ReleaseAndGetAddressOf()));
 
@@ -32,6 +33,9 @@ OriginalEffect::OriginalEffect(ID3D11Device* device, PixelType type, bool isSkin
 	case PixelType::Character:
 		psBlob = DX::ReadData(L"CharacterLighting.cso");
 		break;
+	case PixelType::Block:
+		psBlob = DX::ReadData(L"BlockPixel.cso");
+		break;
 	default:
 		break;
 	}
@@ -41,6 +45,8 @@ OriginalEffect::OriginalEffect(ID3D11Device* device, PixelType type, bool isSkin
 	
 	psBlob = DX::ReadData(L"ObjectShadow.cso");
 	DX::ThrowIfFailed(device->CreatePixelShader(psBlob.data(), psBlob.size(), nullptr, m_objectShadow.ReleaseAndGetAddressOf()));
+	psBlob = DX::ReadData(L"BlockShadow.cso");
+	DX::ThrowIfFailed(device->CreatePixelShader(psBlob.data(), psBlob.size(), nullptr, m_blockShadow.ReleaseAndGetAddressOf()));
 	psBlob = DX::ReadData(L"Red.cso");
 	DX::ThrowIfFailed(device->CreatePixelShader(psBlob.data(), psBlob.size(), nullptr, m_red.ReleaseAndGetAddressOf()));
 	psBlob = DX::ReadData(L"Blue.cso");
@@ -77,9 +83,18 @@ void OriginalEffect::Apply(ID3D11DeviceContext* context)
 	context->VSSetConstantBuffers(1, 1, &sb);
 	context->VSSetConstantBuffers(3, 1, &lvpb);
 	context->PSSetConstantBuffers(2, 1, &lb);
-	context->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
-	context->PSSetShaderResources(1, 1, m_normal.GetAddressOf());
-	context->PSSetShaderResources(2, 1, m_ao.GetAddressOf());
+	context->PSSetShaderResources(0, 1, m_texture1.GetAddressOf());
+	if (m_type == PixelType::Block)
+	{
+		context->PSSetShaderResources(1, 1, m_texture2.GetAddressOf());
+		context->PSSetShaderResources(2, 1, m_texture3.GetAddressOf());
+		context->PSSetShaderResources(3, 1, m_texture4.GetAddressOf());
+	}
+	else
+	{
+		context->PSSetShaderResources(1, 1, m_normal.GetAddressOf());
+		context->PSSetShaderResources(2, 1, m_ao.GetAddressOf());
+	}
 
 	//シェーダーの適用
 	context->VSSetShader(m_vs.Get(), nullptr, 0);
@@ -87,6 +102,9 @@ void OriginalEffect::Apply(ID3D11DeviceContext* context)
 	{
 	case PixelType::Shadow:
 		context->PSSetShader(m_objectShadow.Get(), nullptr, 0);
+		break;
+	case PixelType::BlockShadow:
+		context->PSSetShader(m_blockShadow.Get(), nullptr, 0);
 		break;
 	case PixelType::Red:
 		context->PSSetShader(m_red.Get(), nullptr, 0);
@@ -111,7 +129,15 @@ void OriginalEffect::GetVertexShaderBytecode(void const** pShaderBytecode, size_
 //テクスチャの設定
 void OriginalEffect::SetTexture(ID3D11ShaderResourceView* value)
 {
-	m_texture = value;
+	m_texture1 = value;
+}
+
+void OriginalEffect::SetBlockTexture(ID3D11ShaderResourceView* value1, ID3D11ShaderResourceView* value2, ID3D11ShaderResourceView* value3, ID3D11ShaderResourceView* value4)
+{
+	m_texture1 = value1;
+	m_texture2 = value2;
+	m_texture3 = value3;
+	m_texture4 = value4;
 }
 
 //法線マップの設定

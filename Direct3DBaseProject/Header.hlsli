@@ -42,3 +42,22 @@ struct PSOutput
     float3 WorldPos : TEXVOORD1;
     float4 PosInLVP : TEXCOORD2;
 };
+
+struct BlockVS
+{
+    float4 Position : POSITION;
+    float3 Normal : NORMAL;
+    float2 TexCoord : TEXCOORD0;
+    float4x4 instanceTransform : INSTANCE_TRANSFORM;
+    int textureID : TEXCOORD1;
+};
+
+struct BlockPS
+{
+    float2 TexCoord : TEXCOORD0;
+    float3 Normal : NORMAL;
+    float4 Position : SV_POSITION;
+    float3 WorldPos : TEXCOORD2;
+    float4 PosInLVP : TEXCOORD3;
+    int textureID : TEXCOORD1;
+};

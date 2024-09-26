@@ -352,5 +352,14 @@
     <FxCompile Include="HitMeshSphereCalculation.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
+    <FxCompile Include="BlockVertex.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="BlockPixel.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="BlockShadow.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

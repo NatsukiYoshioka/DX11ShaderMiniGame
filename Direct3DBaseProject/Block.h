@@ -22,6 +22,8 @@ public:
 	/// <param name="rotate">オブジェクトのY軸回転量(XM_PI / rotate)</param>
 	Block(const wchar_t* fileName, Vector3 pos, float rotate);
 
+	Block(Model* modelHandle, vector<Vector3> pos, vector<float> rotate, vector<int> textureID);
+
 	/// <summary>
 	/// データ破棄
 	/// </summary>
@@ -95,7 +97,16 @@ public:
 	ComPtr<ID3D11ShaderResourceView> GetVertexBufferSRV() { return m_vertexBufferSRV; }
 
 private:
+	Model* m_model;
+	struct InstanceData
+	{
+		XMMATRIX world;
+		int textureID;
+	};
+	vector<InstanceData> m_instances;
+	ComPtr<ID3D11Buffer> m_instanceBuffer;
 	shared_ptr<OriginalEffect> m_effect;		//モデル描画用エフェクトクラス
+	ComPtr<ID3D11InputLayout> m_inputLayout;
 
 	float m_rotate;		//モデルのY軸回転量
 	Matrix m_world;		//モデルのワールド座標行列

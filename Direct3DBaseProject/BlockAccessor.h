@@ -45,6 +45,7 @@ public:
 private:
 	static BlockAccessor* m_instance;	//クラスのインスタンス
 
+	vector< unique_ptr<Model>> m_model;
 	vector<Block*> m_blocks;			//ブロックのコンテナ
 };
 

@@ -103,6 +103,7 @@ void FoundUI::Update()
 	if (PlayerAccessor::GetInstance()->GetPlayer()->GetBeFound() && !PlayerAccessor::GetInstance()->GetPlayer()->GetIsClear())
 	{
 		m_foundTime += elapsedTime;
+		m_foundTime = 0;
 	}
 	else
 	{

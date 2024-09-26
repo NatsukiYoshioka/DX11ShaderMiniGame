@@ -17,8 +17,10 @@ public:
 	enum class PixelType
 	{
 		Object,
+		Block,
 		Character,
 		Shadow,
+		BlockShadow,
 		Red,
 		Blue
 	};
@@ -53,6 +55,12 @@ public:
 	/// </summary>
 	/// <param name="value">テクスチャのSRV</param>
 	void SetTexture(ID3D11ShaderResourceView* value);
+
+	void SetBlockTexture(
+		ID3D11ShaderResourceView* value1, 
+		ID3D11ShaderResourceView* value2, 
+		ID3D11ShaderResourceView* value3, 
+		ID3D11ShaderResourceView* value4);
 
 	/// <summary>
 	/// 法線マップの設定
@@ -144,10 +152,14 @@ private:
 	ComPtr<ID3D11VertexShader> m_vs;				//頂点シェーダー
 	ComPtr<ID3D11PixelShader> m_ps;					//ピクセルシェーダー
 	ComPtr<ID3D11PixelShader> m_objectShadow;		//オブジェクト深度シャドウ用ピクセルシェーダー
+	ComPtr<ID3D11PixelShader> m_blockShadow;
 	ComPtr<ID3D11PixelShader> m_red;
 	ComPtr<ID3D11PixelShader> m_blue;
 	vector<uint8_t> m_vsBlob;						//頂点シェーダーのデータ情報
-	ComPtr<ID3D11ShaderResourceView> m_texture;		//テクスチャSRV
+	ComPtr<ID3D11ShaderResourceView> m_texture1;		//テクスチャSRV
+	ComPtr<ID3D11ShaderResourceView> m_texture2;		//テクスチャSRV
+	ComPtr<ID3D11ShaderResourceView> m_texture3;		//テクスチャSRV
+	ComPtr<ID3D11ShaderResourceView> m_texture4;		//テクスチャSRV
 	ComPtr<ID3D11ShaderResourceView> m_normal;		//法線マップSRV
 	ComPtr<ID3D11ShaderResourceView> m_ao;			//AOマップSRV
 
