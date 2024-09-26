@@ -203,6 +203,7 @@ void Player::Initialize()
 {
 	m_pos = m_initializePos;
 	m_rotate = m_initializeRotate;
+	m_beFound = false;
 	m_isClear = false;
 }
 

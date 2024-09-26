@@ -11,6 +11,7 @@
 #include "DollHead.h"
 
 DollHead::DollHead(const wchar_t* fileName, Vector3 pos):
+	m_firstPos(pos),
 	m_finalPos(Vector3(Json::GetInstance()->GetData()["PlayerHeadFinalPos"].at(0),
 		Json::GetInstance()->GetData()["PlayerHeadFinalPos"].at(1),
 		Json::GetInstance()->GetData()["PlayerHeadFinalPos"].at(2))),
@@ -108,6 +109,7 @@ void DollHead::InitializeResult()
 {
 	m_speed = m_firstSpeed;
 	m_rotationSpeed = m_firstRotationSpeed;
+	m_pos = m_firstPos;
 	m_rotate = float(Json::GetInstance()->GetData()["PlayerHeadFirstRotate"]);
 }
 

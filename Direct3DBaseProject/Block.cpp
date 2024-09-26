@@ -85,6 +85,7 @@ Block::Block(const wchar_t* fileName, Vector3 pos, float rotate)
 			}
 		}
 	}
+	m_modelHandle->Modified();
 
 	//頂点バッファSRV作成
 	auto device = DeviceAccessor::GetInstance()->GetDevice();
@@ -200,7 +201,7 @@ void Block::UpdateResult()
 //リザルトシーンオブジェクトの描画
 void Block::DrawResult()
 {
-
+	
 }
 
 //影の描画

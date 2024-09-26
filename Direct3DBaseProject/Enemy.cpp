@@ -177,6 +177,7 @@ void Enemy::Initialize()
 {
 	//À•W‚ÆYŽ²‰ñ“]—Ê‚ÌÝ’è
 	m_nowAnimationState = AnimationState::Idle;
+	m_isStartMoving = false;
 	m_eyePos = m_pos;
 	m_eyePos.y = float(Json::GetInstance()->GetData()["EnemyEyeHeight"]);
 	m_rotate = m_initializeRotate;

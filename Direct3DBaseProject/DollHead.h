@@ -29,6 +29,7 @@ private:
 	float m_rotate;
 	float m_rotationSpeed;
 
+	const Vector3 m_firstPos;
 	const Vector3 m_finalPos;
 	const float m_firstSpeed;
 	const float m_subSpeed;
