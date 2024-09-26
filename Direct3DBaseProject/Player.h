@@ -23,6 +23,7 @@ public:
 		Run,			//走り
 		Crouch,			//しゃがみ
 		CrouchedWalk,	//しゃがみ歩き
+		Dance,			//ゲームクリア
 		Die				//ゲームオーバー
 	};
 
@@ -173,5 +174,6 @@ private:
 	const float m_crouchSpeed;			//プレイヤーのしゃがみ移動スピード
 
 	const Vector3 m_clearPos;
+	const Vector3 m_clearFinalPos;
 };
 

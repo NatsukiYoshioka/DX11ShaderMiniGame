@@ -194,7 +194,7 @@ void Block::InitializeResult()
 //リザルトシーンオブジェクトの更新
 void Block::UpdateResult()
 {
-
+	
 }
 
 //リザルトシーンオブジェクトの描画

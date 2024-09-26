@@ -39,7 +39,10 @@ Player::Player(const wchar_t* fileName):
 	m_crouchSpeed(float(Json::GetInstance()->GetData()["PlayerCrouchSpeed"])),
 	m_clearPos(Vector3(Json::GetInstance()->GetData()["PlayerClearPosition"].at(0),
 		Json::GetInstance()->GetData()["PlayerClearPosition"].at(1),
-		Json::GetInstance()->GetData()["PlayerClearPosition"].at(2)))
+		Json::GetInstance()->GetData()["PlayerClearPosition"].at(2))),
+	m_clearFinalPos(Vector3(Json::GetInstance()->GetData()["PlayerClearFinalPosition"].at(0),
+		Json::GetInstance()->GetData()["PlayerClearFinalPosition"].at(1),
+		Json::GetInstance()->GetData()["PlayerClearFinalPosition"].at(2)))
 {
 	auto deviceAccessor = DeviceAccessor::GetInstance();
 
@@ -361,8 +364,15 @@ void Player::InitializeResult()
 void Player::UpdateResult()
 {
 	if (!m_isClear)return;
-	m_pos.z += -cos(m_rotate) * m_runSpeed;
-	m_pos.x += -sin(m_rotate) * m_runSpeed;
+	if (m_pos.z <= m_clearFinalPos.z)
+	{
+		m_pos.z += -cos(m_rotate) * m_runSpeed;
+		m_pos.x += -sin(m_rotate) * m_runSpeed;
+	}
+	else
+	{
+		m_nowAnimationState = AnimationState::Dance;
+	}
 
 	//ƒ‰ƒCƒg—pî•ñÝ’è
 	for (const auto& mit : m_modelHandle->meshes)
@@ -542,7 +552,7 @@ void Player::HitCheckObject()
 	for (int i = 0;i < blocks.size();i++)
 	{
 		auto blockPos = blocks.at(i)->GetPos();
-		if (Vector2(blockPos.x - m_pos.x, blockPos.z - m_pos.z).Length() > 3.f)continue;
+		if (Vector2::Distance(Vector2(blockPos.x, blockPos.z), Vector2(m_pos.x, m_pos.z)) > 4.f)continue;
 		ID3D11Buffer* debugBuffer = NULL;
 		D3D11_BUFFER_DESC BufferDesc;
 		ZeroMemory(&BufferDesc, sizeof(D3D11_BUFFER_DESC));
