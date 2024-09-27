@@ -415,9 +415,6 @@ void GameObjectManager::DrawHitCheck()
 {
 	for (int i = 0; i < BlockAccessor::GetInstance()->GetBlocks().size(); i++)
 	{
-		auto playerPos = PlayerAccessor::GetInstance()->GetPlayer()->GetPos();
-		auto blockPos = BlockAccessor::GetInstance()->GetBlocks().at(i)->GetPos();
-		if (Vector2::Distance(Vector2(blockPos.x, blockPos.z), Vector2(playerPos.x, playerPos.z)) > 4.f)continue;
 		BlockAccessor::GetInstance()->GetBlocks().at(i)->DrawHitCheck();
 	}
 	PlayerAccessor::GetInstance()->GetPlayer()->DrawHitCheck();

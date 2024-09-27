@@ -14,14 +14,6 @@ class OriginalEffect;
 class Block:public GameObject
 {
 public:
-	/// <summary>
-	/// 積み木ブロックの初期化
-	/// </summary>
-	/// <param name="fileName">3Dモデルのファイル名</param>
-	/// <param name="pos">オブジェクトの初期座標</param>
-	/// <param name="rotate">オブジェクトのY軸回転量(XM_PI / rotate)</param>
-	Block(const wchar_t* fileName, Vector3 pos, float rotate);
-
 	Block(Model* modelHandle, vector<Vector3> pos, vector<float> rotate, vector<int> textureID);
 
 	/// <summary>

@@ -130,9 +130,9 @@ void Camera::Update()
 	float radianX = m_pitch * XM_PI / 180;
 	float radianY = m_yaw * XM_PI / 180;
 
-	float z = playerPos.z + cos(radianX) * m_distance;
-	float x = playerPos.x + sin(radianX) * m_distance;
-	float y = playerPos.y + tan(radianY) * m_distance;
+	float z = playerPos.z + cos(radianY) * cos(radianX) * m_distance;
+	float x = playerPos.x + cos(radianY) * sin(radianX) * m_distance;
+	float y = playerPos.y + sin(radianY) * m_distance;
 	m_pos = Vector3(x, y, z);
 
 	m_view = Matrix::CreateLookAt(m_pos, playerPos, Vector3::Up);

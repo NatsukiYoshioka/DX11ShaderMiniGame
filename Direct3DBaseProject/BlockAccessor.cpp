@@ -43,12 +43,6 @@ BlockAccessor::BlockAccessor()
 			using dist_type = std::uniform_int_distribution<int>;
 			dist_type distribution(0, json->GetData()["BlockTexture"].size() - 1);
 			textureID.push_back(distribution(generator));
-			/*m_blocks.push_back(new Block(
-				json->Widen(json->GetData()["Block"].at(i).at(0)).c_str(),
-				Vector3(json->GetData()["Block"].at(i).at(j).at(0),
-					json->GetData()["Block"].at(i).at(j).at(1),
-					json->GetData()["Block"].at(i).at(j).at(2)),
-				float(json->GetData()["Block"].at(i).at(j).at(3))));*/
 		}
 		m_blocks.push_back(new Block(m_model.at(i).get(), pos, rotate, textureID));
 	}

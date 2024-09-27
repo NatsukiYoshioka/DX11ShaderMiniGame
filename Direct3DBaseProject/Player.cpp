@@ -291,7 +291,7 @@ void Player::Update()
 		m_pos.x += -sin(m_rotate) * nowSpeed;
 	}
 
-	if (m_pos.x > m_clearPos.x)
+	if (m_pos.x > m_clearPos.x && m_pos.z > m_clearPos.z)
 	{
 		m_isClear = true;
 	}
@@ -535,7 +535,7 @@ void Player::HitCheck()
 	deviceAccessor->GetContext()->Unmap(debugBuffer, 0);
 
 	float visibleRatio = float(p->visiblePixNum) / p->playerPixNum;
-	float maxVisibleRatio = 1.f / 2.f;
+	float maxVisibleRatio = 1.f / 3.f;
 	if (visibleRatio > maxVisibleRatio)
 	{
 		m_beFound = true;

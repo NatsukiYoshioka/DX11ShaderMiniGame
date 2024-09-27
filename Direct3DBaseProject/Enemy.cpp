@@ -181,6 +181,7 @@ void Enemy::Initialize()
 	m_eyePos = m_pos;
 	m_eyePos.y = float(Json::GetInstance()->GetData()["EnemyEyeHeight"]);
 	m_rotate = m_initializeRotate;
+	m_posAngle = 0;
 }
 
 //オブジェクト更新
