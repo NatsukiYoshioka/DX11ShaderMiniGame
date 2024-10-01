@@ -187,6 +187,7 @@
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="DollHead.h" />
     <ClInclude Include="DollHeadAccessor.h" />
+    <ClInclude Include="FoundEffect.h" />
     <ClInclude Include="FoundUI.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="BlockAccessor.h" />
@@ -224,6 +225,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="DollHead.cpp" />
     <ClCompile Include="DollHeadAccessor.cpp" />
+    <ClCompile Include="FoundEffect.cpp" />
     <ClCompile Include="FoundUI.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BlockAccessor.cpp" />

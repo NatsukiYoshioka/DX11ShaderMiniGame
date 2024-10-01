@@ -83,8 +83,10 @@ void Camera::DrawTitle()
 //カメラの初期化
 void Camera::Initialize()
 {
+	auto json = Json::GetInstance();
 	m_pitch = m_initializePitch;
 	m_yaw = m_initializeYaw;
+	m_distance = float(json->GetData()["CameraDistance"]);
 }
 
 //カメラの更新

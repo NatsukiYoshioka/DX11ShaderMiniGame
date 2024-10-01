@@ -1,5 +1,6 @@
 #pragma once
-
+#include"UIBase.h"
+#include"GameObject.h"
 using namespace Microsoft::WRL;
 
 class UIBase;
@@ -65,6 +66,8 @@ public:
 	/// </summary>
 	void DrawResult()override;
 
+	float GetTimeRatio()const { return m_timeRatio; }
+
 	/// <summary>
 	/// 完全に見つかったかどうか取得
 	/// </summary>
@@ -95,11 +98,12 @@ private:
 	float m_baseTextureDepth;		//デフォルトテクスチャ深度
 	float m_foundTextureDepth;		//見つかり判定テクスチャ深度
 		
+	float m_timeRatio;				//見つかるまでの時間の割合
 	float m_foundTime;				//見つかり続けている時間
 	const float m_maxFoundTime;		//発見までの時間
 
 	XMVECTOR m_color;		//テクスチャのカラー
-	float m_textureHeight;	//テクスチャの高さ
+	float m_textureWidth;	//テクスチャの高さ
 
 	bool m_isFound;			//完全に見つかったかどうか
 };

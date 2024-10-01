@@ -535,7 +535,7 @@ void Player::HitCheck()
 	deviceAccessor->GetContext()->Unmap(debugBuffer, 0);
 
 	float visibleRatio = float(p->visiblePixNum) / p->playerPixNum;
-	float maxVisibleRatio = 1.f / 3.f;
+	float maxVisibleRatio = 1.f / 4.f;
 	if (visibleRatio > maxVisibleRatio)
 	{
 		m_beFound = true;

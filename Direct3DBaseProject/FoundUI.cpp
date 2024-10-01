@@ -9,6 +9,7 @@
 
 //UI‰Šú‰»
 FoundUI::FoundUI():
+	m_timeRatio(0),
 	m_foundTime(0),
 	m_isFound(false),
 	m_maxFoundTime(float(Json::GetInstance()->GetData()["MaxFoundTime"]))
@@ -58,8 +59,8 @@ FoundUI::FoundUI():
 	m_rectangle.left = 0;
 	m_rectangle.right = texDesc.Width;
 	m_rectangle.top = 0;
-	m_rectangle.bottom = 0;
-	m_textureHeight = texDesc.Height;
+	m_rectangle.bottom = texDesc.Height;
+	m_textureWidth = texDesc.Width;
 }
 
 //ƒf[ƒ^”jŠü
@@ -103,7 +104,6 @@ void FoundUI::Update()
 	if (PlayerAccessor::GetInstance()->GetPlayer()->GetBeFound() && !PlayerAccessor::GetInstance()->GetPlayer()->GetIsClear())
 	{
 		m_foundTime += elapsedTime;
-		m_foundTime = 0;
 	}
 	else
 	{
@@ -118,8 +118,12 @@ void FoundUI::Update()
 		m_foundTime = m_maxFoundTime;
 		m_isFound = true;
 	}
-	m_rectangle.bottom = 0 + (m_textureHeight * (m_foundTime / m_maxFoundTime));
-	m_color = Vector4(1, 1.5f - (1 * (m_foundTime / m_maxFoundTime)), 1.5f - (1 * (m_foundTime / m_maxFoundTime)), 1);
+	if (m_isFound)
+	{
+		m_foundTime = m_maxFoundTime;
+	}
+	m_timeRatio = m_foundTime / m_maxFoundTime;
+	m_rectangle.right = 0 + (m_textureWidth * m_timeRatio);
 }
 
 //UI•`‰æ
@@ -131,7 +135,7 @@ void FoundUI::Draw()
 		m_baseTexture.Get(),
 		m_baseTexturePos,
 		nullptr,
-		Colors::Black,
+		Colors::White,
 		m_baseTextureRotation,
 		m_baseTextureOrigin,
 		m_baseTextureScale,
@@ -142,7 +146,7 @@ void FoundUI::Draw()
 		m_foundTexture.Get(),
 		m_foundTexturePos,
 		&m_rectangle,
-		m_color,
+		Colors::White,
 		m_foundTextureRotation,
 		m_foundTextureOrigin,
 		m_foundTextureScale,

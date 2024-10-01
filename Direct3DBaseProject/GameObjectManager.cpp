@@ -170,6 +170,7 @@ GameObjectManager::~GameObjectManager()
 	DollHeadAccessor::DestroyInstance();
 	EnemyAccessor::DestroyInstance();
 	RoomAccessor::DestroyInstance();
+	UIAccessor::DestroyInstance();
 }
 
 //インスタンス生成
@@ -207,7 +208,7 @@ void GameObjectManager::UpdateTitle()
 //タイトルシーンオブジェクトの描画
 void GameObjectManager::DrawTitle()
 {
-	m_batch->Begin(SpriteSortMode_BackToFront);
+	m_batch->Begin(SpriteSortMode_BackToFront, DeviceAccessor::GetInstance()->GetStates()->NonPremultiplied());
 	for (int i = 0; i < m_gameObjects.size(); i++)
 	{
 		m_gameObjects.at(i)->DrawTitle();
@@ -236,7 +237,7 @@ void GameObjectManager::Update()
 //オブジェクトの描画
 void GameObjectManager::Draw()
 {
-	m_batch->Begin(SpriteSortMode_BackToFront);
+	m_batch->Begin(SpriteSortMode_BackToFront, DeviceAccessor::GetInstance()->GetStates()->NonPremultiplied());
 	for (int i = 0; i < m_gameObjects.size(); i++)
 	{
 		m_gameObjects.at(i)->Draw();
@@ -265,7 +266,7 @@ void GameObjectManager::UpdateResult()
 //リザルトシーンオブジェクトの描画
 void GameObjectManager::DrawResult()
 {
-	m_batch->Begin(SpriteSortMode_BackToFront);
+	m_batch->Begin(SpriteSortMode_BackToFront, DeviceAccessor::GetInstance()->GetStates()->NonPremultiplied());
 	for (int i = 0; i < m_gameObjects.size(); i++)
 	{
 		m_gameObjects.at(i)->DrawResult();

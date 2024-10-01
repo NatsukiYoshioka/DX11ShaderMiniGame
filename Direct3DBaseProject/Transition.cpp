@@ -32,27 +32,12 @@ Transition::Transition():
 	tex->GetDesc(&texDesc);
 	m_origin.x = float(texDesc.Width / 2);
 	m_origin.y = float(texDesc.Height / 2);
-
-	m_effect = make_unique<BasicEffect>(deviceAccessor->GetDevice());
-	m_effect->SetTextureEnabled(true);
-	m_effect->SetTexture(m_texture.Get());
-
-	void const* shaderByteCode;
-	size_t byteCodeLength;
-
-	m_effect->GetVertexShaderBytecode(&shaderByteCode, &byteCodeLength);
-	DeviceAccessor::GetInstance()->GetDevice()->CreateInputLayout(
-		VertexPositionColorTexture::InputElements,
-		VertexPositionColorTexture::InputElementCount,
-		shaderByteCode, byteCodeLength,
-		m_inputLayout.GetAddressOf());
 }
 
 Transition::~Transition()
 {
 	m_texture.Reset();
 	m_textureResource.Reset();
-	m_effect.reset();
 }
 
 //タイトルシーンオブジェクトの初期化
@@ -113,22 +98,8 @@ void Transition::Draw()
 {
 	auto batch = GameObjectManager::GetInstance()->GetSpriteBatch();
 	auto size = DeviceAccessor::GetInstance()->GetScreenSize();
-	auto pos = Vector2(0, 0);
-	batch->End();
-	batch->Begin(
-		SpriteSortMode_Deferred, 
-		DeviceAccessor::GetInstance()->GetStates()->NonPremultiplied(), 
-		nullptr, DeviceAccessor::GetInstance()->GetStates()->DepthRead(), 
-		DeviceAccessor::GetInstance()->GetStates()->CullNone(), [=]
-		{
-			m_effect->SetAlpha(m_alpha);
-			m_effect->SetView(Matrix::Identity);
-			m_effect->Apply(DeviceAccessor::GetInstance()->GetContext());
-			DeviceAccessor::GetInstance()->GetContext()->IASetInputLayout(m_inputLayout.Get());
-		});
-	batch->Draw(m_texture.Get(), pos, nullptr, Colors::White, 0, m_origin, m_scale, SpriteEffects_None, m_layerDepth);
-	batch->End();
-	batch->Begin(SpriteSortMode_BackToFront);
+	auto pos = Vector2(size.right / 2, size.bottom / 2);
+	batch->Draw(m_texture.Get(), pos, nullptr, Colors::White * m_alpha, 0, m_origin, m_scale, SpriteEffects_None, m_layerDepth);
 }
 
 //リザルトシーンオブジェクトの初期化
