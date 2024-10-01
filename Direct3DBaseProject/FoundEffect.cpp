@@ -8,6 +8,7 @@
 #include "FoundEffect.h"
 
 FoundEffect::FoundEffect():
+	m_alpha(0),
 	m_scale(float(Json::GetInstance()->GetData()["FoundEffectScale"])),
 	m_layerDepth(float(Json::GetInstance()->GetData()["FoundEffectLayerDepth"]))
 {
@@ -28,20 +29,6 @@ FoundEffect::FoundEffect():
 	tex->GetDesc(&texDesc);
 	m_origin.x = float(texDesc.Width / 2);
 	m_origin.y = float(texDesc.Height / 2);
-
-	m_effect = make_unique<BasicEffect>(deviceAccessor->GetDevice());
-	m_effect->SetTextureEnabled(true);
-	m_effect->SetTexture(m_texture.Get());
-
-	void const* shaderByteCode;
-	size_t byteCodeLength;
-
-	m_effect->GetVertexShaderBytecode(&shaderByteCode, &byteCodeLength);
-	DeviceAccessor::GetInstance()->GetDevice()->CreateInputLayout(
-		VertexPositionColorTexture::InputElements,
-		VertexPositionColorTexture::InputElementCount,
-		shaderByteCode, byteCodeLength,
-		m_inputLayout.GetAddressOf());
 }
 
 FoundEffect::~FoundEffect()

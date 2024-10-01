@@ -15,6 +15,7 @@ DollHead::DollHead(const wchar_t* fileName, Vector3 pos):
 	m_finalPos(Vector3(Json::GetInstance()->GetData()["PlayerHeadFinalPos"].at(0),
 		Json::GetInstance()->GetData()["PlayerHeadFinalPos"].at(1),
 		Json::GetInstance()->GetData()["PlayerHeadFinalPos"].at(2))),
+	m_posRatio(0),
 	m_speed(),
 	m_firstSpeed(float(Json::GetInstance()->GetData()["PlayerHeadFirstSpeed"])),
 	m_subSpeed(float(Json::GetInstance()->GetData()["PlayerHeadSubSpeed"])),
@@ -139,6 +140,7 @@ void DollHead::UpdateResult()
 		m_pos.x -= m_speed;
 		m_rotationSpeed -= m_subRotationSpeed;
 		m_rotate += m_rotationSpeed;
+		m_posRatio = (m_pos.x - m_firstPos.x) / (m_finalPos.x - m_firstPos.x);
 	}
 
 	//ワールド座標行列の更新

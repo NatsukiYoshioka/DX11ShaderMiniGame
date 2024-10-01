@@ -185,6 +185,7 @@
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="BaseScene.h" />
+    <ClInclude Include="ControlUI.h" />
     <ClInclude Include="DollHead.h" />
     <ClInclude Include="DollHeadAccessor.h" />
     <ClInclude Include="FoundEffect.h" />
@@ -200,8 +201,11 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyAccessor.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameClearUI.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectManager.h" />
+    <ClInclude Include="GameOverEffect.h" />
+    <ClInclude Include="GameOverUI.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="GiftBox.h" />
     <ClInclude Include="GiftBoxAccessor.h" />
@@ -223,6 +227,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="ControlUI.cpp" />
     <ClCompile Include="DollHead.cpp" />
     <ClCompile Include="DollHeadAccessor.cpp" />
     <ClCompile Include="FoundEffect.cpp" />
@@ -238,8 +243,11 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyAccessor.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameClearUI.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
+    <ClCompile Include="GameOverEffect.cpp" />
+    <ClCompile Include="GameOverUI.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="GiftBox.cpp" />
     <ClCompile Include="GiftBoxAccessor.cpp" />

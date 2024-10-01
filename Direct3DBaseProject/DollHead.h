@@ -22,12 +22,16 @@ public:
 
 	void DrawShadow();
 
+	float GetPosRatio()const { return m_posRatio; }
+
 private:
 	shared_ptr<OriginalEffect> m_effect;
 	Matrix m_world;
 	float m_speed;
 	float m_rotate;
 	float m_rotationSpeed;
+
+	float m_posRatio;
 
 	const Vector3 m_firstPos;
 	const Vector3 m_finalPos;

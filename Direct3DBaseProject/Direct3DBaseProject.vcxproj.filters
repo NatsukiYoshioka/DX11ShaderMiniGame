@@ -104,6 +104,18 @@
     <Filter Include="GameObject\UI\FoundEffect">
       <UniqueIdentifier>{d0621c59-edae-4ef9-b77d-72d88a09b435}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\UI\GameOverUI">
+      <UniqueIdentifier>{3c36fe8e-07f2-4bf7-a17b-2c25be20200c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\UI\GameOverEffect">
+      <UniqueIdentifier>{128fc9cd-6290-4333-b5c6-87d5cb08a78b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\UI\GameClearUI">
+      <UniqueIdentifier>{08a7b5dd-de85-4560-8b76-418d6a9f8ed3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\UI\ControlUI">
+      <UniqueIdentifier>{79769228-4551-4b8e-83ad-cb6a5cca985a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -211,6 +223,18 @@
     <ClInclude Include="FoundEffect.h">
       <Filter>GameObject\UI\FoundEffect</Filter>
     </ClInclude>
+    <ClInclude Include="GameOverUI.h">
+      <Filter>GameObject\UI\GameOverUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverEffect.h">
+      <Filter>GameObject\UI\GameOverEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClearUI.h">
+      <Filter>GameObject\UI\GameClearUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlUI.h">
+      <Filter>GameObject\UI\ControlUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -306,6 +330,18 @@
     </ClCompile>
     <ClCompile Include="FoundEffect.cpp">
       <Filter>GameObject\UI\FoundEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverUI.cpp">
+      <Filter>GameObject\UI\GameOverUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverEffect.cpp">
+      <Filter>GameObject\UI\GameOverEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="GameClearUI.cpp">
+      <Filter>GameObject\UI\GameClearUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ControlUI.cpp">
+      <Filter>GameObject\UI\ControlUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

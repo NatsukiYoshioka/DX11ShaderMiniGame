@@ -64,13 +64,7 @@ private:
 	Vector2 m_origin;
 	float m_alpha;
 
-	unique_ptr<BasicEffect> m_effect;
-	ComPtr<ID3D11InputLayout> m_inputLayout;
-
-	bool m_isFinishFadeout;
-	bool m_isFinishFadein;
-
-	float m_scale;
+	const float m_scale;
 	const float m_layerDepth;
 };
 
