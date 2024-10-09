@@ -219,7 +219,10 @@
     <ClInclude Include="Room.h" />
     <ClInclude Include="RoomAccessor.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="SoundAccessor.h" />
+    <ClInclude Include="SoundBase.h" />
     <ClInclude Include="StepTimer.h" />
+    <ClInclude Include="TitleBGM.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="Transition.h" />
     <ClInclude Include="UIAccessor.h" />
@@ -266,6 +269,8 @@
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="RoomAccessor.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="SoundAccessor.cpp" />
+    <ClCompile Include="TitleBGM.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="Transition.cpp" />
     <ClCompile Include="UIAccessor.cpp" />

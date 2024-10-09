@@ -116,6 +116,15 @@
     <Filter Include="GameObject\UI\ControlUI">
       <UniqueIdentifier>{79769228-4551-4b8e-83ad-cb6a5cca985a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Sound">
+      <UniqueIdentifier>{710b980e-b675-43d7-928f-f8ac30a84be7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Sound\TitleBGM">
+      <UniqueIdentifier>{0a7d1b53-ad1e-4e32-891c-78f0e53e318c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Sound\SoundAccessor">
+      <UniqueIdentifier>{5c45a263-4b36-445b-8eb4-e5429f0874f9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -235,6 +244,15 @@
     <ClInclude Include="ControlUI.h">
       <Filter>GameObject\UI\ControlUI</Filter>
     </ClInclude>
+    <ClInclude Include="SoundBase.h">
+      <Filter>GameObject\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleBGM.h">
+      <Filter>GameObject\Sound\TitleBGM</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundAccessor.h">
+      <Filter>GameObject\Sound\SoundAccessor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -342,6 +360,12 @@
     </ClCompile>
     <ClCompile Include="ControlUI.cpp">
       <Filter>GameObject\UI\ControlUI</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleBGM.cpp">
+      <Filter>GameObject\Sound\TitleBGM</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundAccessor.cpp">
+      <Filter>GameObject\Sound\SoundAccessor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

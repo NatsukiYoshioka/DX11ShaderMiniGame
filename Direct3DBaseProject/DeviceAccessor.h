@@ -14,7 +14,8 @@ private:
 		ID3D11DeviceContext* context,
 		ID3D11RenderTargetView* rtv,
 		ID3D11DepthStencilView* dsv,
-		RECT screenSize);
+		RECT screenSize,
+		AudioEngine* audioEngine);
 
 	/// <summary>
 	/// データ破棄
@@ -31,7 +32,8 @@ public:
 		ID3D11DeviceContext* context,
 		ID3D11RenderTargetView* rtv,
 		ID3D11DepthStencilView* dsv,
-		RECT screenSize);
+		RECT screenSize,
+		AudioEngine* audioEngine);
 
 	/// <summary>
 	/// インスタンス破棄
@@ -121,19 +123,26 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	Mouse* GetMouse() { return m_mouse; }
-private:
-	static DeviceAccessor* m_instance;		//クラスのインスタンス
 
-	ID3D11Device* m_device;					//描画デバイス
-	ID3D11DeviceContext* m_context;			//描画コンテキスト
+	/// <summary>
+	/// オーディオ制御エンジンの取得
+	/// </summary>
+	/// <returns></returns>
+	AudioEngine* GetAudioEngine() { return m_audioEngine; }
+private:
+	static DeviceAccessor* m_instance;				//クラスのインスタンス
+
+	ID3D11Device* m_device;							//描画デバイス
+	ID3D11DeviceContext* m_context;					//描画コンテキスト
 	ID3D11RenderTargetView* m_RTV;
 	ID3D11DepthStencilView* m_DSV;
-	RECT m_screenSize;						//スクリーンサイズ
-	unique_ptr<CommonStates> m_states;		//D3Dステートオブジェクト
-	unique_ptr<EffectFactory> m_fxFactory;	//エフェクトヘルパーオブジェクト
-	float* m_elapsedTime;					//経過時間
-	unique_ptr<GamePad> m_gamePad;			//ゲームパッド
-	unique_ptr<Keyboard> m_keyboard;		//キーボード
-	Mouse* m_mouse;							//マウス
+	RECT m_screenSize;								//スクリーンサイズ
+	unique_ptr<CommonStates> m_states;				//D3Dステートオブジェクト
+	unique_ptr<EffectFactory> m_fxFactory;			//エフェクトヘルパーオブジェクト
+	float* m_elapsedTime;							//経過時間
+	unique_ptr<GamePad> m_gamePad;					//ゲームパッド
+	unique_ptr<Keyboard> m_keyboard;				//キーボード
+	Mouse* m_mouse;									//マウス
+	DirectX::AudioEngine* m_audioEngine;			//オーディオ再生用エンジン
 };
 

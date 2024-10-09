@@ -26,6 +26,14 @@ Game::Game() noexcept(false)
     m_deviceResources->RegisterDeviceNotify(this);
 }
 
+Game::~Game()
+{
+    if (m_audioEngine)
+    {
+        m_audioEngine->Suspend();
+    }
+}
+
 // Initialize the Direct3D resources required to run.
 void Game::Initialize(HWND window, int width, int height)
 {
@@ -141,6 +149,7 @@ void Game::OnSuspending()
     // TODO: Game is being power-suspended (or minimized).
     auto deviceAccessor = DeviceAccessor::GetInstance();
     deviceAccessor->GetGamePad()->Suspend();
+    m_audioEngine->Suspend();
 }
 
 void Game::OnResuming()
@@ -150,6 +159,7 @@ void Game::OnResuming()
     // TODO: Game is being power-resumed (or returning from minimize).
     auto deviceAccessor = DeviceAccessor::GetInstance();
     deviceAccessor->GetGamePad()->Resume();
+    m_audioEngine->Resume();
 }
 
 void Game::OnWindowMoved()
@@ -190,12 +200,15 @@ void Game::CreateDeviceDependentResources()
     auto context = m_deviceResources->GetD3DDeviceContext();
 
     // TODO: Initialize device dependent objects here (independent of window size).
+    AUDIO_ENGINE_FLAGS eflags = AudioEngine_Default;
+    m_audioEngine = make_unique<AudioEngine>(eflags);
     Json::CreateInstance();
     DeviceAccessor::CreateInstance(device,
         context,
         m_deviceResources->GetRenderTargetView(),
         m_deviceResources->GetDepthStencilView(),
-        m_deviceResources->GetOutputSize());
+        m_deviceResources->GetOutputSize(),
+        m_audioEngine.get());
     GameObjectManager::CreateInstance();
     SceneManager::CreateInstance();
 

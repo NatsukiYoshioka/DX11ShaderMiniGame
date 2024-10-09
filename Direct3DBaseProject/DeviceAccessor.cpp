@@ -8,12 +8,14 @@ DeviceAccessor::DeviceAccessor(ID3D11Device* device,
 	ID3D11DeviceContext* context,
 	ID3D11RenderTargetView* rtv,
 	ID3D11DepthStencilView* dsv,
-	RECT screenSize):
+	RECT screenSize,
+	AudioEngine* audioEngine):
 	m_device(device),
 	m_context(context),
 	m_RTV(rtv),
 	m_DSV(dsv),
 	m_screenSize(screenSize),
+	m_audioEngine(audioEngine),
 	m_elapsedTime()
 {
 	m_states = make_unique<CommonStates>(m_device);
@@ -35,10 +37,11 @@ void DeviceAccessor::CreateInstance(ID3D11Device* device,
 	ID3D11DeviceContext* context,
 	ID3D11RenderTargetView* rtv,
 	ID3D11DepthStencilView* dsv,
-	RECT screenSize)
+	RECT screenSize,
+	AudioEngine* audioEngine)
 {
 	if (m_instance)return;
-	m_instance = new DeviceAccessor(device, context, rtv, dsv, screenSize);
+	m_instance = new DeviceAccessor(device, context, rtv, dsv, screenSize, audioEngine);
 }
 
 //インスタンス破棄
