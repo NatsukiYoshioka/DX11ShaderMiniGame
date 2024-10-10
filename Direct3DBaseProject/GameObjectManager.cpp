@@ -19,6 +19,8 @@
 #include"RoomAccessor.h"
 #include"UIBase.h"
 #include"UIAccessor.h"
+#include"SoundBase.h"
+#include"SoundAccessor.h"
 #include"DeviceAccessor.h"
 #include "GameObjectManager.h"
 
@@ -38,6 +40,7 @@ GameObjectManager::GameObjectManager()
 	DollHeadAccessor::CreateInstance();
 	RoomAccessor::CreateInstance();
 	UIAccessor::CreateInstance();
+	SoundAccessor::CreateInstance();
 
 	m_gameObjects.push_back(dynamic_cast<GameObject*>(EnemyAccessor::GetInstance()->GetEnemy()));
 	m_gameObjects.push_back(dynamic_cast<GameObject*>(GiftBoxAccessor::GetInstance()->GetGiftBox()));
@@ -54,7 +57,10 @@ GameObjectManager::GameObjectManager()
 	{
 		m_gameObjects.push_back(dynamic_cast<GameObject*>(UIAccessor::GetInstance()->GetUIs().at(i)));
 	}
-	
+	for (int i = 0;i < SoundAccessor::GetInstance()->GetSounds().size();i++)
+	{
+		m_gameObjects.push_back(dynamic_cast<GameObject*>(SoundAccessor::GetInstance()->GetSounds().at(i)));
+	}
 
 	auto device = DeviceAccessor::GetInstance()->GetDevice();
 

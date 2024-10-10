@@ -74,6 +74,8 @@ public:
 	/// <returns>カメラのピッチ</returns>
 	float GetPitch()const  { return m_pitch; }
 
+	float GetTitlePosRatio()const { return m_titlePosRatio; }
+
 	bool GetIsFinishMoving()const { return m_isFinishMoving; }
 
 private:
@@ -83,6 +85,8 @@ private:
 	float m_pitch;			//カメラの縦軸回転量
 	float m_yaw;			//カメラの横軸回転量
 
+	float m_titlePosRatio;	//タイトルの座標移動割合
+
 	const float m_speed;		//カメラのデフォルトスピード
 	const float m_mouseSpeed;	//カメラのマウススピード
 
@@ -90,6 +94,7 @@ private:
 	const float m_maxYaw;
 
 	bool m_isFinishMoving;
+	const Vector3 m_titleInitializePos;
 	const Vector3 m_titleFinalPos;
 	const float m_titleSpeed;
 

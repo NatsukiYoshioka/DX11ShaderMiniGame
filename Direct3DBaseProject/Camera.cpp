@@ -15,11 +15,17 @@
 
 //カメラの初期化
 Camera::Camera():
+	m_titlePosRatio(1.f),
 	m_speed(float(Json::GetInstance()->GetData()["CameraPadSpeed"])),
 	m_mouseSpeed(float(Json::GetInstance()->GetData()["CameraMouseSpeed"])),
 	m_distance(float(Json::GetInstance()->GetData()["CameraDistance"])),
 	m_minYaw(float(Json::GetInstance()->GetData()["CameraMinYaw"])),
 	m_maxYaw(float(Json::GetInstance()->GetData()["CameraMaxYaw"])),
+	m_titleInitializePos(Vector3(
+		Json::GetInstance()->GetData()["CameraTitleEyePosition"].at(0),
+		Json::GetInstance()->GetData()["CameraTitleEyePosition"].at(1),
+		Json::GetInstance()->GetData()["CameraTitleEyePosition"].at(2)
+	)),
 	m_titleFinalPos(Vector3(
 		Json::GetInstance()->GetData()["CameraTitleFinalEyePos"].at(0),
 		Json::GetInstance()->GetData()["CameraTitleFinalEyePos"].at(1),
@@ -48,9 +54,7 @@ Camera::~Camera()
 //タイトルシーンオブジェクトの初期化
 void Camera::InitializeTitle()
 {
-	m_pos = Vector3(Vector3(Json::GetInstance()->GetData()["CameraTitleEyePosition"].at(0),
-		Json::GetInstance()->GetData()["CameraTitleEyePosition"].at(1),
-		Json::GetInstance()->GetData()["CameraTitleEyePosition"].at(2)));
+	m_pos = m_titleInitializePos;
 	m_isFinishMoving = false;
 }
 
@@ -69,6 +73,7 @@ void Camera::UpdateTitle()
 			m_isFinishMoving = true;
 		}
 	}
+	m_titlePosRatio = 1.f - ((m_pos.LengthSquared() - m_titleInitializePos.LengthSquared()) / (m_titleFinalPos.LengthSquared() - m_titleInitializePos.LengthSquared()));
 	m_view = Matrix::CreateLookAt(
 		m_pos,
 		PlayerAccessor::GetInstance()->GetPlayer()->GetPos(), Vector3::Up);
