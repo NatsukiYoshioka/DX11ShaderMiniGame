@@ -7,6 +7,7 @@
 #include"ControlUI.h"
 #include"FoundEffect.h"
 #include"FoundUI.h"
+#include"TitleLogo.h"
 #include "UIAccessor.h"
 
 UIAccessor* UIAccessor::m_instance = nullptr;
@@ -14,6 +15,7 @@ UIAccessor* UIAccessor::m_instance = nullptr;
 //UIê∂ê¨
 UIAccessor::UIAccessor()
 {
+	m_UIs.push_back(new TitleLogo());
 	m_UIs.push_back(new FoundUI());
 	m_UIs.push_back(new FoundEffect());
 	m_UIs.push_back(new ControlUI());

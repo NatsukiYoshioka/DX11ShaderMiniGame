@@ -116,6 +116,9 @@
     <Filter Include="GameObject\UI\ControlUI">
       <UniqueIdentifier>{79769228-4551-4b8e-83ad-cb6a5cca985a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\UI\TitleLogo">
+      <UniqueIdentifier>{ca3b3d5d-9fe9-4ea0-8095-5a341d3d0eff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -235,6 +238,9 @@
     <ClInclude Include="ControlUI.h">
       <Filter>GameObject\UI\ControlUI</Filter>
     </ClInclude>
+    <ClInclude Include="TitleLogo.h">
+      <Filter>GameObject\UI\TitleLogo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -342,6 +348,9 @@
     </ClCompile>
     <ClCompile Include="ControlUI.cpp">
       <Filter>GameObject\UI\ControlUI</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleLogo.cpp">
+      <Filter>GameObject\UI\TitleLogo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
