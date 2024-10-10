@@ -532,5 +532,7 @@
 
   "HitCheckTextureSize": 2000,
 
-  "MaxFoundTime": 3
+  "MaxFoundTime": 3,
+
+  "TitleBGM": "title.wav"
 }

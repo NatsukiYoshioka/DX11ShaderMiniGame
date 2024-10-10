@@ -37,6 +37,7 @@ void TitleBGM::UpdateTitle()
 void TitleBGM::Initialize()
 {
 	m_soundInstance->Stop();
+	m_volume = 1.f;
 }
 
 void TitleBGM::Update()
@@ -47,7 +48,6 @@ void TitleBGM::Update()
 void TitleBGM::InitializeResult()
 {
 	Initialize();
-	m_volume = 1.f;
 }
 
 void TitleBGM::UpdateResult()
