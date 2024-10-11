@@ -119,6 +119,8 @@ public:
 	/// </summary>
 	void HitCheckObject();
 
+	AnimationState GetNowAnimationState()const { return m_nowAnimationState; }
+
 private:
 	AnimationState m_nowAnimationState;			//アニメーションの現在の状態
 	vector<DX::AnimationSDKMESH> m_animations;	//スキニングアニメーションクラスコンテナ

@@ -93,6 +93,8 @@ private:
 	const float m_minYaw;
 	const float m_maxYaw;
 
+	float m_moveWaitTime;
+	const float m_maxMoveWaitTime;
 	bool m_isFinishMoving;
 	const Vector3 m_titleInitializePos;
 	const Vector3 m_titleFinalPos;

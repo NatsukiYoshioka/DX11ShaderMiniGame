@@ -1,6 +1,7 @@
 #include "pch.h"
 #include"DeviceAccessor.h"
 #include"Json.h"
+#include"TitleScene.h"
 #include"BaseScene.h"
 #include"SceneManager.h"
 #include"GameObjectManager.h"
@@ -33,7 +34,7 @@ TitleLogo::TitleLogo():
 	m_origin.y = float(texDesc.Height / 2);
 
 	m_pos.x = deviceAccessor->GetScreenSize().right / 2;
-	m_pos.y = float(json->GetData()["TitleLogoPosY"]);
+	m_pos.y = deviceAccessor->GetScreenSize().bottom / 2;
 }
 
 TitleLogo::~TitleLogo()
@@ -51,7 +52,8 @@ void TitleLogo::InitializeTitle()
 //タイトルシーンオブジェクトの更新
 void TitleLogo::UpdateTitle()
 {
-	if (SceneManager::GetInstance()->GetNowScene()->GetIsChangeScene())
+	auto title = dynamic_cast<TitleScene*>(SceneManager::GetInstance()->GetNowScene());
+	if (title && title->GetIsStartGame())
 	{
 		m_renderTime += *DeviceAccessor::GetInstance()->GetElapsedTime();
 		m_alpha = 1.f - (1.f * (m_renderTime / m_fadeoutTime));

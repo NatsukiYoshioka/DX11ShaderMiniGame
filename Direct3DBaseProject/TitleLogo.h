@@ -1,5 +1,5 @@
 #pragma once
-
+#include"UIBase.h"
 using namespace DirectX;
 using namespace std;
 using namespace Microsoft::WRL;
@@ -56,6 +56,8 @@ public:
 	/// リザルトシーンUI描画
 	/// </summary>
 	void DrawResult()override;
+
+	float GetAlpha()const { return m_alpha; }
 
 private:
 	ComPtr<ID3D11ShaderResourceView> m_texture;

@@ -128,6 +128,27 @@
     <Filter Include="GameObject\Sound\TitleBGM">
       <UniqueIdentifier>{10c5977a-f702-4cf6-be0c-7726a44a94ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Sound\GameBGM">
+      <UniqueIdentifier>{784e42bd-a1e0-42f8-adaf-0af57c39ab1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Sound\WalkSound">
+      <UniqueIdentifier>{e4258c34-43a8-48d5-a46c-bb739835f079}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Sound\RunSound">
+      <UniqueIdentifier>{79b5c302-9418-4cce-828d-cfb8ced610b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Sound\FoundSE">
+      <UniqueIdentifier>{09e93407-68ff-45c7-9485-d5aa82f2066f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Sound\GameClearBGM">
+      <UniqueIdentifier>{72db3a5f-bba1-4f1f-8427-2997fd751db2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Sound\GameOverBGM">
+      <UniqueIdentifier>{24d20486-d8ef-4920-ad61-fd6e24f7087a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\UI\ButtonA">
+      <UniqueIdentifier>{3973e250-23a9-4920-b664-4b489d9f6bc9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -259,6 +280,27 @@
     <ClInclude Include="SoundAccessor.h">
       <Filter>GameObject\Sound\SoundAccessor</Filter>
     </ClInclude>
+    <ClInclude Include="GameBGM.h">
+      <Filter>GameObject\Sound\GameBGM</Filter>
+    </ClInclude>
+    <ClInclude Include="WalkSound.h">
+      <Filter>GameObject\Sound\WalkSound</Filter>
+    </ClInclude>
+    <ClInclude Include="RunSound.h">
+      <Filter>GameObject\Sound\RunSound</Filter>
+    </ClInclude>
+    <ClInclude Include="FoundSE.h">
+      <Filter>GameObject\Sound\FoundSE</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClearBGM.h">
+      <Filter>GameObject\Sound\GameClearBGM</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverBGM.h">
+      <Filter>GameObject\Sound\GameOverBGM</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonA.h">
+      <Filter>GameObject\UI\ButtonA</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -375,6 +417,27 @@
     </ClCompile>
     <ClCompile Include="SoundAccessor.cpp">
       <Filter>GameObject\Sound\SoundAccessor</Filter>
+    </ClCompile>
+    <ClCompile Include="GameBGM.cpp">
+      <Filter>GameObject\Sound\GameBGM</Filter>
+    </ClCompile>
+    <ClCompile Include="WalkSound.cpp">
+      <Filter>GameObject\Sound\WalkSound</Filter>
+    </ClCompile>
+    <ClCompile Include="RunSound.cpp">
+      <Filter>GameObject\Sound\RunSound</Filter>
+    </ClCompile>
+    <ClCompile Include="FoundSE.cpp">
+      <Filter>GameObject\Sound\FoundSE</Filter>
+    </ClCompile>
+    <ClCompile Include="GameClearBGM.cpp">
+      <Filter>GameObject\Sound\GameClearBGM</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverBGM.cpp">
+      <Filter>GameObject\Sound\GameOverBGM</Filter>
+    </ClCompile>
+    <ClCompile Include="ButtonA.cpp">
+      <Filter>GameObject\UI\ButtonA</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

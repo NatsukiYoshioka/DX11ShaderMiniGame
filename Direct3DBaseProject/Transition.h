@@ -1,4 +1,5 @@
 #pragma once
+#include"UIBase.h"
 
 using namespace DirectX;
 using namespace std;
@@ -56,6 +57,8 @@ public:
 	/// リザルトシーンUI描画
 	/// </summary>
 	void DrawResult()override;
+
+	float GetAlpha()const { return m_alpha; }
 
 	bool GetIsFinishFadeout()const { return m_isFinishFadeout; }
 

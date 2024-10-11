@@ -11,6 +11,9 @@
 #include"DeskAccessor.h"
 #include"Player.h"
 #include"PlayerAccessor.h"
+#include"TitleLogo.h"
+#include"UIBase.h"
+#include"UIAccessor.h"
 #include "Camera.h"
 
 //カメラの初期化
@@ -35,7 +38,9 @@ Camera::Camera():
 	m_isFinishMoving(false),
 	m_initializePitch(float(Json::GetInstance()->GetData()["CameraInitializePitch"])),
 	m_initializeYaw(float(Json::GetInstance()->GetData()["CameraInitializeYaw"])),
-	m_resultCameraHeight(float(Json::GetInstance()->GetData()["CameraResultHeight"]))
+	m_resultCameraHeight(float(Json::GetInstance()->GetData()["CameraResultHeight"])),
+	m_moveWaitTime(0.f),
+	m_maxMoveWaitTime(float(Json::GetInstance()->GetData()["CameraTitleLogoWaitTime"]))
 {
 	m_modelHandle = nullptr;
 
@@ -56,6 +61,7 @@ void Camera::InitializeTitle()
 {
 	m_pos = m_titleInitializePos;
 	m_isFinishMoving = false;
+	m_moveWaitTime = 0.f;
 }
 
 //タイトルシーンオブジェクトの更新
@@ -64,13 +70,24 @@ void Camera::UpdateTitle()
 	auto title = dynamic_cast<TitleScene*>(SceneManager::GetInstance()->GetNowScene());
 	if (title&&title->GetIsStartGame())
 	{
-		auto direction = m_titleFinalPos - m_pos;
-		direction.Normalize();
-		m_pos += direction * m_titleSpeed;
-		if (m_pos.LengthSquared() >= m_titleFinalPos.LengthSquared())
+		for (int i = 0;i < UIAccessor::GetInstance()->GetUIs().size();i++)
 		{
-			m_pos = m_titleFinalPos;
-			m_isFinishMoving = true;
+			auto titleLogo = dynamic_cast<TitleLogo*>(UIAccessor::GetInstance()->GetUIs().at(i));
+			if (titleLogo && titleLogo->GetAlpha() <= 0.f)
+			{
+				m_moveWaitTime += *DeviceAccessor::GetInstance()->GetElapsedTime();
+				if (m_moveWaitTime >= m_maxMoveWaitTime)
+				{
+					auto direction = m_titleFinalPos - m_pos;
+					direction.Normalize();
+					m_pos += direction * m_titleSpeed;
+					if (m_pos.LengthSquared() >= m_titleFinalPos.LengthSquared())
+					{
+						m_pos = m_titleFinalPos;
+						m_isFinishMoving = true;
+					}
+				}
+			}
 		}
 	}
 	m_titlePosRatio = 1.f - ((m_pos.LengthSquared() - m_titleInitializePos.LengthSquared()) / (m_titleFinalPos.LengthSquared() - m_titleInitializePos.LengthSquared()));

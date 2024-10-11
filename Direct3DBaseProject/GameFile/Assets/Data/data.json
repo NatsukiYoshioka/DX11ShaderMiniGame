@@ -407,6 +407,7 @@
     "gift_N.dds"
   ],
 
+  "CameraTitleLogoWaitTime": 0.5,
   "CameraTitleEyePosition": [ 12, 5, 9.9 ],
   "CameraTitleFinalEyePos": [ 12, -5, -62.5 ],
   "CameraTitleMoveSpeed": 1,
@@ -483,6 +484,19 @@
   "LightRange": 1000,
   "LightAngle": 20,
 
+  "TitleLogo": "title.dds",
+    "TitleLogoPosition": [ 500, 300 ],
+  "TitleLogoScale": 1,
+  "TitleLogoLayerDepth": 0.2,
+    "TitleLogoRenderTime": 1,
+
+    "ButtonA": "a.dds",
+    "ButtonAPosition": [ 0, 800 ],
+    "ButtonAScale": 0.25,
+    "ButtonAMaxScale": 0.3,
+    "ButtonAScaleAdd": -0.001,
+    "ButtonALayerDepth": 0.2,
+
   "EyeBaseUI": "gaugeBase.dds",
   "EyeFoundUI": "gauge.dds",
 
@@ -497,7 +511,7 @@
   "EyeFoundUIDepth": 0.2,
 
   "FoundEffectTexture": "FoundEffect.dds",
-  "FoundEffectScale": 1.3,
+  "FoundEffectScale": 1,
   "FoundEffectLayerDepth": 0.1,
 
   "ControlUI": "ControlUI.dds",
@@ -526,5 +540,18 @@
 
   "HitCheckTextureSize": 2000,
 
-  "MaxFoundTime": 4
+  "MaxFoundTime": 3,
+
+    "TitleBGM": "title.wav",
+    "GameBGM": "game.wav",
+    "WalkSound": "walk.wav",
+    "RunSound": "dash.wav",
+    "FoundSE": "found.wav",
+    "GameClearBGM": "gameclear.wav",
+    "GameOverBGM": "gameover.wav",
+
+    "GameBGMVolume": 0.5,
+    "WalkSoundVolume": 2,
+    "RunSoundVolume": 2,
+    "FoundSEVolume": 1
 }
