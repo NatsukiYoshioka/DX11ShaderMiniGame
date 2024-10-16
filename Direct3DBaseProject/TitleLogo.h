@@ -9,7 +9,14 @@ class UIBase;
 class TitleLogo:public UIBase
 {
 public:
+	/// <summary>
+	/// タイトルロゴの初期化
+	/// </summary>
 	TitleLogo();
+
+	/// <summary>
+	/// データ破棄
+	/// </summary>
 	~TitleLogo();
 
 	/// <summary>
@@ -57,19 +64,23 @@ public:
 	/// </summary>
 	void DrawResult()override;
 
+	/// <summary>
+	/// テクスチャのアルファ値取得
+	/// </summary>
+	/// <returns></returns>
 	float GetAlpha()const { return m_alpha; }
 
 private:
-	ComPtr<ID3D11ShaderResourceView> m_texture;
-	ComPtr<ID3D11Resource> m_textureResource;
+	ComPtr<ID3D11ShaderResourceView> m_texture;		//テクスチャ
+	ComPtr<ID3D11Resource> m_textureResource;		//テクスチャ情報
 
-	Vector2 m_pos;
-	Vector2 m_origin;
-	float m_alpha;
-	float m_renderTime;
+	Vector2 m_pos;		//テクスチャ座標
+	Vector2 m_origin;	//テクスチャ中心座標
+	float m_alpha;		//テクスチャアルファ値
+	float m_renderTime;	//テクスチャを描画した経過時間
 
-	const float m_scale;
-	const float m_layerDepth;
-	const float m_fadeoutTime;
+	const float m_scale;		//テクスチャのスケール
+	const float m_layerDepth;	//テクスチャのレイヤー深度
+	const float m_fadeoutTime;	//テクスチャがフェードアウトするまでの時間
 };
 

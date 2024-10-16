@@ -10,6 +10,7 @@
 #include"CameraAccessor.h"
 #include "DollHead.h"
 
+//オブジェクトの初期化
 DollHead::DollHead(const wchar_t* fileName, Vector3 pos):
 	m_firstPos(pos),
 	m_finalPos(Vector3(Json::GetInstance()->GetData()["PlayerHeadFinalPos"].at(0),
@@ -71,41 +72,49 @@ DollHead::DollHead(const wchar_t* fileName, Vector3 pos):
 	m_pos = pos;
 }
 
+//オブジェクトの破棄
 DollHead::~DollHead()
 {
 	m_modelHandle.reset();
 }
 
+//タイトルでの初期化(処理なし)
 void DollHead::InitializeTitle()
 {
 
 }
 
+//タイトルでの更新(処理なし)
 void DollHead::UpdateTitle()
 {
 
 }
 
+//タイトルでの描画(処理なし)
 void DollHead::DrawTitle()
 {
 
 }
 
+//ゲームシーンの初期化(処理なし)
 void DollHead::Initialize()
 {
 
 }
 
+//ゲームシーンの更新(処理なし)
 void DollHead::Update()
 {
 
 }
 
+//ゲームシーンの描画(処理なし)
 void DollHead::Draw()
 {
 
 }
 
+//リザルトシーンでの初期化
 void DollHead::InitializeResult()
 {
 	m_speed = m_firstSpeed;
@@ -114,9 +123,12 @@ void DollHead::InitializeResult()
 	m_rotate = float(Json::GetInstance()->GetData()["PlayerHeadFirstRotate"]);
 }
 
+//リザルトシーンでの更新
 void DollHead::UpdateResult()
 {
+	//ゲームオーバー時に処理を続ける
 	if (PlayerAccessor::GetInstance()->GetPlayer()->GetIsClear())return;
+	//シェーダー描画時の情報取得
 	for (const auto& mit : m_modelHandle->meshes)
 	{
 		auto mesh = mit.get();
@@ -134,6 +146,7 @@ void DollHead::UpdateResult()
 		}
 	}
 
+	//移動限界の処理
 	if (m_pos.x > m_finalPos.x && m_speed > 0)
 	{
 		m_speed -= m_subSpeed;
@@ -151,6 +164,7 @@ void DollHead::UpdateResult()
 	m_world = XMMatrixMultiply(m_world, XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
 }
 
+//リザルトでの描画
 void DollHead::DrawResult()
 {
 	if (PlayerAccessor::GetInstance()->GetPlayer()->GetIsClear())return;

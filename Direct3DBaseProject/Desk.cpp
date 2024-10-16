@@ -107,6 +107,7 @@ void Desk::Initialize()
 //オブジェクトの更新
 void Desk::Update()
 {
+	//ライティング用情報の設定
 	for (const auto& mit : m_modelHandle->meshes)
 	{
 		auto mesh = mit.get();

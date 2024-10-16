@@ -9,7 +9,14 @@ class UIBase;
 class ButtonA:public UIBase
 {
 public:
+	/// <summary>
+	/// AボタンUIの初期化
+	/// </summary>
 	ButtonA();
+
+	/// <summary>
+	/// データ破棄
+	/// </summary>
 	~ButtonA();
 
 	/// <summary>
@@ -57,20 +64,23 @@ public:
 	/// </summary>
 	void DrawResult()override;
 
+	/// <summary>
+	/// テクスチャのスケールの更新
+	/// </summary>
 	void UpdateScale();
 
 private:
-	ComPtr<ID3D11ShaderResourceView> m_texture;
-	ComPtr<ID3D11Resource> m_textureResource;
+	ComPtr<ID3D11ShaderResourceView> m_texture;		//テクスチャ
+	ComPtr<ID3D11Resource> m_textureResource;		//テクスチャ情報
 
-	Vector2 m_pos;
-	Vector2 m_origin;
-	float m_alpha;
-	float m_scale;
-	float m_scaleAdd;
+	Vector2 m_pos;		//テクスチャの座標
+	Vector2 m_origin;	//テクスチャの中心座標
+	float m_alpha;		//テクスチャのアルファ値
+	float m_scale;		//テクスチャのスケール
+	float m_scaleAdd;	//テクスチャのスケール拡縮量
 
-	const float m_layerDepth;
-	const float m_minScale;
-	const float m_maxScale;
+	const float m_layerDepth;	//テクスチャのレイヤー深度
+	const float m_minScale;		//テクスチャの最小スケール
+	const float m_maxScale;		//テクスチャの最大スケール
 };
 

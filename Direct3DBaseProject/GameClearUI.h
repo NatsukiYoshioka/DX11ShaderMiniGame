@@ -9,7 +9,14 @@ class UIBase;
 class GameClearUI:public UIBase
 {
 public:
+	/// <summary>
+	/// クリア時のUI初期化
+	/// </summary>
 	GameClearUI();
+
+	/// <summary>
+	/// データ破棄
+	/// </summary>
 	~GameClearUI();
 
 	/// <summary>
@@ -58,13 +65,13 @@ public:
 	void DrawResult()override;
 
 private:
-	ComPtr<ID3D11ShaderResourceView> m_texture;
-	ComPtr<ID3D11Resource> m_textureResource;
+	ComPtr<ID3D11ShaderResourceView> m_texture;		//テクスチャ
+	ComPtr<ID3D11Resource> m_textureResource;		//テクスチャ情報
 
-	Vector2 m_pos;
-	Vector2 m_origin;
+	Vector2 m_pos;		//テクスチャの座標
+	Vector2 m_origin;	//テクスチャの中心座標
 
-	const float m_scale;
-	const float m_layerDepth;
+	const float m_scale;		//テクスチャのスケール
+	const float m_layerDepth;	//テクスチャのレイヤー深度
 };
 

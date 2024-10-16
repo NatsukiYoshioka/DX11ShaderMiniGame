@@ -14,10 +14,12 @@
 #include "Block.h"
 
 //積み木ブロックの初期化
-Block::Block(Model* modelHandle, vector<Vector3> pos, vector<float> rotate, vector<int> textureID)
+Block::Block(Model* modelHandle, vector<Vector3> pos, vector<float> rotate, vector<int> textureID):
+	m_rotate()
 {
 	m_model = modelHandle;
 
+	//インスタンシング用のワールド座標とテクスチャIDの設定
 	for (int i = 0; i < pos.size(); i++)
 	{
 		InstanceData instance;
@@ -46,6 +48,7 @@ Block::Block(Model* modelHandle, vector<Vector3> pos, vector<float> rotate, vect
 	m_effect = make_unique<OriginalEffect>(device, OriginalEffect::PixelType::Block);
 	SetCurrentDirectory(L"../../");
 
+	//入力レイアウトの定義の設定
 	D3D11_INPUT_ELEMENT_DESC layout[] = {
 		// 頂点データ
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -59,11 +62,13 @@ Block::Block(Model* modelHandle, vector<Vector3> pos, vector<float> rotate, vect
 		{ "TEXCOORD", 1, DXGI_FORMAT_R32_UINT, 1, 64, D3D11_INPUT_PER_INSTANCE_DATA, 1 }
 	};
 
+	//入力レイアウトの作成
 	const void* shaderByteCode;
 	size_t byteCodeLength;
 	m_effect->GetVertexShaderBytecode(&shaderByteCode, &byteCodeLength);
 	device->CreateInputLayout(layout, ARRAYSIZE(layout), shaderByteCode, byteCodeLength, m_inputLayout.ReleaseAndGetAddressOf());
 
+	//テクスチャのロードと設定
 	auto json = Json::GetInstance();
 	ComPtr<ID3D11ShaderResourceView> texture1;
 	ComPtr<ID3D11ShaderResourceView> texture2;
@@ -99,7 +104,7 @@ Block::Block(Model* modelHandle, vector<Vector3> pos, vector<float> rotate, vect
 			auto part = pit.get();
 			assert(part != nullptr);
 
-			//頂点データとインデックスデータの取得
+			//頂点データの取得
 			D3D11_BUFFER_DESC vbDesc;
 			part->vertexBuffer->GetDesc(&vbDesc);
 			D3D11_BUFFER_DESC vbufferDesc = {};

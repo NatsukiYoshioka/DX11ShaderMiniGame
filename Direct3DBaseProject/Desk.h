@@ -73,6 +73,9 @@ public:
 	/// </summary>
 	void DrawResult()override;
 
+	/// <summary>
+	/// ‰e‚Ì•`‰æ
+	/// </summary>
 	void DrawShadow();
 
 private:

@@ -132,6 +132,7 @@ void Enemy::UpdateTitle()
 	m_eyeDirection = playerPos - m_eyePos;
 	m_eyeDirection.Normalize();
 
+	//シェーダー描画用の情報設定
 	for (const auto& mit : m_modelHandle->meshes)
 	{
 		auto mesh = mit.get();
@@ -155,6 +156,7 @@ void Enemy::UpdateTitle()
 	m_world = XMMatrixMultiply(m_world, Matrix::CreateRotationY(m_rotate));
 	m_world = XMMatrixMultiply(m_world, XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
 
+	//アニメーションの遷移条件
 	if (CameraAccessor::GetInstance()->GetCamera()->GetIsFinishMoving())
 	{
 		m_nowAnimationState = AnimationState::PickUp;
@@ -254,6 +256,7 @@ void Enemy::Update()
 	m_eyeDirection = playerPos - m_eyePos;
 	m_eyeDirection.Normalize();
 
+	//シェーダーの設定
 	for (const auto& mit : m_modelHandle->meshes)
 	{
 		auto mesh = mit.get();
@@ -336,6 +339,7 @@ void Enemy::UpdateResult()
 	
 	m_eyeDirection.Normalize();
 
+	//シェーダーの設定
 	for (const auto& mit : m_modelHandle->meshes)
 	{
 		auto mesh = mit.get();
@@ -368,8 +372,10 @@ void Enemy::DrawResult()
 	Draw();
 }
 
+//影の描画
 void Enemy::DrawShadow()
 {
+	//シェーダーの変更
 	for (const auto& mit : m_modelHandle->meshes)
 	{
 		auto mesh = mit.get();
@@ -396,6 +402,7 @@ void Enemy::DrawShadow()
 		m_eyeView,
 		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
 
+	//シェーダーをもとに戻す
 	for (const auto& mit : m_modelHandle->meshes)
 	{
 		auto mesh = mit.get();

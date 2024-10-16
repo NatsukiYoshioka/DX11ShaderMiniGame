@@ -56,6 +56,13 @@ public:
 	/// <param name="value">テクスチャのSRV</param>
 	void SetTexture(ID3D11ShaderResourceView* value);
 
+	/// <summary>
+	/// ブロックのテクスチャ設定
+	/// </summary>
+	/// <param name="value1"></param>
+	/// <param name="value2"></param>
+	/// <param name="value3"></param>
+	/// <param name="value4"></param>
 	void SetBlockTexture(
 		ID3D11ShaderResourceView* value1, 
 		ID3D11ShaderResourceView* value2, 

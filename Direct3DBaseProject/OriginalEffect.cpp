@@ -132,6 +132,7 @@ void OriginalEffect::SetTexture(ID3D11ShaderResourceView* value)
 	m_texture1 = value;
 }
 
+//ブロックのテクスチャ設定
 void OriginalEffect::SetBlockTexture(ID3D11ShaderResourceView* value1, ID3D11ShaderResourceView* value2, ID3D11ShaderResourceView* value3, ID3D11ShaderResourceView* value4)
 {
 	m_texture1 = value1;

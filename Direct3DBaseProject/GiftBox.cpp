@@ -9,6 +9,7 @@
 #include"OriginalEffect.h"
 #include "GiftBox.h"
 
+//オブジェクトの初期化
 GiftBox::GiftBox(const wchar_t* fileName, Vector3 pos, float rotate)
 {
 	auto deviceAccessor = DeviceAccessor::GetInstance();
@@ -73,18 +74,22 @@ GiftBox::GiftBox(const wchar_t* fileName, Vector3 pos, float rotate)
 	m_world = XMMatrixMultiply(m_world, XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
 }
 
+//データ破棄
 GiftBox::~GiftBox()
 {
 
 }
 
+//タイトルでの初期化
 void GiftBox::InitializeTitle()
 {
 
 }
 
+//タイトルでの更新
 void GiftBox::UpdateTitle()
 {
+	//シェーダー用の設定
 	for (const auto& mit : m_modelHandle->meshes)
 	{
 		auto mesh = mit.get();
@@ -103,6 +108,7 @@ void GiftBox::UpdateTitle()
 	}
 }
 
+//タイトルでの描画
 void GiftBox::DrawTitle()
 {
 	m_modelHandle->Draw(DeviceAccessor::GetInstance()->GetContext(),
@@ -112,36 +118,43 @@ void GiftBox::DrawTitle()
 		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
 }
 
+//ゲームシーンでの初期化(処理なし)
 void GiftBox::Initialize()
 {
 
 }
 
+//ゲームシーンでの更新(処理なし)
 void GiftBox::Update()
 {
 
 }
 
+//ゲームシーンでの描画(処理なし)
 void GiftBox::Draw()
 {
 
 }
 
+//リザルトでの初期化(処理なし)
 void GiftBox::InitializeResult()
 {
 
 }
 
+//リザルトでの更新(処理なし)
 void GiftBox::UpdateResult()
 {
 
 }
 
+//リザルトでの描画(処理なし)
 void GiftBox::DrawResult()
 {
 
 }
 
+//影の描画
 void GiftBox::DrawShadow()
 {
 	//シェーダーを影用に変更

@@ -5,6 +5,7 @@
 #include"UIBase.h"
 #include "ControlUI.h"
 
+//操作説明UIの初期化
 ControlUI::ControlUI():
 	m_scale(float(Json::GetInstance()->GetData()["ControlUIScale"])),
 	m_layerDepth(float(Json::GetInstance()->GetData()["ControlUILayerDepth"])),
@@ -32,36 +33,37 @@ ControlUI::ControlUI():
 	m_origin.y = float(texDesc.Height / 2);
 }
 
+//データ破棄
 ControlUI::~ControlUI()
 {
 
 }
 
-//タイトルシーンオブジェクトの初期化
+//タイトルシーンオブジェクトの初期化(処理なし)
 void ControlUI::InitializeTitle()
 {
 
 }
 
-//タイトルシーンオブジェクトの更新
+//タイトルシーンオブジェクトの更新(処理なし)
 void ControlUI::UpdateTitle()
 {
 
 }
 
-//タイトルシーンオブジェクトの描画
+//タイトルシーンオブジェクトの描画(処理なし)
 void ControlUI::DrawTitle()
 {
 
 }
 
-//UI初期化
+//UI初期化(処理なし)
 void ControlUI::Initialize()
 {
 
 }
 
-//UI更新
+//UI更新(処理なし)
 void ControlUI::Update()
 {
 
@@ -75,19 +77,19 @@ void ControlUI::Draw()
 	batch->Draw(m_texture.Get(), m_pos, nullptr, Colors::White, 0, m_origin, m_scale, SpriteEffects_None, m_layerDepth);
 }
 
-//リザルトシーンオブジェクトの初期化
+//リザルトシーンオブジェクトの初期化(処理なし)
 void ControlUI::InitializeResult()
 {
 
 }
 
-//リザルトシーンオブジェクトの更新
+//リザルトシーンオブジェクトの更新(処理なし)
 void ControlUI::UpdateResult()
 {
 
 }
 
-//リザルトシーンオブジェクトの描画
+//リザルトシーンオブジェクトの描画(処理なし)
 void ControlUI::DrawResult()
 {
 	

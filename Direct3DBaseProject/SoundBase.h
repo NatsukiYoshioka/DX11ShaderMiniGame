@@ -33,7 +33,9 @@ public:
 	virtual void UpdateResult() = 0;
 	void DrawResult()override{}
 
+	SoundState GetSoundState()const { return m_soundInstance->GetState(); }
+
 protected:
-	unique_ptr<SoundEffect> m_sound;
-	unique_ptr<SoundEffectInstance> m_soundInstance;
+	unique_ptr<SoundEffect> m_sound;					//サウンドエフェクトクラス
+	unique_ptr<SoundEffectInstance> m_soundInstance;	//サウンドエフェクトのインスタンスクラス
 };

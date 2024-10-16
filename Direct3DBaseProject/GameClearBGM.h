@@ -7,40 +7,47 @@ class SoundBase;
 class GameClearBGM:public SoundBase
 {
 public:
+	/// <summary>
+	/// クリア時BGMの初期化
+	/// </summary>
 	GameClearBGM();
+
+	/// <summary>
+	/// データ破棄
+	/// </summary>
 	~GameClearBGM();
 
 	/// <summary>
-	/// タイトルシーンUI初期化
+	/// タイトルサウンド初期化
 	/// </summary>
 	void InitializeTitle()override;
 
 	/// <summary>
-	/// タイトルシーンUI更新
+	/// タイトルサウンド更新
 	/// </summary>
 	void UpdateTitle()override;
 
 	/// <summary>
-	/// UI初期化
+	/// ゲームシーンサウンド初期化
 	/// </summary>
 	void Initialize()override;
 
 	/// <summary>
-	/// UI更新
+	/// ゲームシーンサウンド更新
 	/// </summary>
 	void Update()override;
 
 	/// <summary>
-	/// リザルトシーンUI初期化
+	/// リザルトサウンド初期化
 	/// </summary>
 	void InitializeResult()override;
 
 	/// <summary>
-	/// リザルトシーンUI更新
+	/// リザルトサウンド更新
 	/// </summary>
 	void UpdateResult()override;
 
 private:
-	float m_volume;
+	float m_volume;		//サウンドのボリューム
 };
 

@@ -8,6 +8,7 @@
 #include"UIBase.h"
 #include "TitleLogo.h"
 
+//タイトルロゴの初期化
 TitleLogo::TitleLogo():
 	m_alpha(1.f),
 	m_renderTime(0.f),
@@ -37,6 +38,7 @@ TitleLogo::TitleLogo():
 	m_pos.y = deviceAccessor->GetScreenSize().bottom / 2;
 }
 
+//データ破棄
 TitleLogo::~TitleLogo()
 {
 
@@ -72,37 +74,37 @@ void TitleLogo::DrawTitle()
 	batch->Draw(m_texture.Get(), m_pos, nullptr, Colors::White * m_alpha, 0, m_origin, m_scale, SpriteEffects_None, m_layerDepth);
 }
 
-//UI初期化
+//UI初期化(処理なし)
 void TitleLogo::Initialize()
 {
 
 }
 
-//UI更新
+//UI更新(処理なし)
 void TitleLogo::Update()
 {
 
 }
 
-//UI描画
+//UI描画(処理なし)
 void TitleLogo::Draw()
 {
 
 }
 
-//リザルトシーンオブジェクトの初期化
+//リザルトシーンオブジェクトの初期化(処理なし)
 void TitleLogo::InitializeResult()
 {
 
 }
 
-//リザルトシーンオブジェクトの更新
+//リザルトシーンオブジェクトの更新(処理なし)
 void TitleLogo::UpdateResult()
 {
 	
 }
 
-//リザルトシーンオブジェクトの描画
+//リザルトシーンオブジェクトの描画(処理なし)
 void TitleLogo::DrawResult()
 {
 	

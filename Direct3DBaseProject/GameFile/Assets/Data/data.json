@@ -540,7 +540,7 @@
 
   "HitCheckTextureSize": 2000,
 
-  "MaxFoundTime": 3,
+  "MaxFoundTime": 4,
 
     "TitleBGM": "title.wav",
     "GameBGM": "game.wav",
@@ -553,5 +553,5 @@
     "GameBGMVolume": 0.5,
     "WalkSoundVolume": 2,
     "RunSoundVolume": 2,
-    "FoundSEVolume": 1
+    "FoundSEVolume": 8
 }

@@ -5,6 +5,7 @@
 
 DollHeadAccessor* DollHeadAccessor::m_instance = nullptr;
 
+//オブジェクトの生成
 DollHeadAccessor::DollHeadAccessor()
 {
 	auto json = Json::GetInstance();
@@ -15,17 +16,20 @@ DollHeadAccessor::DollHeadAccessor()
 			json->GetData()["PlayerHeadPos"].at(2)));
 }
 
+//オブジェクトの破棄
 DollHeadAccessor::~DollHeadAccessor()
 {
 	delete(m_dollHead);
 }
 
+//インスタンス生成
 void DollHeadAccessor::CreateInstance()
 {
 	if (m_instance)return;
 	m_instance = new DollHeadAccessor();
 }
 
+//インスタンス破棄
 void DollHeadAccessor::DestroyInstance()
 {
 	if (!m_instance)return;

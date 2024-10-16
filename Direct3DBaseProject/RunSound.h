@@ -7,40 +7,47 @@ class SoundBase;
 class RunSound:public SoundBase
 {
 public:
+	/// <summary>
+	/// 走った時の足音の初期化
+	/// </summary>
 	RunSound();
+
+	/// <summary>
+	/// データ破棄
+	/// </summary>
 	~RunSound();
 
 	/// <summary>
-	/// タイトルシーンUI初期化
+	/// タイトルサウンド初期化
 	/// </summary>
 	void InitializeTitle()override;
 
 	/// <summary>
-	/// タイトルシーンUI更新
+	/// タイトルサウンド更新
 	/// </summary>
 	void UpdateTitle()override;
 
 	/// <summary>
-	/// UI初期化
+	/// ゲームシーンサウンド初期化
 	/// </summary>
 	void Initialize()override;
 
 	/// <summary>
-	/// UI更新
+	/// ゲームシーンサウンド更新
 	/// </summary>
 	void Update()override;
 
 	/// <summary>
-	/// リザルトシーンUI初期化
+	/// リザルトサウンド初期化
 	/// </summary>
 	void InitializeResult()override;
 
 	/// <summary>
-	/// リザルトシーンUI更新
+	/// リザルトサウンド更新
 	/// </summary>
 	void UpdateResult()override;
 
 private:
-	const float m_volume;
+	const float m_volume;	//サウンドのボリューム
 };
 

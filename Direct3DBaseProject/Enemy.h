@@ -106,6 +106,10 @@ public:
 	/// <returns></returns>
 	Matrix GetEyeView()const { return m_eyeView; }
 
+	/// <summary>
+	/// 敵のアニメーション状態取得
+	/// </summary>
+	/// <returns></returns>
 	AnimationState GetNowAnimationState()const { return m_nowAnimationState; }
 
 private:
@@ -126,8 +130,8 @@ private:
 	bool m_isStartMoving;
 
 	const Vector3 m_initializeTitlePos;	//モデルのタイトルシーン初期座標
-	const Vector3 m_initializeGameClearPos;		//モデルのゲームシーン初期座標
-	const Vector3 m_initializeGameOverPos;
+	const Vector3 m_initializeGameClearPos;		//モデルのゲームクリア時初期座標
+	const Vector3 m_initializeGameOverPos;		//モデルのゲームオーバー時初期座標
 	const float m_initializeTitleRotate;//モデルのタイトルシーン初期回転量
 	const float m_initializeRotate;		//モデルのゲームシーン初期回転量
 	const float m_scale;				//モデルのスケール

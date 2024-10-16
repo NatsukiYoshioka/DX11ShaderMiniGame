@@ -21,6 +21,7 @@ BlockAccessor::BlockAccessor()
 	
 	for (int i = 0; i < json->GetData()["Block"].size(); i++)
 	{
+		//ブロックのモデルロード
 		SetCurrentDirectory(L"Assets/Models");
 		m_model.push_back(
 			Model::CreateFromSDKMESH(
@@ -32,6 +33,7 @@ BlockAccessor::BlockAccessor()
 		pos.clear();
 		rotate.clear();
 		textureID.clear();
+		//座標、回転量、テクスチャIDの設定
 		for (int j = 1; j < json->GetData()["Block"].at(i).size(); j++)
 		{
 			pos.push_back(Vector3(json->GetData()["Block"].at(i).at(j).at(0),

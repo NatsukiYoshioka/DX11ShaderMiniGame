@@ -7,7 +7,9 @@
 #include"GameObjectManager.h"
 #include "ButtonA.h"
 
+//AボタンUIの初期化
 ButtonA::ButtonA():
+	m_alpha(1.f),
 	m_scale(float(Json::GetInstance()->GetData()["ButtonAScale"])),
 	m_scaleAdd(float(Json::GetInstance()->GetData()["ButtonAScaleAdd"])),
 	m_minScale(float(Json::GetInstance()->GetData()["ButtonAScale"])),
@@ -36,6 +38,7 @@ ButtonA::ButtonA():
 	m_pos.y = float(json->GetData()["ButtonAPosition"].at(1));
 }
 
+//データ破棄
 ButtonA::~ButtonA()
 {
 
@@ -69,19 +72,19 @@ void ButtonA::DrawTitle()
 	batch->Draw(m_texture.Get(), m_pos, nullptr, Colors::White * m_alpha, 0, m_origin, m_scale, SpriteEffects_None, m_layerDepth);
 }
 
-//UI初期化
+//UI初期化(処理なし)
 void ButtonA::Initialize()
 {
 	m_alpha = 1.f;
 }
 
-//UI更新
+//UI更新(処理なし)
 void ButtonA::Update()
 {
 
 }
 
-//UI描画
+//UI描画(処理なし)
 void ButtonA::Draw()
 {
 	
@@ -107,6 +110,7 @@ void ButtonA::DrawResult()
 	batch->Draw(m_texture.Get(), m_pos, nullptr, Colors::White * m_alpha, 0, m_origin, m_scale, SpriteEffects_None, m_layerDepth);
 }
 
+//テクスチャのスケール更新
 void ButtonA::UpdateScale()
 {
 	if (m_scale <= m_minScale||m_scale>=m_maxScale)

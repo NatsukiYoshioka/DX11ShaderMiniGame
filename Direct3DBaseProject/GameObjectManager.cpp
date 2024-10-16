@@ -42,6 +42,7 @@ GameObjectManager::GameObjectManager()
 	UIAccessor::CreateInstance();
 	SoundAccessor::CreateInstance();
 
+	//オブジェクトの追加
 	m_gameObjects.push_back(dynamic_cast<GameObject*>(EnemyAccessor::GetInstance()->GetEnemy()));
 	m_gameObjects.push_back(dynamic_cast<GameObject*>(GiftBoxAccessor::GetInstance()->GetGiftBox()));
 	m_gameObjects.push_back(dynamic_cast<GameObject*>(CameraAccessor::GetInstance()->GetCamera()));

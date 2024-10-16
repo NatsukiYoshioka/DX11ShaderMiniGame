@@ -475,7 +475,7 @@
   "EnemyGameClearPosition": [ 0, -31.5, 55 ],
   "EnemyGameOverPosition": [ 20, -31.5, 20 ],
   "EnemyStartMovingPlayerPosition": [ -7.5, -0.6, 0 ],
-  "EnemyTitleEyeHeight": 30,
+  "EnemyTitleEyeHeight": 50,
   "EnemyEyeHeight": 7.5,
   "EnemyScale": 0.325,
   "EnemyDistance": 40,
@@ -540,7 +540,7 @@
 
   "HitCheckTextureSize": 2000,
 
-  "MaxFoundTime": 3,
+  "MaxFoundTime": 4,
 
     "TitleBGM": "title.wav",
     "GameBGM": "game.wav",
@@ -553,5 +553,5 @@
     "GameBGMVolume": 0.5,
     "WalkSoundVolume": 2,
     "RunSoundVolume": 2,
-    "FoundSEVolume": 1
+    "FoundSEVolume": 2
 }

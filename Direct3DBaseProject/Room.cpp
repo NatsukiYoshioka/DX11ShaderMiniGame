@@ -8,6 +8,7 @@
 #include"CameraAccessor.h"
 #include "Room.h"
 
+//オブジェクトの初期化
 Room::Room(const wchar_t* fileName)
 {
 	auto deviceAccessor = DeviceAccessor::GetInstance();
@@ -20,36 +21,9 @@ Room::Room(const wchar_t* fileName)
 		ModelLoader_Clockwise | ModelLoader_IncludeBones);
 	SetCurrentDirectory(L"../../");
 
-	//エフェクトの初期化
-	/*SetCurrentDirectory(L"Assets/Shader");
-	m_effect.assign(m_modelHandle->meshes.size(), 
-		make_unique<OriginalEffect>(deviceAccessor->GetDevice(), OriginalEffect::PixelType::Object));
-	SetCurrentDirectory(L"../../");*/
-
-	//モデルの各メッシュの描画設定
-	//int index = 0;
-	//for (const auto& mit : m_modelHandle->meshes)
-	//{
-	//	auto mesh = mit.get();
-	//	assert(mesh != nullptr);
-
-	//	if (mesh->boneIndex != ModelBone::c_Invalid)
-	//	{
-	//		for (const auto& pit : mesh->meshParts)
-	//		{
-	//			auto part = pit.get();
-	//			assert(part != nullptr);
-
-	//			//入力レイアウトの初期化とエフェクトの適用
-	//			part->ModifyEffect(deviceAccessor->GetDevice(), m_effect.at(index), false);
-	//		}
-	//	}
-	//	index++;
-	//}
-	//m_modelHandle->Modified();
-
 	auto json = Json::GetInstance();
 	int index = 0;
+	//各メッシュのテクスチャ設定
 	for (const auto& mit : m_modelHandle->meshes)
 	{
 		auto mesh = mit.get();
@@ -85,6 +59,7 @@ Room::Room(const wchar_t* fileName)
 		index++;
 	}
 	
+	//ワールド行列の設定
 	m_pos = Vector3(
 		float(json->GetData()["Room"].at(1).at(0)),
 		float(json->GetData()["Room"].at(1).at(1)),
@@ -97,31 +72,37 @@ Room::Room(const wchar_t* fileName)
 	m_world = XMMatrixMultiply(m_world, XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
 }
 
+//データ破棄
 Room::~Room()
 {
 	m_modelHandle.reset();
 }
 
+//タイトルでの初期化
 void Room::InitializeTitle()
 {
 	
 }
 
+//タイトルでの更新
 void Room::UpdateTitle()
 {
 	Update();
 }
 
+//タイトルでの描画
 void Room::DrawTitle()
 {
 	Draw();
 }
 
+//ゲームシーンでの初期化
 void Room::Initialize()
 {
 
 }
 
+//ゲームシーンでの更新
 void Room::Update()
 {
 	for (const auto& mit : m_modelHandle->meshes)
@@ -142,6 +123,7 @@ void Room::Update()
 	}
 }
 
+//ゲームシーンでの描画
 void Room::Draw()
 {
 	m_modelHandle->Draw(DeviceAccessor::GetInstance()->GetContext(),
@@ -151,21 +133,25 @@ void Room::Draw()
 		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
 }
 
+//リザルトでの初期化(処理なし)
 void Room::InitializeResult()
 {
 
 }
 
+//リザルトでの更新
 void Room::UpdateResult()
 {
 	Update();
 }
 
+//リザルトでの描画
 void Room::DrawResult()
 {
 	Draw();
 }
 
+//影の描画
 void Room::DrawShadow()
 {
 	//シェーダーを影用に変更

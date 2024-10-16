@@ -7,6 +7,7 @@
 #include"UIBase.h"
 #include "GameClearUI.h"
 
+//クリア時のUI初期化
 GameClearUI::GameClearUI():
 	m_scale(float(Json::GetInstance()->GetData()["GameClearUIScale"])),
 	m_layerDepth(float(Json::GetInstance()->GetData()["GameClearUILayerDepth"]))
@@ -33,54 +34,55 @@ GameClearUI::GameClearUI():
 	m_pos.y = float(json->GetData()["GameClearUIPosY"]);
 }
 
+//データ破棄
 GameClearUI::~GameClearUI()
 {
 
 }
 
-//タイトルシーンオブジェクトの初期化
+//タイトルシーンオブジェクトの初期化(処理なし)
 void GameClearUI::InitializeTitle()
 {
 
 }
 
-//タイトルシーンオブジェクトの更新
+//タイトルシーンオブジェクトの更新(処理なし)
 void GameClearUI::UpdateTitle()
 {
 
 }
 
-//タイトルシーンオブジェクトの描画
+//タイトルシーンオブジェクトの描画(処理なし)
 void GameClearUI::DrawTitle()
 {
 
 }
 
-//UI初期化
+//UI初期化(処理なし)
 void GameClearUI::Initialize()
 {
 
 }
 
-//UI更新
+//UI更新(処理なし)
 void GameClearUI::Update()
 {
 
 }
 
-//UI描画
+//UI描画(処理なし)
 void GameClearUI::Draw()
 {
 
 }
 
-//リザルトシーンオブジェクトの初期化
+//リザルトシーンオブジェクトの初期化(処理なし)
 void GameClearUI::InitializeResult()
 {
 
 }
 
-//リザルトシーンオブジェクトの更新
+//リザルトシーンオブジェクトの更新(処理なし)
 void GameClearUI::UpdateResult()
 {
 	

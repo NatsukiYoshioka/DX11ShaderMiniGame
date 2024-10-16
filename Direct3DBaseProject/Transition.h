@@ -10,7 +10,14 @@ class UIBase;
 class Transition :public UIBase
 {
 public:
+	/// <summary>
+	/// トランジションの初期化
+	/// </summary>
 	Transition();
+
+	/// <summary>
+	/// データ破棄
+	/// </summary>
 	~Transition();
 
 	/// <summary>
@@ -58,24 +65,36 @@ public:
 	/// </summary>
 	void DrawResult()override;
 
+	/// <summary>
+	/// テクスチャのアルファ値取得
+	/// </summary>
+	/// <returns></returns>
 	float GetAlpha()const { return m_alpha; }
 
+	/// <summary>
+	/// トランジションのフェードアウトが終わったかどうか取得
+	/// </summary>
+	/// <returns></returns>
 	bool GetIsFinishFadeout()const { return m_isFinishFadeout; }
 
+	/// <summary>
+	/// トランジションのフェードインが終わったかどうか取得
+	/// </summary>
+	/// <returns></returns>
 	bool GetIsFinishFadein()const { return m_isFinishFadein; }
 
 private:
-	ComPtr<ID3D11ShaderResourceView> m_texture;
-	ComPtr<ID3D11Resource> m_textureResource;
+	ComPtr<ID3D11ShaderResourceView> m_texture;		//テクスチャ
+	ComPtr<ID3D11Resource> m_textureResource;		//テクスチャ情報
 
-	Vector2 m_origin;
-	float m_alpha;
+	Vector2 m_origin;		//テクスチャ中心座標
+	float m_alpha;			//テクスチャのアルファ値
 
-	bool m_isFinishFadeout;
-	bool m_isFinishFadein;
+	bool m_isFinishFadeout;	//フェードアウトが終わったかどうか
+	bool m_isFinishFadein;	//フェードインが終わったかどうか
 
-	const float m_scale;
-	const float m_layerDepth;
-	const float m_alphaAdd;
+	const float m_scale;		//テクスチャのスケール
+	const float m_layerDepth;	//テクスチャのレイヤー深度
+	const float m_alphaAdd;		//アルファ値の増減量
 };
 

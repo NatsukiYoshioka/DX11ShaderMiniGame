@@ -9,6 +9,7 @@
 #include"UIBase.h"
 #include "GameOverUI.h"
 
+//ゲームオーバー時UIの初期化
 GameOverUI::GameOverUI():
 	m_alpha(0),
 	m_scale(float(Json::GetInstance()->GetData()["GameOverUIScale"])),
@@ -37,48 +38,49 @@ GameOverUI::GameOverUI():
 	m_pos.y = float(json->GetData()["GameOverUIPosY"]);
 }
 
+//データ破棄
 GameOverUI::~GameOverUI()
 {
 
 }
 
-//タイトルシーンオブジェクトの初期化
+//タイトルシーンオブジェクトの初期化(処理なし)
 void GameOverUI::InitializeTitle()
 {
 
 }
 
-//タイトルシーンオブジェクトの更新
+//タイトルシーンオブジェクトの更新(処理なし)
 void GameOverUI::UpdateTitle()
 {
 
 }
 
-//タイトルシーンオブジェクトの描画
+//タイトルシーンオブジェクトの描画(処理なし)
 void GameOverUI::DrawTitle()
 {
 
 }
 
-//UI初期化
+//UI初期化(処理なし)
 void GameOverUI::Initialize()
 {
 
 }
 
-//UI更新
+//UI更新(処理なし)
 void GameOverUI::Update()
 {
 	
 }
 
-//UI描画
+//UI描画(処理なし)
 void GameOverUI::Draw()
 {
 	
 }
 
-//リザルトシーンオブジェクトの初期化
+//リザルトシーンオブジェクトの初期化(処理なし)
 void GameOverUI::InitializeResult()
 {
 

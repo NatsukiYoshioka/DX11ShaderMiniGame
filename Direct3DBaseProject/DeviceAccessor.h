@@ -134,8 +134,8 @@ private:
 
 	ID3D11Device* m_device;							//描画デバイス
 	ID3D11DeviceContext* m_context;					//描画コンテキスト
-	ID3D11RenderTargetView* m_RTV;
-	ID3D11DepthStencilView* m_DSV;
+	ID3D11RenderTargetView* m_RTV;					//レンダーターゲットビュー
+	ID3D11DepthStencilView* m_DSV;					//深度ステンシルビュー
 	RECT m_screenSize;								//スクリーンサイズ
 	unique_ptr<CommonStates> m_states;				//D3Dステートオブジェクト
 	unique_ptr<EffectFactory> m_fxFactory;			//エフェクトヘルパーオブジェクト

@@ -68,6 +68,7 @@ void Camera::InitializeTitle()
 void Camera::UpdateTitle()
 {
 	auto title = dynamic_cast<TitleScene*>(SceneManager::GetInstance()->GetNowScene());
+	//ゲームスタートしていたらUIをフェードアウトさせる
 	if (title&&title->GetIsStartGame())
 	{
 		for (int i = 0;i < UIAccessor::GetInstance()->GetUIs().size();i++)
@@ -87,10 +88,13 @@ void Camera::UpdateTitle()
 						m_isFinishMoving = true;
 					}
 				}
+				break;
 			}
 		}
 	}
+	//タイトルでの座標移動割合を計算
 	m_titlePosRatio = 1.f - ((m_pos.LengthSquared() - m_titleInitializePos.LengthSquared()) / (m_titleFinalPos.LengthSquared() - m_titleInitializePos.LengthSquared()));
+	//ビュー行列の設定
 	m_view = Matrix::CreateLookAt(
 		m_pos,
 		PlayerAccessor::GetInstance()->GetPlayer()->GetPos(), Vector3::Up);
@@ -141,6 +145,7 @@ void Camera::Update()
 		m_yaw += -moveDirection.y * yawSpeed;
 	}
 	
+	//カメラの移動限界処理
 	if (m_yaw < m_minYaw)
 	{
 		m_yaw = m_minYaw;
@@ -150,6 +155,7 @@ void Camera::Update()
 		m_yaw = m_maxYaw;
 	}
 
+	//カメラの注視点をプレイヤーにする
 	auto playerPos = PlayerAccessor::GetInstance()->GetPlayer()->GetPos();
 	float radianX = m_pitch * XM_PI / 180;
 	float radianY = m_yaw * XM_PI / 180;
@@ -159,6 +165,7 @@ void Camera::Update()
 	float y = playerPos.y + sin(radianY) * m_distance;
 	m_pos = Vector3(x, y, z);
 
+	//ビュー行列の設定
 	m_view = Matrix::CreateLookAt(m_pos, playerPos, Vector3::Up);
 }
 
@@ -172,12 +179,14 @@ void Camera::Draw()
 void Camera::InitializeResult()
 {
 	auto json = Json::GetInstance();
+	//クリア時の初期化
 	if (PlayerAccessor::GetInstance()->GetPlayer()->GetIsClear())
 	{
 		m_pitch = float(json->GetData()["CameraInitializeClearPitch"]);
 		m_yaw = float(json->GetData()["CameraInitializeClearYaw"]);
 		m_distance = float(json->GetData()["CameraClearDistance"]);
 	}
+	//ゲームオーバー時の初期化
 	else
 	{
 		m_pos = Vector3(json->GetData()["CameraGameOverPos"].at(0),
@@ -190,6 +199,7 @@ void Camera::InitializeResult()
 //リザルトシーンオブジェクトの更新
 void Camera::UpdateResult()
 {
+	//クリア時のカメラ更新
 	if (PlayerAccessor::GetInstance()->GetPlayer()->GetIsClear())
 	{
 		float radianX = m_pitch * XM_PI / 180;

@@ -7,6 +7,7 @@
 #include"UIBase.h"
 #include "Transition.h"
 
+//トランジションの初期化
 Transition::Transition():
 	m_alpha(0),
 	m_isFinishFadeout(false),
@@ -34,13 +35,14 @@ Transition::Transition():
 	m_origin.y = float(texDesc.Height / 2);
 }
 
+//データ破棄
 Transition::~Transition()
 {
 	m_texture.Reset();
 	m_textureResource.Reset();
 }
 
-//タイトルシーンオブジェクトの初期化
+//タイトルシーンオブジェクトの初期化(処理なし)
 void Transition::InitializeTitle()
 {
 
@@ -58,17 +60,18 @@ void Transition::DrawTitle()
 	Draw();
 }
 
-//UI初期化
+//UI初期化(処理なし)
 void Transition::Initialize()
 {
 
 }
 
-//UI更新
+//UI更新(処理なし)
 void Transition::Update()
 {
 	auto scene = SceneManager::GetInstance()->GetNowScene();
 	auto isChangeScene = SceneManager::GetInstance()->GetNowScene()->GetIsChangeScene();
+	//シーン遷移が有効な場合はフェードアウト処理を行う
 	if (isChangeScene)
 	{
 		if (!m_isFinishFadeout)
@@ -81,6 +84,7 @@ void Transition::Update()
 			m_isFinishFadeout = true;
 		}
 	}
+	//シーン遷移が終わったらシーンをフェードインさせる
 	else
 	{
 		m_isFinishFadeout = false;
@@ -102,7 +106,7 @@ void Transition::Draw()
 	batch->Draw(m_texture.Get(), pos, nullptr, Colors::White * m_alpha, 0, m_origin, m_scale, SpriteEffects_None, m_layerDepth);
 }
 
-//リザルトシーンオブジェクトの初期化
+//リザルトシーンオブジェクトの初期化(処理なし)
 void Transition::InitializeResult()
 {
 

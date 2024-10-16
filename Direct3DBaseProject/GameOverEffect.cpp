@@ -9,8 +9,10 @@
 #include"UIBase.h"
 #include "GameOverEffect.h"
 
+//ゲームオーバー時UIエフェクトの初期化
 GameOverEffect::GameOverEffect():
 	m_pos(),
+	m_alpha(1.f),
 	m_scale(float(Json::GetInstance()->GetData()["GameOverEffectScale"])),
 	m_layerDepth(float(Json::GetInstance()->GetData()["GameOverEffectLayerDepth"]))
 {
@@ -36,48 +38,49 @@ GameOverEffect::GameOverEffect():
 	m_pos.y = deviceAccessor->GetScreenSize().bottom / 2;
 }
 
+//データ破棄
 GameOverEffect::~GameOverEffect()
 {
 
 }
 
-//タイトルシーンオブジェクトの初期化
+//タイトルシーンオブジェクトの初期化(処理なし)
 void GameOverEffect::InitializeTitle()
 {
 
 }
 
-//タイトルシーンオブジェクトの更新
+//タイトルシーンオブジェクトの更新(処理なし)
 void GameOverEffect::UpdateTitle()
 {
 
 }
 
-//タイトルシーンオブジェクトの描画
+//タイトルシーンオブジェクトの描画(処理なし)
 void GameOverEffect::DrawTitle()
 {
 
 }
 
-//UI初期化
+//UI初期化(処理なし)
 void GameOverEffect::Initialize()
 {
 
 }
 
-//UI更新
+//UI更新(処理なし)
 void GameOverEffect::Update()
 {
 
 }
 
-//UI描画
+//UI描画(処理なし)
 void GameOverEffect::Draw()
 {
 
 }
 
-//リザルトシーンオブジェクトの初期化
+//リザルトシーンオブジェクトの初期化(処理なし)
 void GameOverEffect::InitializeResult()
 {
 
@@ -87,6 +90,7 @@ void GameOverEffect::InitializeResult()
 void GameOverEffect::UpdateResult()
 {
 	if (PlayerAccessor::GetInstance()->GetPlayer()->GetIsClear())return;
+	//人形の頭の移動割合に合わせてフェードイン
 	m_alpha = DollHeadAccessor::GetInstance()->GetDollHead()->GetPosRatio();
 }
 

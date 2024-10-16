@@ -17,6 +17,7 @@
 
 //オブジェクトの初期化
 Player::Player(const wchar_t* fileName):
+	m_rotate(),
 	m_nowAnimationState(AnimationState::Idle),
 	m_beFound(false),
 	m_isClear(false),
@@ -32,7 +33,6 @@ Player::Player(const wchar_t* fileName):
 	m_initializeRotate(float(Json::GetInstance()->GetData()["PlayerPosition"].at(3))* XM_PI / 180.f),
 	m_sphereRadius(float(Json::GetInstance()->GetData()["SphereRadius"])),
 	m_sphereDefaultHeight(float(Json::GetInstance()->GetData()["SphereDefaultHeight"])),
-	m_sphereCrouchHeight(float(Json::GetInstance()->GetData()["SphereCrouchHeight"])),
 	m_scale(float(Json::GetInstance()->GetData()["PlayerScale"])),
 	m_speed(float(Json::GetInstance()->GetData()["PlayerSpeed"])),
 	m_runSpeed(float(Json::GetInstance()->GetData()["PlayerRunSpeed"])),
@@ -217,7 +217,6 @@ void Player::Update()
 	bool isMove = false;
 	bool isCrouch = false;
 	float nowSpeed = 0.f;
-	m_sphereHeight = m_sphereDefaultHeight;
 	m_nowAnimationState = AnimationState::Idle;
 
 	//移動処理
@@ -233,7 +232,6 @@ void Player::Update()
 		if (pad.IsLeftShoulderPressed() || key.LeftControl || mouse.rightButton)
 		{
 			m_nowAnimationState = AnimationState::Crouch;
-			m_sphereHeight = m_sphereCrouchHeight;
 			isCrouch = true;
 		}
 		if (pad.thumbSticks.leftX != 0 || pad.thumbSticks.leftY != 0 || key.W || key.A || key.S || key.D)
@@ -556,8 +554,8 @@ void Player::HitCheckObject()
 		D3D11_BUFFER_DESC BufferDesc;
 		ZeroMemory(&BufferDesc, sizeof(D3D11_BUFFER_DESC));
 		m_sphereResult->GetDesc(&BufferDesc);
-		BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE | D3D11_CPU_ACCESS_READ;  // CPU から読み込みできるように設定する
-		BufferDesc.Usage = D3D11_USAGE_STAGING;             // GPU から CPU へのデータ転送 (コピー) をサポートするリソース
+		BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE | D3D11_CPU_ACCESS_READ;  //CPUから読み込みできるように設定する
+		BufferDesc.Usage = D3D11_USAGE_STAGING;             //GPUからCPUへのデータ転送(コピー)をサポートするリソース
 		BufferDesc.BindFlags = 0;
 		BufferDesc.MiscFlags = 0;
 		device->CreateBuffer(&BufferDesc, NULL, &debugBuffer);

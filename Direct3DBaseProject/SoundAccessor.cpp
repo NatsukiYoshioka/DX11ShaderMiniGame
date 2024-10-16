@@ -11,6 +11,7 @@
 
 SoundAccessor* SoundAccessor::m_instance = nullptr;
 
+//オブジェクトの追加
 SoundAccessor::SoundAccessor()
 {
 	m_sounds.push_back(new TitleBGM());
@@ -22,17 +23,20 @@ SoundAccessor::SoundAccessor()
 	m_sounds.push_back(new GameOverBGM());
 }
 
+//データ破棄
 SoundAccessor::~SoundAccessor()
 {
 	m_sounds.clear();
 }
 
+//インスタンス生成
 void SoundAccessor::CreateInstance()
 {
 	if (m_instance)return;
 	m_instance = new SoundAccessor();
 }
 
+//インスタンス破棄
 void SoundAccessor::DestroyInstance()
 {
 	if (!m_instance)return;

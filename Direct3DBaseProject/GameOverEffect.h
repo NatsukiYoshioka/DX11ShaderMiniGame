@@ -9,7 +9,14 @@ class UIBase;
 class GameOverEffect :public UIBase
 {
 public:
+	/// <summary>
+	/// ゲームオーバー時UIエフェクトの初期化
+	/// </summary>
 	GameOverEffect();
+
+	/// <summary>
+	/// データ破棄
+	/// </summary>
 	~GameOverEffect();
 
 	/// <summary>
@@ -58,14 +65,14 @@ public:
 	void DrawResult()override;
 
 private:
-	ComPtr<ID3D11ShaderResourceView> m_texture;
-	ComPtr<ID3D11Resource> m_textureResource;
+	ComPtr<ID3D11ShaderResourceView> m_texture;		//テクスチャ
+	ComPtr<ID3D11Resource> m_textureResource;		//テクスチャ情報
 
-	Vector2 m_pos;
-	Vector2 m_origin;
-	float m_alpha;
+	Vector2 m_pos;		//テクスチャ座標
+	Vector2 m_origin;	//テクスチャの中心座標
+	float m_alpha;		//テクスチャのアルファ値
 
-	const float m_scale;
-	const float m_layerDepth;
+	const float m_scale;		//テクスチャのスケール
+	const float m_layerDepth;	//テクスチャのレイヤー深度
 };
 

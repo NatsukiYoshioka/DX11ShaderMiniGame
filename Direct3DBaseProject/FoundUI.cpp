@@ -72,19 +72,19 @@ FoundUI::~FoundUI()
 	m_foundTextureResource.Reset();
 }
 
-//タイトルシーンオブジェクトの初期化
+//タイトルシーンオブジェクトの初期化(処理なし)
 void FoundUI::InitializeTitle()
 {
 
 }
 
-//タイトルシーンオブジェクトの更新
+//タイトルシーンオブジェクトの更新(処理なし)
 void FoundUI::UpdateTitle()
 {
 
 }
 
-//タイトルシーンオブジェクトの描画
+//タイトルシーンオブジェクトの描画(処理なし)
 void FoundUI::DrawTitle()
 {
 
@@ -155,19 +155,19 @@ void FoundUI::Draw()
 	);
 }
 
-//リザルトシーンオブジェクトの初期化
+//リザルトシーンオブジェクトの初期化(処理なし)
 void FoundUI::InitializeResult()
 {
 
 }
 
-//リザルトシーンオブジェクトの更新
+//リザルトシーンオブジェクトの更新(処理なし)
 void FoundUI::UpdateResult()
 {
 
 }
 
-//リザルトシーンオブジェクトの描画
+//リザルトシーンオブジェクトの描画(処理なし)
 void FoundUI::DrawResult()
 {
 

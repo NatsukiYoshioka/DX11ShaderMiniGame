@@ -119,6 +119,10 @@ public:
 	/// </summary>
 	void HitCheckObject();
 
+	/// <summary>
+	/// アニメーションの状態取得
+	/// </summary>
+	/// <returns></returns>
 	AnimationState GetNowAnimationState()const { return m_nowAnimationState; }
 
 private:
@@ -155,18 +159,17 @@ private:
 	ComPtr<ID3D11UnorderedAccessView> m_sphereInfo;	//スフィア用UAV
 	ComPtr<ID3D11ComputeShader> m_csForCollision;	//当たり判定用コンピュートシェーダー
 
-	float m_sphereHeight;
-	const float m_sphereRadius;
-	const float m_sphereDefaultHeight;
-	const float m_sphereCrouchHeight;
+	float m_sphereHeight;				//当たり判定用スフィアの高さ
+	const float m_sphereRadius;			//スフィアの半径
+	const float m_sphereDefaultHeight;	//スフィアの通常高さ
 
 	bool m_beFound;		//見つかったかどうか
 	bool m_isClear;		//クリアしたかどうか
 
-	const Vector3 m_initializeTitlePos;
-	const float m_titleRotateX;
-	const float m_titleRotateY;
-	const float m_titleScale;
+	const Vector3 m_initializeTitlePos;	//タイトルでの初期座標
+	const float m_titleRotateX;			//タイトルでの初期X軸回転量
+	const float m_titleRotateY;			//タイトルでの初期Y軸回転量
+	const float m_titleScale;			//タイトルでのスケール
 
 	const Vector3 m_initializePos;		//ゲームシーンのオブジェクト初期座標
 	const float m_initializeRotate;		//ゲームシーンのオブジェクト初期回転量
@@ -175,7 +178,7 @@ private:
 	const float m_runSpeed;				//プレイヤーのダッシュスピード
 	const float m_crouchSpeed;			//プレイヤーのしゃがみ移動スピード
 
-	const Vector3 m_clearPos;
-	const Vector3 m_clearFinalPos;
+	const Vector3 m_clearPos;			//クリア時の初期座標
+	const Vector3 m_clearFinalPos;		//クリア時の最終座標
 };
 

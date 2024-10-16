@@ -15,6 +15,7 @@ DeviceAccessor::DeviceAccessor(ID3D11Device* device,
 	m_RTV(rtv),
 	m_DSV(dsv),
 	m_screenSize(screenSize),
+	m_mouse(),
 	m_audioEngine(audioEngine),
 	m_elapsedTime()
 {

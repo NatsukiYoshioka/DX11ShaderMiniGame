@@ -7,6 +7,7 @@
 #include"UIAccessor.h"
 #include "FoundEffect.h"
 
+//見つかった時のUIエフェクト初期化
 FoundEffect::FoundEffect():
 	m_alpha(0),
 	m_scale(float(Json::GetInstance()->GetData()["FoundEffectScale"])),
@@ -31,30 +32,31 @@ FoundEffect::FoundEffect():
 	m_origin.y = float(texDesc.Height / 2);
 }
 
+//データ破棄
 FoundEffect::~FoundEffect()
 {
 
 }
 
-//タイトルシーンオブジェクトの初期化
+//タイトルシーンオブジェクトの初期化(処理なし)
 void FoundEffect::InitializeTitle()
 {
 
 }
 
-//タイトルシーンオブジェクトの更新
+//タイトルシーンオブジェクトの更新(処理なし)
 void FoundEffect::UpdateTitle()
 {
 	
 }
 
-//タイトルシーンオブジェクトの描画
+//タイトルシーンオブジェクトの描画(処理なし)
 void FoundEffect::DrawTitle()
 {
 	
 }
 
-//UI初期化
+//UI初期化(処理なし)
 void FoundEffect::Initialize()
 {
 
@@ -84,19 +86,19 @@ void FoundEffect::Draw()
 	batch->Draw(m_texture.Get(), pos, nullptr, Colors::White * m_alpha, 0, m_origin, m_scale, SpriteEffects_None, m_layerDepth);
 }
 
-//リザルトシーンオブジェクトの初期化
+//リザルトシーンオブジェクトの初期化(処理なし)
 void FoundEffect::InitializeResult()
 {
 
 }
 
-//リザルトシーンオブジェクトの更新
+//リザルトシーンオブジェクトの更新(処理なし)
 void FoundEffect::UpdateResult()
 {
 	
 }
 
-//リザルトシーンオブジェクトの描画
+//リザルトシーンオブジェクトの描画(処理なし)
 void FoundEffect::DrawResult()
 {
 	

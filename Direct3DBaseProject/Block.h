@@ -89,14 +89,18 @@ public:
 	ComPtr<ID3D11ShaderResourceView> GetVertexBufferSRV() { return m_vertexBufferSRV; }
 
 private:
-	Model* m_model;
+	Model* m_model;								//モデル情報が格納されたクラスポインタ
+
+	/// <summary>
+	/// 描画時のインスタンシングに必要な変数の構造体
+	/// </summary>
 	struct InstanceData
 	{
-		XMMATRIX world;
-		int textureID;
+		XMMATRIX world;			//オブジェクトのワールド座標
+		int textureID;			//オブジェクトのテクスチャID
 	};
-	vector<InstanceData> m_instances;
-	ComPtr<ID3D11Buffer> m_instanceBuffer;
+	vector<InstanceData> m_instances;			//インスタンシング構造体のコンテナ
+	ComPtr<ID3D11Buffer> m_instanceBuffer;		//インスタンシング構造体バッファ
 	shared_ptr<OriginalEffect> m_effect;		//モデル描画用エフェクトクラス
 	ComPtr<ID3D11InputLayout> m_inputLayout;
 

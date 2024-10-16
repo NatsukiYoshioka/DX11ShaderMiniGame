@@ -5,6 +5,7 @@
 
 GiftBoxAccessor* GiftBoxAccessor::m_instance = nullptr;
 
+//モデルの生成
 GiftBoxAccessor::GiftBoxAccessor()
 {
 	auto json = Json::GetInstance();
@@ -15,17 +16,20 @@ GiftBoxAccessor::GiftBoxAccessor()
 		float(json->GetData()["GiftBox"].at(1).at(3)));
 }
 
+//データ破棄
 GiftBoxAccessor::~GiftBoxAccessor()
 {
 
 }
 
+//インスタンス生成
 void GiftBoxAccessor::CreateInstance()
 {
 	if (m_instance)return;
 	m_instance = new GiftBoxAccessor();
 }
 
+//インスタンス破棄
 void GiftBoxAccessor::DestroyInstance()
 {
 	if (!m_instance)return;

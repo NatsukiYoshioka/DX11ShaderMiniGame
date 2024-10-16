@@ -74,8 +74,16 @@ public:
 	/// <returns>カメラのピッチ</returns>
 	float GetPitch()const  { return m_pitch; }
 
+	/// <summary>
+	/// タイトルでのカメラの移動割合
+	/// </summary>
+	/// <returns></returns>
 	float GetTitlePosRatio()const { return m_titlePosRatio; }
 
+	/// <summary>
+	/// タイトルでのカメラ移動が終了したか取得
+	/// </summary>
+	/// <returns></returns>
 	bool GetIsFinishMoving()const { return m_isFinishMoving; }
 
 private:
@@ -90,18 +98,18 @@ private:
 	const float m_speed;		//カメラのデフォルトスピード
 	const float m_mouseSpeed;	//カメラのマウススピード
 
-	const float m_minYaw;
-	const float m_maxYaw;
+	const float m_minYaw;		//カメラの最小ヨー
+	const float m_maxYaw;		//カメラの最大ヨー
 
-	float m_moveWaitTime;
-	const float m_maxMoveWaitTime;
-	bool m_isFinishMoving;
-	const Vector3 m_titleInitializePos;
-	const Vector3 m_titleFinalPos;
-	const float m_titleSpeed;
+	float m_moveWaitTime;				//タイトルでのカメラ移動までの待機時間
+	const float m_maxMoveWaitTime;		//タイトルでのカメラ移動までの最大待機時間
+	bool m_isFinishMoving;				//タイトルのカメラ移動が終了したかどうか
+	const Vector3 m_titleInitializePos;	//タイトルでの初期座標
+	const Vector3 m_titleFinalPos;		//タイトルでの最終座標
+	const float m_titleSpeed;			//タイトルでの座標移動スピード
 
-	const float m_initializePitch;
-	const float m_initializeYaw;
-	const float m_resultCameraHeight;
+	const float m_initializePitch;		//カメラの初期ピッチ
+	const float m_initializeYaw;		//カメラの初期ヨー
+	const float m_resultCameraHeight;	//リザルトでのカメラの高さ
 };
 
