@@ -161,6 +161,27 @@ GameObjectManager::GameObjectManager()
 	dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 	dsvDesc.Texture2D.MipSlice = 0;
 	device->CreateDepthStencilView(dst.Get(), &dsvDesc, m_hitCheckDSV.ReleaseAndGetAddressOf());
+
+	//法線+深度値保存用ビューの作成
+	D3D11_TEXTURE2D_DESC ndd = {};
+	ndd.Width = DeviceAccessor::GetInstance()->GetScreenSize().right;
+	ndd.Height = DeviceAccessor::GetInstance()->GetScreenSize().bottom;
+	ndd.MipLevels = 1;
+	ndd.ArraySize = 1;
+	ndd.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	ndd.SampleDesc.Count = 1;
+	ndd.Usage = D3D11_USAGE_DEFAULT;
+	ndd.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+	device->CreateTexture2D(&ndd, nullptr, m_normalDepthTexture.ReleaseAndGetAddressOf());
+
+	m_normalDepthRTV = nullptr;
+	device->CreateRenderTargetView(m_normalDepthTexture.Get(), nullptr, m_normalDepthRTV.ReleaseAndGetAddressOf());
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC ndsd = {};
+	ndsd.Format = ndd.Format;
+	ndsd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	ndsd.Texture2D.MipLevels = 1;
+	device->CreateShaderResourceView(m_normalDepthTexture.Get(), &ndsd, m_normalDepthSRV.ReleaseAndGetAddressOf());
 }
 
 //データ破棄

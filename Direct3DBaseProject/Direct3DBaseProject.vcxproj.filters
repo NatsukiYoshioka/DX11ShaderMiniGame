@@ -502,5 +502,11 @@
     <FxCompile Include="BlockShadow.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
+    <FxCompile Include="DepthNormal.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="AmbientOcclusion.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

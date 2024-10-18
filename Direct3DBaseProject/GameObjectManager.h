@@ -192,5 +192,9 @@ private:
 	ComPtr<ID3D11DepthStencilView> m_hitCheckDSV;					//見つかり判定用深度テストデバイス
 	ComPtr<ID3D11ShaderResourceView> m_hitCheckShaderResourceView;	//見つかり判定用オブジェクトSRV
 	ComPtr<ID3D11ShaderResourceView> m_hitCheckCharacterSRV;		//見つかり判定用プレイヤーSRV
+
+	ComPtr<ID3D11Texture2D> m_normalDepthTexture;
+	ComPtr<ID3D11RenderTargetView> m_normalDepthRTV;
+	ComPtr<ID3D11ShaderResourceView> m_normalDepthSRV;
 };
 
