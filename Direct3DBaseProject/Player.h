@@ -88,7 +88,7 @@ public:
 	/// <summary>
 	/// ‰e—p•`‰æ
 	/// </summary>
-	void DrawShadow();
+	void DrawShadow()override;
 
 	/// <summary>
 	/// Œ©‚Â‚©‚è”»’è—p•`‰æ
@@ -112,6 +112,10 @@ public:
 	/// <returns></returns>
 	bool GetBeFound()const { return m_beFound; }
 
+	/// <summary>
+	/// ƒNƒŠƒA‚µ‚½‚©‚Ç‚¤‚©Žæ“¾
+	/// </summary>
+	/// <returns></returns>
 	bool GetIsClear()const { return m_isClear; }
 
 	/// <summary>

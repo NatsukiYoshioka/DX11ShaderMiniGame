@@ -67,7 +67,7 @@ public:
 	/// <summary>
 	/// ‰e‚Ì•`‰æ
 	/// </summary>
-	void DrawShadow();
+	void DrawShadow()override;
 
 	/// <summary>
 	/// ƒŠƒUƒ‹ƒg‚Å‚ÌÀ•WˆÚ“®Š„‡æ“¾

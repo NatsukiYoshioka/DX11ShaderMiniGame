@@ -1,5 +1,6 @@
 #pragma once
 using namespace DirectX;
+using namespace SimpleMath;
 using namespace std;
 using namespace Microsoft::WRL;
 
@@ -11,6 +12,10 @@ class GameObject;
 class GameObjectManager
 {
 private:
+	float RandomFloat(float min,float max);
+
+	float Lerp(float a, float b, float t);
+
 	/// <summary>
 	/// 管理するオブジェクトの設定
 	/// </summary>
@@ -94,39 +99,18 @@ public:
 	void ClearObjectShadow();
 
 	/// <summary>
-	/// プレイヤーの影の初期化
-	/// </summary>
-	void ClearCharacterShadow();
-
-	/// <summary>
 	/// オブジェクトの影のレンダリングターゲットを設定
 	/// </summary>
 	void SetObjectShadowRenderTarget();
-
-	/// <summary>
-	/// プレイヤーの影のレンダリングターゲットを設定
-	/// </summary>
-	void SetCharacterShadowRenderTarget();
 
 	/// <summary>
 	/// 作成したオブジェクトのSRVを設定
 	/// </summary>
 	void SetObjectShadowResource();
 
-	/// <summary>
-	/// 作成したプレイヤーのSRVを設定
-	/// </summary>
-	void SetCharacterShadowResource();
+	void DrawShadow();
 
-	/// <summary>
-	/// オブジェクトの影描画
-	/// </summary>
-	void DrawObjectShadow();
-
-	/// <summary>
-	/// プレイヤーの影描画
-	/// </summary>
-	void DrawCharacterShadow();
+	void DrawAmbientOcclusion();
 
 	/// <summary>
 	/// 敵視点の見つかり判定用レンダリングターゲット初期化
@@ -173,6 +157,8 @@ public:
 	/// </summary>
 	void HitCheck();
 
+	ID3D11RenderTargetView* GetNormalDepthRTV() { return m_normalDepthRTV.Get(); }
+
 private:
 	static GameObjectManager* m_instance;	//マネージャのインスタンス
 
@@ -193,8 +179,32 @@ private:
 	ComPtr<ID3D11ShaderResourceView> m_hitCheckShaderResourceView;	//見つかり判定用オブジェクトSRV
 	ComPtr<ID3D11ShaderResourceView> m_hitCheckCharacterSRV;		//見つかり判定用プレイヤーSRV
 
+	ComPtr<ID3D11PixelShader> m_spritePixel;
+
 	ComPtr<ID3D11Texture2D> m_normalDepthTexture;
 	ComPtr<ID3D11RenderTargetView> m_normalDepthRTV;
 	ComPtr<ID3D11ShaderResourceView> m_normalDepthSRV;
+
+	struct __declspec(align(16)) AOConstants
+	{
+		XMMATRIX projection;
+		XMMATRIX inverseProjection;
+		Vector4 sampleKernel[64];
+		float radius;
+		float ZFar;
+		float AOPower;
+	};
+	ConstantBuffer<AOConstants> m_AOConstantBuffer;
+	struct Vertex
+	{
+		XMFLOAT3 Position;
+		XMFLOAT2 TexCoord;
+	};
+	ComPtr<ID3D11Buffer> m_vertexBuffer;
+	ComPtr<ID3D11Buffer> m_indexBuffer;
+	ComPtr<ID3D11InputLayout> m_inputLayout;
+	ComPtr<ID3D11BlendState> m_AOBlend;
+	ComPtr<ID3D11VertexShader> m_AOVertex;
+	ComPtr<ID3D11PixelShader> m_AOPixel;
 };
 

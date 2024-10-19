@@ -91,6 +91,7 @@ void Game::Render()
         return;
     }
     auto sceneManager = SceneManager::GetInstance();
+    m_deviceResources->PIXBeginEvent(L"OffScreenRender");
     sceneManager->DrawOffScreen();
 
     m_deviceResources->PIXEndEvent();
@@ -102,9 +103,19 @@ void Game::Render()
 
     // TODO: Add your rendering code here.
     sceneManager->Draw();
-    context;
 
     m_deviceResources->PIXEndEvent();
+
+    m_deviceResources->PIXBeginEvent(L"SSAO");
+    auto renderTarget = m_deviceResources->GetRenderTargetView();
+    auto depthStencil = m_deviceResources->GetDepthStencilView();
+    ID3D11RenderTargetView* rtv[2] = { NULL,NULL };
+    rtv[0] = renderTarget;
+    context->OMSetRenderTargets(2, rtv, depthStencil);
+    GameObjectManager::GetInstance()->DrawAmbientOcclusion();
+    m_deviceResources->PIXEndEvent();
+
+    context;
 
     // Show the new frame.
     m_deviceResources->Present();
@@ -122,7 +133,11 @@ void Game::Clear()
 
     context->ClearRenderTargetView(renderTarget, Colors::Black);
     context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-    context->OMSetRenderTargets(1, &renderTarget, depthStencil);
+    context->ClearRenderTargetView(GameObjectManager::GetInstance()->GetNormalDepthRTV(), Colors::Black);
+    ID3D11RenderTargetView* rtv[2] = { NULL,NULL };
+    rtv[0] = renderTarget;
+    rtv[1] = GameObjectManager::GetInstance()->GetNormalDepthRTV();
+    context->OMSetRenderTargets(2, rtv, depthStencil);
 
     // Set the viewport.
     auto const viewport = m_deviceResources->GetScreenViewport();

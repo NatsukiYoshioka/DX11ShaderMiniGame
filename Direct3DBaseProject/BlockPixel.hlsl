@@ -5,11 +5,17 @@ Texture2D<float4> Texture2 : register(t1);
 Texture2D<float4> Texture3 : register(t2);
 Texture2D<float4> Texture4 : register(t3);
 Texture2D<float4> Shadow : register(t10);
-Texture2D<float4> CharacterShadow : register(t11);
 SamplerState Sampler : register(s0);
 
-float4 main(BlockPS pout) : SV_Target0
+struct PSOut
 {
+    float4 BackBuffer : SV_Target0;
+    float4 Normal : SV_Target1;
+};
+
+PSOut main(BlockPS pout) : SV_Target0
+{
+    PSOut Out;
     //ピクセルの座標 - スポットライトの座標を計算
     float3 lightDirection = pout.WorldPos - LightPosition;
     //正規化して大きさ1のベクトルにする
@@ -93,8 +99,7 @@ float4 main(BlockPS pout) : SV_Target0
     if (shadowMapUV.x > 0.f && shadowMapUV.x < 1.f && shadowMapUV.y > 0.f && shadowMapUV.y < 1.f)
     {
         float zInShadowMap = Shadow.Sample(Sampler, shadowMapUV).r;
-        float zInCharacterShadowMap = CharacterShadow.Sample(Sampler, shadowMapUV).r;
-        if (zInLVP > zInShadowMap + 0.00001f || zInLVP > zInCharacterShadowMap + 0.00001f)
+        if (zInLVP > zInShadowMap + 0.00001f)
         {
             finalLight = ambientLight;
         }
@@ -120,5 +125,11 @@ float4 main(BlockPS pout) : SV_Target0
     }
     finalColor.xyz *= finalLight;
     
-    return finalColor;
+    Out.BackBuffer = finalColor;
+    //法線ベクトル計算要素の出力
+    Out.Normal.xy = normalize(mul(float4(pout.Normal, 0), mul(World, View)).xyz).xy;
+    //深度値を出力
+    Out.Normal.zw = pout.Position.zw;
+    
+    return Out;
 }

@@ -1,11 +1,11 @@
 #include"Header.hlsli"
-#define KERNEL_SIZE 16
+#define KERNEL_SIZE 64
 
 cbuffer AOConstats : register(b4)
 {
+    float4x4 projection;
     float4x4 invProj;
     float4 sampleKernel[KERNEL_SIZE];
-    float2 noiseScale;
     float radius;
     float ZFar;
     float AOPower;
@@ -14,9 +14,9 @@ cbuffer AOConstats : register(b4)
 Texture2D<float4> Normal : register(t0);
 SamplerState Sampler : register(s0);
 
-float main(PSOutput pout):SV_Target0
+float4 main(AOPS pout):SV_Target0
 {
-    float Out;
+    float4 Out;
     
     //法線マップ+深度マップの取得
     float4 NormalDepthMap = Normal.Sample(Sampler, pout.TexCoord);
@@ -50,7 +50,7 @@ float main(PSOutput pout):SV_Target0
         //レイの方向に移動
         envPos.xyz = ViewPos.xyz + ray;
         //クリップ空間上に行列変換
-        envPos = mul(float4(envPos.xyz, 1), Projection);
+        envPos = mul(float4(envPos.xyz, 1), projection);
         //スクリーン空間上に変換
         envPos.xy = envPos.xy / envPos.w * float2(0.5f, -0.5f) + 0.5f;
         

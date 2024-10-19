@@ -7,6 +7,7 @@
 #include"CameraAccessor.h"
 #include"Enemy.h"
 #include"EnemyAccessor.h"
+#include"GameObjectManager.h"
 #include "Desk.h"
 
 //デスクの初期化
@@ -54,20 +55,10 @@ Desk::Desk(const wchar_t* fileName, Vector3 pos, float rotate)
 		json->Widen(json->GetData()["DeskTexture"].at(0)).c_str(),
 		nullptr,
 		texture.ReleaseAndGetAddressOf()));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(deviceAccessor->GetDevice(),
-		json->Widen(json->GetData()["DeskTexture"].at(1)).c_str(),
-		nullptr,
-		normal.ReleaseAndGetAddressOf()));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(deviceAccessor->GetDevice(),
-		json->Widen(json->GetData()["DeskTexture"].at(2)).c_str(),
-		nullptr,
-		ao.ReleaseAndGetAddressOf()));
 	SetCurrentDirectory(L"../../");
 
 	//テクスチャの設定
 	m_effect->SetTexture(texture.Get());
-	m_effect->SetNormal(normal.Get());
-	m_effect->SetAO(ao.Get());
 
 	//座標とY軸回転量の設定
 	m_pos = pos;

@@ -56,6 +56,8 @@ public:
 	/// </summary>
 	void DrawResult()override;
 
+	void DrawShadow()override{}
+
 	/// <summary>
 	/// カメラビュー行列の取得
 	/// </summary>

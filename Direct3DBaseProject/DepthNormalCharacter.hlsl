@@ -2,7 +2,6 @@
 
 Texture2D<float4> Texture : register(t0);
 Texture2D<float4> Shadow : register(t10);
-Texture2D<float4> CharacterShadow : register(t11);
 SamplerState Sampler : register(s0);
 
 struct PSOut
@@ -28,21 +27,6 @@ PSOut main(PSOutput pout)
     //拡散反射光を定義する
     float3 diffuseLight = t;
     
-    //減衰なしのPhong鏡面反射光を計算する
-    //反射ベクトルを求める
-    float3 reflectionVector = reflect(lightDirection, pout.Normal);
-    //光が当たったサーフェイスから視点に伸びるベクトルを求める
-    float3 toEye = EyePosition - pout.WorldPos;
-    toEye = normalize(toEye);
-    //鏡面反射の強さを求める
-    t = dot(reflectionVector, toEye);
-    //鏡面反射の強さを0以上の数値にする
-    t = max(0.f, t);
-    //鏡面反射の強さを絞る
-    t = pow(t, 5.f);
-    //鏡面反射光を定義する
-    float3 specularLight = t;
-    
     //スポットライトとの距離を計算する
     float3 distance = length(pout.WorldPos - LightPosition);
     
@@ -60,7 +44,6 @@ PSOut main(PSOutput pout)
     
     //影響率を乗算して影響を弱める
     diffuseLight *= affect;
-    specularLight *= affect;
     
     //入射光と射出方向の角度を求める
     float angle = dot(lightDirection, LightDirection);
@@ -82,11 +65,10 @@ PSOut main(PSOutput pout)
     
     //角度による影響率を反射光に乗算して、影響を弱める
     diffuseLight *= affect;
-    specularLight *= affect;
     
     //スポットライトの反射光を最終的な反射光に足し算する
     float3 ambientLight = 0.5f;
-    float3 finalLight = ambientLight + diffuseLight + specularLight;
+    float3 finalLight = ambientLight + diffuseLight;
     
     float2 shadowMapUV = pout.PosInLVP.xy / pout.PosInLVP.w;
     shadowMapUV *= float2(0.5f, -0.5f);
@@ -98,8 +80,7 @@ PSOut main(PSOutput pout)
     if (shadowMapUV.x > 0.f && shadowMapUV.x < 1.f && shadowMapUV.y > 0.f && shadowMapUV.y < 1.f)
     {
         float zInShadowMap = Shadow.Sample(Sampler, shadowMapUV).r;
-        float zInCharacterShadowMap = CharacterShadow.Sample(Sampler, shadowMapUV).r;
-        if (zInLVP > zInShadowMap + 0.00001f || zInLVP > zInCharacterShadowMap + 0.00001f)
+        if (zInLVP > zInShadowMap + 0.00001f)
         {
             finalLight = ambientLight;
         }

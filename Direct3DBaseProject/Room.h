@@ -69,7 +69,7 @@ public:
 	/// <summary>
 	/// 影の描画
 	/// </summary>
-	void DrawShadow();
+	void DrawShadow()override;
 
 private:
 	vector<ComPtr<ID3D11ShaderResourceView>> texture;		//テクスチャのコンテナ

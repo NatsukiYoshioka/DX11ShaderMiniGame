@@ -68,7 +68,6 @@ void TitleScene::Draw()
 	auto gameObjectManager = GameObjectManager::GetInstance();
 
 	gameObjectManager->SetObjectShadowResource();
-	gameObjectManager->SetCharacterShadowResource();
 
 	gameObjectManager->DrawTitle();
 }
@@ -79,9 +78,5 @@ void TitleScene::DrawOffScreen()
 	//‰e‚Ì•`‰æ
 	gameObjectManager->ClearObjectShadow();
 	gameObjectManager->SetObjectShadowRenderTarget();
-	GiftBoxAccessor::GetInstance()->GetGiftBox()->DrawShadow();
-
-	gameObjectManager->ClearCharacterShadow();
-	gameObjectManager->SetCharacterShadowRenderTarget();
-	PlayerAccessor::GetInstance()->GetPlayer()->DrawShadow();
+	gameObjectManager->DrawShadow();
 }

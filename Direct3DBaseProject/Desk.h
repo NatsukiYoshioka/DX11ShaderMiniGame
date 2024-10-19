@@ -76,7 +76,7 @@ public:
 	/// <summary>
 	/// 影の描画
 	/// </summary>
-	void DrawShadow();
+	void DrawShadow()override;
 
 private:
 	shared_ptr<OriginalEffect> m_effect;		//モデル描画用エフェクトクラス

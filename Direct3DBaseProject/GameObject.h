@@ -64,6 +64,7 @@ public:
 	/// </summary>
 	virtual void DrawResult() = 0;
 
+	virtual void DrawShadow() = 0;
 	/// <summary>
 	/// À•W‚Ìæ“¾
 	/// </summary>

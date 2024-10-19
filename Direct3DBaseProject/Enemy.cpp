@@ -13,6 +13,7 @@
 #include<random>
 #define _USE_MATH_DEFINES
 #include<math.h>
+#include"GameObjectManager.h"
 #include "Enemy.h"
 
 //オブジェクト初期化
@@ -375,45 +376,45 @@ void Enemy::DrawResult()
 //影の描画
 void Enemy::DrawShadow()
 {
-	//シェーダーの変更
-	for (const auto& mit : m_modelHandle->meshes)
-	{
-		auto mesh = mit.get();
-		assert(mesh != nullptr);
-		for (const auto& pit : mesh->meshParts)
-		{
-			auto part = pit.get();
-			assert(part != nullptr);
+	////シェーダーの変更
+	//for (const auto& mit : m_modelHandle->meshes)
+	//{
+	//	auto mesh = mit.get();
+	//	assert(mesh != nullptr);
+	//	for (const auto& pit : mesh->meshParts)
+	//	{
+	//		auto part = pit.get();
+	//		assert(part != nullptr);
 
-			auto effect = static_cast<OriginalEffect*>(part->effect.get());
-			effect->UpdateType(OriginalEffect::PixelType::Shadow);
-		}
-	}
+	//		auto effect = static_cast<OriginalEffect*>(part->effect.get());
+	//		effect->UpdateType(OriginalEffect::PixelType::Shadow);
+	//	}
+	//}
 
-	size_t nbones = m_modelHandle->bones.size();
+	//size_t nbones = m_modelHandle->bones.size();
 
-	m_animations.at(static_cast<int>(m_nowAnimationState)).Apply(*m_modelHandle, nbones, m_drawBones.get());
+	//m_animations.at(static_cast<int>(m_nowAnimationState)).Apply(*m_modelHandle, nbones, m_drawBones.get());
 
-	m_modelHandle->DrawSkinned(DeviceAccessor::GetInstance()->GetContext(),
-		*DeviceAccessor::GetInstance()->GetStates(),
-		nbones,
-		m_drawBones.get(),
-		m_world,
-		m_eyeView,
-		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
+	//m_modelHandle->DrawSkinned(DeviceAccessor::GetInstance()->GetContext(),
+	//	*DeviceAccessor::GetInstance()->GetStates(),
+	//	nbones,
+	//	m_drawBones.get(),
+	//	m_world,
+	//	m_eyeView,
+	//	CameraAccessor::GetInstance()->GetCamera()->GetProjection());
 
-	//シェーダーをもとに戻す
-	for (const auto& mit : m_modelHandle->meshes)
-	{
-		auto mesh = mit.get();
-		assert(mesh != nullptr);
-		for (const auto& pit : mesh->meshParts)
-		{
-			auto part = pit.get();
-			assert(part != nullptr);
+	////シェーダーをもとに戻す
+	//for (const auto& mit : m_modelHandle->meshes)
+	//{
+	//	auto mesh = mit.get();
+	//	assert(mesh != nullptr);
+	//	for (const auto& pit : mesh->meshParts)
+	//	{
+	//		auto part = pit.get();
+	//		assert(part != nullptr);
 
-			auto effect = static_cast<OriginalEffect*>(part->effect.get());
-			effect->UpdateType(OriginalEffect::PixelType::Character);
-		}
-	}
+	//		auto effect = static_cast<OriginalEffect*>(part->effect.get());
+	//		effect->UpdateType(OriginalEffect::PixelType::Character);
+	//	}
+	//}
 }

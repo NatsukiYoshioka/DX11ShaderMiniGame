@@ -13,6 +13,7 @@
 #include"OriginalEffect.h"
 #include"GameObject.h"
 #include"ReadData.h"
+#include"GameObjectManager.h"
 #include "Player.h"
 
 //オブジェクトの初期化
@@ -185,17 +186,7 @@ void Player::UpdateTitle()
 //タイトルシーンオブジェクトの描画
 void Player::DrawTitle()
 {
-	size_t nbones = m_modelHandle->bones.size();
-
-	m_animations.at(static_cast<int>(m_nowAnimationState)).Apply(*m_modelHandle, nbones, m_drawBones.get());
-
-	m_modelHandle->DrawSkinned(DeviceAccessor::GetInstance()->GetContext(),
-		*DeviceAccessor::GetInstance()->GetStates(),
-		nbones,
-		m_drawBones.get(),
-		m_world,
-		CameraAccessor::GetInstance()->GetCamera()->GetView(),
-		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
+	Draw();
 }
 
 //オブジェクト初期化

@@ -32,6 +32,7 @@ public:
 	virtual void InitializeResult() = 0;
 	virtual void UpdateResult() = 0;
 	void DrawResult()override{}
+	void DrawShadow()override{}
 
 	SoundState GetSoundState()const { return m_soundInstance->GetState(); }
 

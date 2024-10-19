@@ -70,18 +70,6 @@ public:
 		ID3D11ShaderResourceView* value4);
 
 	/// <summary>
-	/// 法線マップの設定
-	/// </summary>
-	/// <param name="value">法線マップのSRV</param>
-	void SetNormal(ID3D11ShaderResourceView* value);
-
-	/// <summary>
-	/// AOマップの設定
-	/// </summary>
-	/// <param name="value">AOマップのSRV</param>
-	void SetAO(ID3D11ShaderResourceView* value);
-
-	/// <summary>
 	/// ワールド行列の設定
 	/// </summary>
 	/// <param name="world">ワールド行列</param>
@@ -167,8 +155,6 @@ private:
 	ComPtr<ID3D11ShaderResourceView> m_texture2;		//テクスチャSRV
 	ComPtr<ID3D11ShaderResourceView> m_texture3;		//テクスチャSRV
 	ComPtr<ID3D11ShaderResourceView> m_texture4;		//テクスチャSRV
-	ComPtr<ID3D11ShaderResourceView> m_normal;		//法線マップSRV
-	ComPtr<ID3D11ShaderResourceView> m_ao;			//AOマップSRV
 
 	Matrix m_world;			//ワールド行列
 	Matrix m_view;			//ビュー行列

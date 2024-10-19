@@ -7,6 +7,7 @@
 #include"CameraAccessor.h"
 #include"GameObject.h"
 #include"OriginalEffect.h"
+#include"GameObjectManager.h"
 #include "GiftBox.h"
 
 //オブジェクトの初期化
@@ -53,15 +54,10 @@ GiftBox::GiftBox(const wchar_t* fileName, Vector3 pos, float rotate)
 		json->Widen(json->GetData()["GiftBoxTexture"].at(0)).c_str(),
 		nullptr,
 		texture.ReleaseAndGetAddressOf()));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(deviceAccessor->GetDevice(),
-		json->Widen(json->GetData()["GiftBoxTexture"].at(1)).c_str(),
-		nullptr,
-		normal.ReleaseAndGetAddressOf()));
 	SetCurrentDirectory(L"../../");
 
 	//テクスチャの設定
 	m_effect->SetTexture(texture.Get());
-	m_effect->SetNormal(normal.Get());
 
 	//座標とY軸回転量の設定
 	m_pos = pos;

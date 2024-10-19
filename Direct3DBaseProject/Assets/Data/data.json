@@ -542,6 +542,10 @@
 
   "MaxFoundTime": 4,
 
+  "SSAORadius": 1,
+  "SSAOZFar": 5,
+  "SSAOPower": 1,
+
     "TitleBGM": "title.wav",
     "GameBGM": "game.wav",
     "WalkSound": "walk.wav",

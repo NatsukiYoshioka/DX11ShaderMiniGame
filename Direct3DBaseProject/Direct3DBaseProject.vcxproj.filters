@@ -502,10 +502,19 @@
     <FxCompile Include="BlockShadow.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
-    <FxCompile Include="DepthNormal.hlsl">
+    <FxCompile Include="DepthNormalObject.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
-    <FxCompile Include="AmbientOcclusion.hlsl">
+    <FxCompile Include="AmbientOcclusionPixel.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="DepthNormalCharacter.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="AmbientOcclusionVertex.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="SpritePixel.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>

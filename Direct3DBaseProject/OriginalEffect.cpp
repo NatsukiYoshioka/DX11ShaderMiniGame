@@ -28,10 +28,10 @@ OriginalEffect::OriginalEffect(ID3D11Device* device, PixelType type, bool isSkin
 	switch (m_type)
 	{
 	case PixelType::Object:
-		psBlob = DX::ReadData(L"Lighting.cso");
+		psBlob = DX::ReadData(L"DepthNormalObject.cso");
 		break;
 	case PixelType::Character:
-		psBlob = DX::ReadData(L"CharacterLighting.cso");
+		psBlob = DX::ReadData(L"DepthNormalCharacter.cso");
 		break;
 	case PixelType::Block:
 		psBlob = DX::ReadData(L"BlockPixel.cso");
@@ -82,6 +82,7 @@ void OriginalEffect::Apply(ID3D11DeviceContext* context)
 	context->VSSetConstantBuffers(0, 1, &mb);
 	context->VSSetConstantBuffers(1, 1, &sb);
 	context->VSSetConstantBuffers(3, 1, &lvpb);
+	context->PSSetConstantBuffers(0, 1, &mb);
 	context->PSSetConstantBuffers(2, 1, &lb);
 	context->PSSetShaderResources(0, 1, m_texture1.GetAddressOf());
 	if (m_type == PixelType::Block)
@@ -89,11 +90,6 @@ void OriginalEffect::Apply(ID3D11DeviceContext* context)
 		context->PSSetShaderResources(1, 1, m_texture2.GetAddressOf());
 		context->PSSetShaderResources(2, 1, m_texture3.GetAddressOf());
 		context->PSSetShaderResources(3, 1, m_texture4.GetAddressOf());
-	}
-	else
-	{
-		context->PSSetShaderResources(1, 1, m_normal.GetAddressOf());
-		context->PSSetShaderResources(2, 1, m_ao.GetAddressOf());
 	}
 
 	//シェーダーの適用
@@ -139,18 +135,6 @@ void OriginalEffect::SetBlockTexture(ID3D11ShaderResourceView* value1, ID3D11Sha
 	m_texture2 = value2;
 	m_texture3 = value3;
 	m_texture4 = value4;
-}
-
-//法線マップの設定
-void OriginalEffect::SetNormal(ID3D11ShaderResourceView* value)
-{
-	m_normal = value;
-}
-
-//AOマップの設定
-void OriginalEffect::SetAO(ID3D11ShaderResourceView* value)
-{
-	m_ao = value;
 }
 
 //ワールド行列の設定

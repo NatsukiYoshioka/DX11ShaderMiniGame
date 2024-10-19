@@ -4,8 +4,16 @@ Texture2D<float4> Texture : register(t0);
 Texture2D<float4> Shadow : register(t10);
 SamplerState Sampler : register(s0);
 
-float4 main(PSOutput pout):SV_Target0
+struct PSOut
 {
+    float4 BackBuffer : SV_Target0;
+    float4 Normal : SV_Target1;
+};
+
+PSOut main(PSOutput pout)
+{
+    PSOut Out;
+    
     //ピクセルの座標 - スポットライトの座標を計算
     float3 lightDirection = pout.WorldPos - LightPosition;
     //正規化して大きさ1のベクトルにする
@@ -41,7 +49,7 @@ float4 main(PSOutput pout):SV_Target0
     float affect = 1.f - 1.f / LightRange * distance;
     
     //影響率がマイナスにならないように補正をかける
-    if(affect<0.f)
+    if (affect < 0.f)
     {
         affect = 0.f;
     }
@@ -63,7 +71,7 @@ float4 main(PSOutput pout):SV_Target0
     affect = 1.f - 1.f / LightAngle * angle;
     
     //影響率がマイナスにならないように補正をかける
-    if(affect<0.f)
+    if (affect < 0.f)
     {
         affect = 0.f;
     }
@@ -99,5 +107,13 @@ float4 main(PSOutput pout):SV_Target0
     float4 finalColor = Texture.Sample(Sampler, pout.TexCoord);
     finalColor.xyz *= finalLight;
     
-    return finalColor;
+    //バックバッファにカラー書き込み
+    Out.BackBuffer = finalColor;
+    
+    //法線ベクトル計算要素の出力
+    Out.Normal.xy = normalize(mul(float4(pout.Normal, 0), mul(World, View)).xyz).xy;
+    //深度値を出力
+    Out.Normal.zw = pout.Position.zw;
+    
+    return Out;
 }

@@ -67,7 +67,6 @@ void GameScene::Draw()
     gameObjectManager->HitCheck();
 
     gameObjectManager->SetObjectShadowResource();
-    gameObjectManager->SetCharacterShadowResource();
 
     //ƒIƒuƒWƒFƒNƒg‚Ì•`‰æ
 	gameObjectManager->Draw();
@@ -79,11 +78,7 @@ void GameScene::DrawOffScreen()
     //‰e‚Ì•`‰æ
     gameObjectManager->ClearObjectShadow();
     gameObjectManager->SetObjectShadowRenderTarget();
-    gameObjectManager->DrawObjectShadow();
-
-    gameObjectManager->ClearCharacterShadow();
-    gameObjectManager->SetCharacterShadowRenderTarget();
-    gameObjectManager->DrawCharacterShadow();
+    gameObjectManager->DrawShadow();
 
     //“GŽ‹“_‚©‚ç‚Ì“–‚½‚è”»’è—p•`‰æ
     gameObjectManager->ClearHitCheckRenderTarget();

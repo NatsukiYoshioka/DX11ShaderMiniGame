@@ -58,7 +58,6 @@ void ResultScene::Draw()
 	auto gameObjectManager = GameObjectManager::GetInstance();
 
 	gameObjectManager->SetObjectShadowResource();
-	gameObjectManager->SetCharacterShadowResource();
 
 	gameObjectManager->DrawResult();
 }
@@ -69,9 +68,5 @@ void ResultScene::DrawOffScreen()
 	//‰e‚Ì•`‰æ
 	gameObjectManager->ClearObjectShadow();
 	gameObjectManager->SetObjectShadowRenderTarget();
-	DeskAccessor::GetInstance()->GetDesk()->DrawShadow();
-
-	gameObjectManager->ClearCharacterShadow();
-	gameObjectManager->SetCharacterShadowRenderTarget();
-	DollHeadAccessor::GetInstance()->GetDollHead()->DrawShadow();
+	gameObjectManager->DrawShadow();
 }

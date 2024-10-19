@@ -29,8 +29,9 @@ public:
 	virtual void InitializeResult() = 0;
 	virtual void UpdateResult() = 0;
 	virtual void DrawResult() = 0;
+	void DrawShadow()override{}
 
 protected:
-	
+
 };
 

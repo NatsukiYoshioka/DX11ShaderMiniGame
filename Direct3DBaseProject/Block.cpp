@@ -11,6 +11,7 @@
 #include<random>
 #define _USE_MATH_DEFINES
 #include<math.h>
+#include"GameObjectManager.h"
 #include "Block.h"
 
 //Ï‚İ–ØƒuƒƒbƒN‚Ì‰Šú‰»

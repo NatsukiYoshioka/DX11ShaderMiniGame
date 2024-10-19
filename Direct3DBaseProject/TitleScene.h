@@ -12,6 +12,7 @@ public:
 	void Update()override;
 	void Draw()override;
 	void DrawOffScreen()override;
+	
 
 	bool GetIsStartGame()const { return m_isStartGame; }
 private:

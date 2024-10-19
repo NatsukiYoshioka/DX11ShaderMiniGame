@@ -69,7 +69,7 @@ public:
 	/// <summary>
 	/// ‰e‚Ì•`‰æ
 	/// </summary>
-	void DrawShadow();
+	void DrawShadow()override;
 
 	/// <summary>
 	/// “G‹“_‚Å‚Ì•`‰æ
@@ -87,7 +87,6 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	ComPtr<ID3D11ShaderResourceView> GetVertexBufferSRV() { return m_vertexBufferSRV; }
-
 private:
 	Model* m_model;								//ƒ‚ƒfƒ‹î•ñ‚ªŠi”[‚³‚ê‚½ƒNƒ‰ƒXƒ|ƒCƒ“ƒ^
 

@@ -8,6 +8,7 @@
 #include"EnemyAccessor.h"
 #include"Camera.h"
 #include"CameraAccessor.h"
+#include"GameObjectManager.h"
 #include "DollHead.h"
 
 //オブジェクトの初期化

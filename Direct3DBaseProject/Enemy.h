@@ -86,7 +86,7 @@ public:
 	/// </summary>
 	void DrawResult()override;
 
-	void DrawShadow();
+	void DrawShadow()override;
 
 	/// <summary>
 	/// “G‚Ì–Ú‚ÌˆÊ’u‚ðŽæ“¾
