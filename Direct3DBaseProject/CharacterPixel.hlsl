@@ -4,8 +4,17 @@ Texture2D<float4> Texture : register(t0);
 Texture2D<float4> Shadow : register(t10);
 SamplerState Sampler : register(s0);
 
-float4 main(PSOutput pout):SV_Target0
+struct PSOut
 {
+    float4 BackBuffer : SV_Target0;
+    float4 Normal : SV_Target1;
+    float4 Color : SV_Target2;
+};
+
+PSOut main(PSOutput pout)
+{
+    PSOut Out;
+    
     //ピクセルの座標 - スポットライトの座標を計算
     float3 lightDirection = pout.WorldPos - LightPosition;
     //正規化して大きさ1のベクトルにする
@@ -19,21 +28,6 @@ float4 main(PSOutput pout):SV_Target0
     //拡散反射光を定義する
     float3 diffuseLight = t;
     
-    //減衰なしのPhong鏡面反射光を計算する
-    //反射ベクトルを求める
-    float3 reflectionVector = reflect(lightDirection, pout.Normal);
-    //光が当たったサーフェイスから視点に伸びるベクトルを求める
-    float3 toEye = EyePosition - pout.WorldPos;
-    toEye = normalize(toEye);
-    //鏡面反射の強さを求める
-    t = dot(reflectionVector, toEye);
-    //鏡面反射の強さを0以上の数値にする
-    t = max(0.f, t);
-    //鏡面反射の強さを絞る
-    t = pow(t, 5.f);
-    //鏡面反射光を定義する
-    float3 specularLight = t;
-    
     //スポットライトとの距離を計算する
     float3 distance = length(pout.WorldPos - LightPosition);
     
@@ -41,7 +35,7 @@ float4 main(PSOutput pout):SV_Target0
     float affect = 1.f - 1.f / LightRange * distance;
     
     //影響率がマイナスにならないように補正をかける
-    if(affect<0.f)
+    if (affect < 0.f)
     {
         affect = 0.f;
     }
@@ -51,7 +45,6 @@ float4 main(PSOutput pout):SV_Target0
     
     //影響率を乗算して影響を弱める
     diffuseLight *= affect;
-    specularLight *= affect;
     
     //入射光と射出方向の角度を求める
     float angle = dot(lightDirection, LightDirection);
@@ -63,7 +56,7 @@ float4 main(PSOutput pout):SV_Target0
     affect = 1.f - 1.f / LightAngle * angle;
     
     //影響率がマイナスにならないように補正をかける
-    if(affect<0.f)
+    if (affect < 0.f)
     {
         affect = 0.f;
     }
@@ -73,11 +66,10 @@ float4 main(PSOutput pout):SV_Target0
     
     //角度による影響率を反射光に乗算して、影響を弱める
     diffuseLight *= affect;
-    specularLight *= affect;
     
     //スポットライトの反射光を最終的な反射光に足し算する
     float3 ambientLight = 0.5f;
-    float3 finalLight = ambientLight + diffuseLight + specularLight;
+    float3 finalLight = ambientLight + diffuseLight;
     
     float2 shadowMapUV = pout.PosInLVP.xy / pout.PosInLVP.w;
     shadowMapUV *= float2(0.5f, -0.5f);
@@ -99,5 +91,15 @@ float4 main(PSOutput pout):SV_Target0
     float4 finalColor = Texture.Sample(Sampler, pout.TexCoord);
     finalColor.xyz *= finalLight;
     
-    return finalColor;
+    //バックバッファにカラー書き込み
+    Out.BackBuffer = finalColor;
+    
+    //法線ベクトル計算要素の出力
+    Out.Normal.xy = normalize(mul(float4(pout.Normal, 0), mul(World, View)).xyz).xy;
+    //深度値を出力
+    Out.Normal.zw = pout.Position.zw;
+    
+    Out.Color = Out.BackBuffer;
+    
+    return Out;
 }

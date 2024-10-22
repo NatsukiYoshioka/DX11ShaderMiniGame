@@ -62,13 +62,13 @@ struct BlockPS
     int textureID : TEXCOORD1;
 };
 
-struct AOVS
+struct PPVS
 {
     float3 Position : POSITION;
     float2 TexCoord : TEXCOORD;
 };
 
-struct AOPS
+struct PPPS
 {
     float4 Position : SV_Position;
     float2 TexCoord : TEXCOORD0;

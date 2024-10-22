@@ -11,6 +11,7 @@ struct PSOut
 {
     float4 BackBuffer : SV_Target0;
     float4 Normal : SV_Target1;
+    float4 Color : SV_Target2;
 };
 
 PSOut main(BlockPS pout) : SV_Target0
@@ -130,6 +131,8 @@ PSOut main(BlockPS pout) : SV_Target0
     Out.Normal.xy = normalize(mul(float4(pout.Normal, 0), mul(World, View)).xyz).xy;
     //ê[ìxílÇèoóÕ
     Out.Normal.zw = pout.Position.zw;
+    
+    Out.Color = Out.BackBuffer;
     
     return Out;
 }

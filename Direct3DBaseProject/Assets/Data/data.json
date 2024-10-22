@@ -546,6 +546,9 @@
   "SSAOZFar": 5,
   "SSAOPower": 1,
 
+  "LUTTexture": "purplesky.dds",
+  "LUTMaxPower": 0.5,
+
     "TitleBGM": "title.wav",
     "GameBGM": "game.wav",
     "WalkSound": "walk.wav",

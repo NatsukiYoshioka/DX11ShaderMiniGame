@@ -75,7 +75,7 @@ FoundUI::~FoundUI()
 //タイトルシーンオブジェクトの初期化(処理なし)
 void FoundUI::InitializeTitle()
 {
-
+	m_timeRatio = 0.f;
 }
 
 //タイトルシーンオブジェクトの更新(処理なし)

@@ -466,16 +466,7 @@
     <FxCompile Include="VertexShader.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
-    <FxCompile Include="TestPixel.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
     <FxCompile Include="SkinningVertex.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Lighting.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="CharacterLighting.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="ObjectShadow.hlsl">
@@ -502,19 +493,22 @@
     <FxCompile Include="BlockShadow.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
-    <FxCompile Include="DepthNormalObject.hlsl">
+    <FxCompile Include="ObjectPixel.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="AmbientOcclusionPixel.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
-    <FxCompile Include="DepthNormalCharacter.hlsl">
+    <FxCompile Include="CharacterPixel.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
-    <FxCompile Include="AmbientOcclusionVertex.hlsl">
+    <FxCompile Include="PostProccessVertex.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="SpritePixel.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="LookUpTablePixel.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>

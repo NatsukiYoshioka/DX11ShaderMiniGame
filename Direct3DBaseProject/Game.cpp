@@ -106,12 +106,16 @@ void Game::Render()
 
     m_deviceResources->PIXEndEvent();
 
-    m_deviceResources->PIXBeginEvent(L"SSAO");
+    m_deviceResources->PIXBeginEvent(L"LUT");
     auto renderTarget = m_deviceResources->GetRenderTargetView();
     auto depthStencil = m_deviceResources->GetDepthStencilView();
     ID3D11RenderTargetView* rtv[2] = { NULL,NULL };
     rtv[0] = renderTarget;
     context->OMSetRenderTargets(2, rtv, depthStencil);
+    GameObjectManager::GetInstance()->DrawLUT();
+    m_deviceResources->PIXEndEvent();
+
+    m_deviceResources->PIXBeginEvent(L"SSAO");
     GameObjectManager::GetInstance()->DrawAmbientOcclusion();
     m_deviceResources->PIXEndEvent();
 
@@ -134,10 +138,12 @@ void Game::Clear()
     context->ClearRenderTargetView(renderTarget, Colors::Black);
     context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
     context->ClearRenderTargetView(GameObjectManager::GetInstance()->GetNormalDepthRTV(), Colors::Black);
-    ID3D11RenderTargetView* rtv[2] = { NULL,NULL };
+    context->ClearRenderTargetView(GameObjectManager::GetInstance()->GetLUTColorRTV(), Colors::Black);
+    ID3D11RenderTargetView* rtv[3] = { NULL,NULL,NULL };
     rtv[0] = renderTarget;
     rtv[1] = GameObjectManager::GetInstance()->GetNormalDepthRTV();
-    context->OMSetRenderTargets(2, rtv, depthStencil);
+    rtv[2] = GameObjectManager::GetInstance()->GetLUTColorRTV();
+    context->OMSetRenderTargets(3, rtv, depthStencil);
 
     // Set the viewport.
     auto const viewport = m_deviceResources->GetScreenViewport();

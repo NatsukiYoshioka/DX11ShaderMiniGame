@@ -1,8 +1,8 @@
 #include"Header.hlsli"
 
-AOPS main(AOVS vin)
+PPPS main(PPVS vin)
 {
-    AOPS pout;
+    PPPS pout;
     
     pout.Position = float4(vin.Position, 1);
     pout.TexCoord = vin.TexCoord;

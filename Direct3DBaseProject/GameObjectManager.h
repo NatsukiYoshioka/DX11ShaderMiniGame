@@ -157,7 +157,11 @@ public:
 	/// </summary>
 	void HitCheck();
 
+	void DrawLUT();
+
 	ID3D11RenderTargetView* GetNormalDepthRTV() { return m_normalDepthRTV.Get(); }
+
+	ID3D11RenderTargetView* GetLUTColorRTV() { return m_LUTColorRTV.Get(); }
 
 private:
 	static GameObjectManager* m_instance;	//マネージャのインスタンス
@@ -166,12 +170,16 @@ private:
 
 	unique_ptr<SpriteBatch> m_batch;
 
+	void CreateShadowDevice();
+
 	ComPtr<ID3D11Texture2D> m_objectShadowDepth;				//オブジェクトのテクスチャ
 	ComPtr<ID3D11Texture2D> m_characterShadowDepth;				//プレイヤーのテクスチャ
 	ComPtr<ID3D11DepthStencilView> m_objectShadowDepthView;		//オブジェクトの深度テストデバイス
 	ComPtr<ID3D11DepthStencilView> m_characterShadowDepthView;	//プレイヤーの深度テストデバイス
 	ComPtr<ID3D11ShaderResourceView> m_objectShadowView;		//オブジェクトのテクスチャSRV
 	ComPtr<ID3D11ShaderResourceView> m_characterShadowView;		//プレイヤーのテクスチャSRV
+
+	void CreateFindCheckDevice();
 
 	ComPtr<ID3D11RenderTargetView> m_hitCheckRenderTargetView;		//見つかり判定用オブジェクトレンダーターゲット
 	ComPtr<ID3D11RenderTargetView> m_hitCheckCharacterRTV;			//見つかり判定キャラクター用レンダーターゲット
@@ -180,6 +188,8 @@ private:
 	ComPtr<ID3D11ShaderResourceView> m_hitCheckCharacterSRV;		//見つかり判定用プレイヤーSRV
 
 	ComPtr<ID3D11PixelShader> m_spritePixel;
+
+	void CreateAmbientOcclusionDevice();
 
 	ComPtr<ID3D11Texture2D> m_normalDepthTexture;
 	ComPtr<ID3D11RenderTargetView> m_normalDepthRTV;
@@ -204,7 +214,21 @@ private:
 	ComPtr<ID3D11Buffer> m_indexBuffer;
 	ComPtr<ID3D11InputLayout> m_inputLayout;
 	ComPtr<ID3D11BlendState> m_AOBlend;
-	ComPtr<ID3D11VertexShader> m_AOVertex;
+	ComPtr<ID3D11VertexShader> m_PostProccessVertex;
 	ComPtr<ID3D11PixelShader> m_AOPixel;
+
+	void CreateLUTDevice();
+
+	struct __declspec(align(16)) LUTConstants
+	{
+		float gradingPower;
+	};
+	ConstantBuffer<LUTConstants> m_LUTConstantBuffer;
+
+	ComPtr<ID3D11Texture2D> m_LUTColorTexture;
+	ComPtr<ID3D11RenderTargetView> m_LUTColorRTV;
+	ComPtr<ID3D11ShaderResourceView> m_LUTColorSRV;
+	ComPtr<ID3D11ShaderResourceView> m_LUTSampleSRV;
+	ComPtr<ID3D11PixelShader> m_LUTPixel;
 };
 

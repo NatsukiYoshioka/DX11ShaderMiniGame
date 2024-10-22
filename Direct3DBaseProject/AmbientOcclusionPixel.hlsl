@@ -14,7 +14,7 @@ cbuffer AOConstats : register(b4)
 Texture2D<float4> Normal : register(t0);
 SamplerState Sampler : register(s0);
 
-float4 main(AOPS pout):SV_Target0
+float4 main(PPPS pout):SV_Target0
 {
     float4 Out;
     

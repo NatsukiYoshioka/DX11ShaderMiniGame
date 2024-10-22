@@ -28,10 +28,10 @@ OriginalEffect::OriginalEffect(ID3D11Device* device, PixelType type, bool isSkin
 	switch (m_type)
 	{
 	case PixelType::Object:
-		psBlob = DX::ReadData(L"DepthNormalObject.cso");
+		psBlob = DX::ReadData(L"ObjectPixel.cso");
 		break;
 	case PixelType::Character:
-		psBlob = DX::ReadData(L"DepthNormalCharacter.cso");
+		psBlob = DX::ReadData(L"CharacterPixel.cso");
 		break;
 	case PixelType::Block:
 		psBlob = DX::ReadData(L"BlockPixel.cso");
