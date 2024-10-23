@@ -546,8 +546,8 @@
   "SSAOZFar": 5,
   "SSAOPower": 1,
 
-  "LUTTexture": "purplesky.dds",
-  "LUTMaxPower": 0.6,
+  "LUTTexture": "Sin-City.dds",
+  "LUTMaxPower": 1.0,
 
     "TitleBGM": "title.wav",
     "GameBGM": "game.wav",

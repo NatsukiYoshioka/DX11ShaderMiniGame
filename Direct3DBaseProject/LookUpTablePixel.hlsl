@@ -13,14 +13,29 @@ float4 main(PPPS pout):SV_Target0
 {
     float4 color = sceneTexture.Sample(Sampler, pout.TexCoord);
     
-    //2DLUTの適用（G成分をU方向に、R成分をV方向に、B成分を行に割り当て）
+    //2DLUTの適用（G成分をV方向に、R,B成分をU方向に割り当て）
     float2 lutCoord;
-    lutCoord.x = 64 * 1 + color.r * 63.f / 512.f;               //R成分をU方向の座標に
-    lutCoord.y = color.g * 7.f / 8.f * color.b * 63.f / 64.f;   //B成分とG成分をV方向の座標に
-    lutCoord /= float2(512.0, 512.0);                           //正規化
-
-    float4 lutColor = lutTexture.Sample(Sampler, lutCoord);
+    lutCoord.x = floor(color.b * 15.f) / 15.f * 240.f;
+    lutCoord.x = (floor(color.r * 15.0) / 15.0 * 15.0) + lutCoord.x;
+    lutCoord.x /= 255.f;
+    lutCoord.y = (ceil(color.g * 15.0) / 15.0);
+    
+    float3 left = lutTexture.Sample(Sampler, lutCoord).rgb;
+    
+    lutCoord.x = ceil(color.b * 15.f) / 15.f * 240.f;
+    lutCoord.x = (ceil(color.r * 15.0) / 15.0 * 15.0) + lutCoord.x;
+    lutCoord.x /= 255.f;
+    lutCoord.y = (ceil(color.g * 15.0) / 15.0);
+    
+    float3 right = lutTexture.Sample(Sampler, lutCoord).rgb;
+    
+    float4 lutColor;
+    lutColor.r = lerp(left.r, right.r, frac(color.r * 15.f));
+    lutColor.g = lerp(left.g, right.g, frac(color.g * 15.f));
+    lutColor.b = lerp(left.b, right.b, frac(color.b * 15.f));
     
     color.rgb = lerp(color.rgb, lutColor.rgb, lutPower);
+    //color.rgb = lutColor.rgb;
+
     return color;
 }

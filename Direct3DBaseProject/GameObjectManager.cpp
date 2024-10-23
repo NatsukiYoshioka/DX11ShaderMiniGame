@@ -704,7 +704,7 @@ void GameObjectManager::DrawLUT()
 	ID3D11SamplerState* samplers[] =
 	{
 		states->LinearClamp(),
-		states->LinearClamp(),
+		states->LinearClamp()
 	};
 	context->PSSetSamplers(0, 1, samplers);
 	context->PSSetShaderResources(0, 1, m_LUTColorSRV.GetAddressOf());
