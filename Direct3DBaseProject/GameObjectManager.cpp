@@ -681,6 +681,17 @@ void GameObjectManager::CreateLUTDevice()
 	srvDesc.Texture2D.MipLevels = 1;
 	device->CreateShaderResourceView(m_LUTColorTexture.Get(), &srvDesc, m_LUTColorSRV.ReleaseAndGetAddressOf());
 
+	D3D11_SAMPLER_DESC samplerDesc = {};
+	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+	samplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+	samplerDesc.MinLOD = 0;
+	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+
+	device->CreateSamplerState(&samplerDesc, m_LUTSampler.ReleaseAndGetAddressOf());
+
 	auto json = Json::GetInstance();
 	SetCurrentDirectory(L"Assets/Shader");
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(device,
@@ -701,12 +712,8 @@ void GameObjectManager::DrawLUT()
 	context->VSSetShader(m_PostProccessVertex.Get(), NULL, 0);
 	context->PSSetShader(m_LUTPixel.Get(), NULL, 0);
 	auto states = DeviceAccessor::GetInstance()->GetStates();
-	ID3D11SamplerState* samplers[] =
-	{
-		states->LinearClamp(),
-		states->LinearClamp()
-	};
-	context->PSSetSamplers(0, 1, samplers);
+
+	context->PSSetSamplers(0, 1, m_LUTSampler.GetAddressOf());
 	context->PSSetShaderResources(0, 1, m_LUTColorSRV.GetAddressOf());
 	context->PSSetShaderResources(1, 1, m_LUTSampleSRV.GetAddressOf());
 

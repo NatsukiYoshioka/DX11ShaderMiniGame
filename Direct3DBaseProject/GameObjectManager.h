@@ -269,6 +269,7 @@ private:
 
 	ComPtr<ID3D11Texture2D> m_LUTColorTexture;			//LUT用カラーテクスチャ
 	ComPtr<ID3D11RenderTargetView> m_LUTColorRTV;		//LUT用カラー入力RTV
+	ComPtr<ID3D11SamplerState> m_LUTSampler;			//LUT用サンプラー
 	ComPtr<ID3D11ShaderResourceView> m_LUTColorSRV;		//LUT用カラーリソースビュー
 	ComPtr<ID3D11ShaderResourceView> m_LUTSampleSRV;	//LUT用サンプリングリソースビュー
 	ComPtr<ID3D11PixelShader> m_LUTPixel;				//LUT用ピクセルシェーダー

@@ -18,7 +18,7 @@ PSOut main(float4 color : COLOR0,
     Out.Normal.xy = 0.f;
     Out.Normal.zw = color.a;
     
-    Out.Color = Out.BackBuffer;
+    Out.Color = Out.BackBuffer * Out.BackBuffer.a;
     
     return Out;
 }

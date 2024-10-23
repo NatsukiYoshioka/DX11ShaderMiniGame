@@ -547,7 +547,7 @@
   "SSAOPower": 1,
 
   "LUTTexture": "Sin-City.dds",
-  "LUTMaxPower": 1.0,
+  "LUTMaxPower": 1,
 
     "TitleBGM": "title.wav",
     "GameBGM": "game.wav",
