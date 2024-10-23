@@ -4,6 +4,9 @@
 
 class SoundBase;
 
+/// <summary>
+/// ゲームオーバーBGM管理クラス
+/// </summary>
 class GameOverBGM:public SoundBase
 {
 public:
@@ -48,6 +51,6 @@ public:
 	void UpdateResult()override;
 
 private:
-	float m_volume;
+	float m_volume;		//サウンドのボリューム
 };
 

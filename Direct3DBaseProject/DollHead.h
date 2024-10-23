@@ -4,14 +4,15 @@
 class GameObject;
 class OriginalEffect;
 
+/// <summary>
+/// 人形の頭管理クラス
+/// </summary>
 class DollHead:public GameObject
 {
 public:
 	/// <summary>
 	/// オブジェクトの初期化
 	/// </summary>
-	/// <param name="fileName"></param>
-	/// <param name="pos"></param>
 	DollHead(const wchar_t* fileName, Vector3 pos);
 
 	/// <summary>
@@ -72,7 +73,6 @@ public:
 	/// <summary>
 	/// リザルトでの座標移動割合取得
 	/// </summary>
-	/// <returns></returns>
 	float GetPosRatio()const { return m_posRatio; }
 
 private:

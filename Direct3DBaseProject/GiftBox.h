@@ -4,15 +4,15 @@
 class GameObject;
 class OriginalEffect;
 
+/// <summary>
+/// プレゼント箱管理クラス
+/// </summary>
 class GiftBox:public GameObject
 {
 public:
 	/// <summary>
 	/// オブジェクトの初期化
 	/// </summary>
-	/// <param name="fileName"></param>
-	/// <param name="pos"></param>
-	/// <param name="rotate"></param>
 	GiftBox(const wchar_t* fileName, Vector3 pos, float rotate);
 
 	/// <summary>

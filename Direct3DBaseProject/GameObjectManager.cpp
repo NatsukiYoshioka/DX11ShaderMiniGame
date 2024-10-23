@@ -353,6 +353,7 @@ void GameObjectManager::DrawShadow()
 	}
 }
 
+//SSAO描画用デバイスの作成
 void GameObjectManager::CreateAmbientOcclusionDevice()
 {
 	auto device = DeviceAccessor::GetInstance()->GetDevice();
@@ -480,6 +481,7 @@ void GameObjectManager::CreateAmbientOcclusionDevice()
 	device->CreateBlendState(&blendDesc, m_AOBlend.ReleaseAndGetAddressOf());
 }
 
+//SSAO描画(ポストプロセス)
 void GameObjectManager::DrawAmbientOcclusion()
 {
 	auto context = DeviceAccessor::GetInstance()->GetContext();
@@ -510,6 +512,7 @@ void GameObjectManager::DrawAmbientOcclusion()
 	context->DrawIndexed(6, 0, 0);
 }
 
+//見つかり判定用デバイスの作成
 void GameObjectManager::CreateFindCheckDevice()
 {
 	auto device = DeviceAccessor::GetInstance()->GetDevice();
@@ -654,6 +657,7 @@ void GameObjectManager::HitCheck()
 	PlayerAccessor::GetInstance()->GetPlayer()->HitCheck();
 }
 
+//LUT描画用デバイスの作成
 void GameObjectManager::CreateLUTDevice()
 {
 	auto device = DeviceAccessor::GetInstance()->GetDevice();
@@ -688,6 +692,7 @@ void GameObjectManager::CreateLUTDevice()
 	SetCurrentDirectory(L"../../");
 }
 
+//LUT描画(ポストプロセス)
 void GameObjectManager::DrawLUT()
 {
 	auto context = DeviceAccessor::GetInstance()->GetContext();

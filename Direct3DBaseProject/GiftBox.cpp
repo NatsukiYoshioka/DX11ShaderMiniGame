@@ -76,7 +76,7 @@ GiftBox::~GiftBox()
 
 }
 
-//タイトルでの初期化
+//タイトルでの初期化(処理なし)
 void GiftBox::InitializeTitle()
 {
 

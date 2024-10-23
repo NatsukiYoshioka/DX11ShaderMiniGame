@@ -92,6 +92,7 @@ void Game::Render()
     }
     auto sceneManager = SceneManager::GetInstance();
     m_deviceResources->PIXBeginEvent(L"OffScreenRender");
+    //オフスクリーン描画
     sceneManager->DrawOffScreen();
 
     m_deviceResources->PIXEndEvent();
@@ -102,10 +103,12 @@ void Game::Render()
     auto context = m_deviceResources->GetD3DDeviceContext();
 
     // TODO: Add your rendering code here.
+    //通常レンダリング
     sceneManager->Draw();
 
     m_deviceResources->PIXEndEvent();
 
+    //LUTポストプロセス
     m_deviceResources->PIXBeginEvent(L"LUT");
     auto renderTarget = m_deviceResources->GetRenderTargetView();
     auto depthStencil = m_deviceResources->GetDepthStencilView();
@@ -115,6 +118,7 @@ void Game::Render()
     GameObjectManager::GetInstance()->DrawLUT();
     m_deviceResources->PIXEndEvent();
 
+    //SSAOポストプロセス
     m_deviceResources->PIXBeginEvent(L"SSAO");
     GameObjectManager::GetInstance()->DrawAmbientOcclusion();
     m_deviceResources->PIXEndEvent();

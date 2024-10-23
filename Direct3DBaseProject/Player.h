@@ -10,6 +10,9 @@ using namespace std;
 class GameObject;
 class OriginalEffect;
 
+/// <summary>
+/// プレイヤー管理クラス
+/// </summary>
 class Player :public GameObject
 {
 public:
@@ -30,9 +33,6 @@ public:
 	/// <summary>
 	/// オブジェクトの初期化
 	/// </summary>
-	/// <param name="fileName">3Dモデルファイル名</param>
-	/// <param name="pos">初期座標</param>
-	/// <param name="rotate">オブジェクトのY軸回転量(XM_PI / rotate)</param>
 	Player(const wchar_t* fileName);
 
 	/// <summary>
@@ -103,19 +103,16 @@ public:
 	/// <summary>
 	/// オブジェクトの回転量の取得
 	/// </summary>
-	/// <returns>オブジェクトの回転量</returns>
 	float GetRotate()const { return m_rotate; }
 
 	/// <summary>
 	/// 敵に見つかったかどうか取得
 	/// </summary>
-	/// <returns></returns>
 	bool GetBeFound()const { return m_beFound; }
 
 	/// <summary>
 	/// クリアしたかどうか取得
 	/// </summary>
-	/// <returns></returns>
 	bool GetIsClear()const { return m_isClear; }
 
 	/// <summary>
@@ -126,7 +123,6 @@ public:
 	/// <summary>
 	/// アニメーションの状態取得
 	/// </summary>
-	/// <returns></returns>
 	AnimationState GetNowAnimationState()const { return m_nowAnimationState; }
 
 private:
@@ -156,8 +152,8 @@ private:
 	/// </summary>
 	struct Sphere
 	{
-		Vector3 center;
-		float radius;
+		Vector3 center;		//スフィアの中心座標
+		float radius;		//スフィアの半径
 	};
 	ComPtr<ID3D11Buffer> m_sphereResult;			//スフィアの入出力バッファ
 	ComPtr<ID3D11UnorderedAccessView> m_sphereInfo;	//スフィア用UAV

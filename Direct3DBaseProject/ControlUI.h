@@ -6,6 +6,9 @@ using namespace Microsoft::WRL;
 
 class UIBase;
 
+/// <summary>
+/// ‘€ìà–¾UIŠÇ—ƒNƒ‰ƒX
+/// </summary>
 class ControlUI:public UIBase
 {
 public:

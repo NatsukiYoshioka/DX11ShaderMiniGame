@@ -4,6 +4,9 @@
 
 class SoundBase;
 
+/// <summary>
+/// 見つかった時のサウンドエフェクト管理クラス
+/// </summary>
 class FoundSE:public SoundBase
 {
 public:

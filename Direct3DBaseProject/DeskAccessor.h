@@ -31,13 +31,11 @@ public:
 	/// <summary>
 	/// アクセサのインスタンス取得
 	/// </summary>
-	/// <returns>アクセサのインスタンス</returns>
 	static DeskAccessor* GetInstance() { return m_instance; }
 
 	/// <summary>
 	/// デスクインスタンス取得
 	/// </summary>
-	/// <returns>デスクのインスタンス</returns>
 	Desk* GetDesk() { return m_desk; }
 private:
 	static DeskAccessor* m_instance;	//アクセサのインスタンス

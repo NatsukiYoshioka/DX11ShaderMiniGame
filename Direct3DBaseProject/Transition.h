@@ -7,6 +7,9 @@ using namespace Microsoft::WRL;
 
 class UIBase;
 
+/// <summary>
+/// トランジション管理クラス
+/// </summary>
 class Transition :public UIBase
 {
 public:
@@ -68,19 +71,16 @@ public:
 	/// <summary>
 	/// テクスチャのアルファ値取得
 	/// </summary>
-	/// <returns></returns>
 	float GetAlpha()const { return m_alpha; }
 
 	/// <summary>
 	/// トランジションのフェードアウトが終わったかどうか取得
 	/// </summary>
-	/// <returns></returns>
 	bool GetIsFinishFadeout()const { return m_isFinishFadeout; }
 
 	/// <summary>
 	/// トランジションのフェードインが終わったかどうか取得
 	/// </summary>
-	/// <returns></returns>
 	bool GetIsFinishFadein()const { return m_isFinishFadein; }
 
 private:

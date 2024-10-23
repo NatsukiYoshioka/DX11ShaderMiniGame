@@ -4,6 +4,9 @@
 
 class SoundBase;
 
+/// <summary>
+/// ゲームクリアBGM管理クラス
+/// </summary>
 class GameClearBGM:public SoundBase
 {
 public:

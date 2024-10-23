@@ -6,7 +6,7 @@ using namespace std;
 /// <summary>
 /// ゲームオブジェクト基底クラス
 /// </summary>
-class GameObject
+class GameObject abstract
 {
 public:
 	/// <summary>
@@ -22,59 +22,61 @@ public:
 	/// <summary>
 	/// 純粋仮想関数(タイトルシーンオブジェクト初期化関数)
 	/// </summary>
-	virtual void InitializeTitle() = 0;
+	virtual void InitializeTitle() abstract;
 
 	/// <summary>
 	/// 純粋仮想関数(タイトルシーンオブジェクト更新関数)
 	/// </summary>
-	virtual void UpdateTitle() = 0;
+	virtual void UpdateTitle() abstract;
 
 	/// <summary>
 	/// 純粋仮想関数(タイトルシーンオブジェクト描画関数)
 	/// </summary>
-	virtual void DrawTitle() = 0;
+	virtual void DrawTitle() abstract;
 
 	/// <summary>
 	/// 純粋仮想関数(オブジェクト初期化関数)
 	/// </summary>
-	virtual void Initialize() = 0;
+	virtual void Initialize() abstract;
 
 	/// <summary>
 	/// 純粋仮想関数(オブジェクト更新関数)
 	/// </summary>
-	virtual void Update() = 0;
+	virtual void Update() abstract;
 
 	/// <summary>
 	/// 純粋仮想関数(オブジェクト描画関数)
 	/// </summary>
-	virtual void Draw() = 0;
+	virtual void Draw() abstract;
 
 	/// <summary>
 	/// 純粋仮想関数(リザルトシーンオブジェクト初期化関数)
 	/// </summary>
-	virtual void InitializeResult() = 0;
+	virtual void InitializeResult() abstract;
 
 	/// <summary>
 	/// 純粋仮想関数(リザルトシーンオブジェクト更新関数)
 	/// </summary>
-	virtual void UpdateResult() = 0;
+	virtual void UpdateResult() abstract;
 
 	/// <summary>
 	/// 純粋仮想関数(リザルトシーンオブジェクト描画関数)
 	/// </summary>
-	virtual void DrawResult() = 0;
+	virtual void DrawResult() abstract;
 
-	virtual void DrawShadow() = 0;
+	/// <summary>
+	/// 純粋仮想関数(影の描画)
+	/// </summary>
+	virtual void DrawShadow() abstract;
+
 	/// <summary>
 	/// 座標の取得
 	/// </summary>
-	/// <returns>座標(Vector3)</returns>
 	Vector3 GetPos()const { return m_pos; }
 
 	/// <summary>
 	/// モデルハンドル取得
 	/// </summary>
-	/// <returns>モデルのポインタ</returns>
 	Model* GetModelHandle() { return m_modelHandle.get(); }
 
 protected:

@@ -13,6 +13,7 @@
 
 extern void ExitGame() noexcept;
 
+//ゲームシーン初期化
 GameScene::GameScene()
 {
     m_isChangeScene = false;
@@ -20,11 +21,13 @@ GameScene::GameScene()
     gameObjectManager->Initialize();
 }
 
+//データ破棄
 GameScene::~GameScene()
 {
 
 }
 
+//シーン更新
 void GameScene::Update()
 {
     auto pad = DeviceAccessor::GetInstance()->GetGamePad()->GetState(0);
@@ -33,11 +36,13 @@ void GameScene::Update()
 	auto gameObjectManager = GameObjectManager::GetInstance();
 	gameObjectManager->Update();
 
+    //クリアしていたらシーン遷移
     if (PlayerAccessor::GetInstance()->GetPlayer()->GetIsClear())
     {
         m_isChangeScene = true;
     }
 
+    //見つかったらシーン遷移
     for (int i = 0; i < UIAccessor::GetInstance()->GetUIs().size(); i++)
     {
         auto foundUI = dynamic_cast<FoundUI*>(UIAccessor::GetInstance()->GetUIs().at(i));
@@ -58,6 +63,7 @@ void GameScene::Update()
     }
 }
 
+//シーン描画
 void GameScene::Draw()
 {
 	auto gameObjectManager = GameObjectManager::GetInstance();
@@ -72,6 +78,7 @@ void GameScene::Draw()
 	gameObjectManager->Draw();
 }
 
+//オフスクリーン描画
 void GameScene::DrawOffScreen()
 {
     auto gameObjectManager = GameObjectManager::GetInstance();

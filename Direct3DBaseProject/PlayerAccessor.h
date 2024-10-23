@@ -37,7 +37,6 @@ public:
 	/// <summary>
 	/// プレイヤーオブジェクトの取得
 	/// </summary>
-	/// <returns>Playerオブジェクト</returns>
 	Player* GetPlayer() { return m_player; }
 private:
 	static PlayerAccessor* m_instance;		//アクセサのインスタンス

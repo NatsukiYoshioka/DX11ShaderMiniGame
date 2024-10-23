@@ -4,6 +4,9 @@
 
 class SoundBase;
 
+/// <summary>
+/// ‘–‚è‘«‰¹ŠÇ—ƒNƒ‰ƒX
+/// </summary>
 class RunSound:public SoundBase
 {
 public:

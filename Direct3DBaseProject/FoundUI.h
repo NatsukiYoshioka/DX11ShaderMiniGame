@@ -66,12 +66,14 @@ public:
 	/// </summary>
 	void DrawResult()override;
 
+	/// <summary>
+	/// Œ©‚Â‚©‚Á‚Ä‚¢‚éŠ„‡æ“¾
+	/// </summary>
 	float GetTimeRatio()const { return m_timeRatio; }
 
 	/// <summary>
 	/// Š®‘S‚ÉŒ©‚Â‚©‚Á‚½‚©‚Ç‚¤‚©æ“¾
 	/// </summary>
-	/// <returns></returns>
 	bool GetIsFound()const { return m_isFound; }
 
 private:

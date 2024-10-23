@@ -32,6 +32,9 @@ public:
 	/// </summary>
 	void DrawTitle()override;
 
+	/// <summary>
+	/// オブジェクトの初期化
+	/// </summary>
 	void Initialize()override;
 
 	/// <summary>
@@ -44,6 +47,9 @@ public:
 	/// </summary>
 	void Draw()override;
 
+	/// <summary>
+	/// リザルトシーンオブジェクトの初期化
+	/// </summary>
 	void InitializeResult()override;
 
 	/// <summary>
@@ -56,36 +62,34 @@ public:
 	/// </summary>
 	void DrawResult()override;
 
+	/// <summary>
+	/// 影の描画(描画なし)
+	/// </summary>
 	void DrawShadow()override{}
 
 	/// <summary>
 	/// カメラビュー行列の取得
 	/// </summary>
-	/// <returns>ビュー行列</returns>
 	Matrix GetView()const { return m_view; }
 
 	/// <summary>
 	/// カメラプロジェクション行列の取得
 	/// </summary>
-	/// <returns>プロジェクション行列</returns>
 	Matrix GetProjection()const { return m_projection; }
 
 	/// <summary>
 	/// カメラのピッチ取得
 	/// </summary>
-	/// <returns>カメラのピッチ</returns>
 	float GetPitch()const  { return m_pitch; }
 
 	/// <summary>
 	/// タイトルでのカメラの移動割合
 	/// </summary>
-	/// <returns></returns>
 	float GetTitlePosRatio()const { return m_titlePosRatio; }
 
 	/// <summary>
 	/// タイトルでのカメラ移動が終了したか取得
 	/// </summary>
-	/// <returns></returns>
 	bool GetIsFinishMoving()const { return m_isFinishMoving; }
 
 private:

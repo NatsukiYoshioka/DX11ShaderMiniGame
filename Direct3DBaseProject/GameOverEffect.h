@@ -6,6 +6,9 @@ using namespace Microsoft::WRL;
 
 class UIBase;
 
+/// <summary>
+/// ゲームオーバーエフェクト管理クラス
+/// </summary>
 class GameOverEffect :public UIBase
 {
 public:

@@ -373,48 +373,8 @@ void Enemy::DrawResult()
 	Draw();
 }
 
-//影の描画
+//影の描画(描画なし)
 void Enemy::DrawShadow()
 {
-	////シェーダーの変更
-	//for (const auto& mit : m_modelHandle->meshes)
-	//{
-	//	auto mesh = mit.get();
-	//	assert(mesh != nullptr);
-	//	for (const auto& pit : mesh->meshParts)
-	//	{
-	//		auto part = pit.get();
-	//		assert(part != nullptr);
-
-	//		auto effect = static_cast<OriginalEffect*>(part->effect.get());
-	//		effect->UpdateType(OriginalEffect::PixelType::Shadow);
-	//	}
-	//}
-
-	//size_t nbones = m_modelHandle->bones.size();
-
-	//m_animations.at(static_cast<int>(m_nowAnimationState)).Apply(*m_modelHandle, nbones, m_drawBones.get());
-
-	//m_modelHandle->DrawSkinned(DeviceAccessor::GetInstance()->GetContext(),
-	//	*DeviceAccessor::GetInstance()->GetStates(),
-	//	nbones,
-	//	m_drawBones.get(),
-	//	m_world,
-	//	m_eyeView,
-	//	CameraAccessor::GetInstance()->GetCamera()->GetProjection());
-
-	////シェーダーをもとに戻す
-	//for (const auto& mit : m_modelHandle->meshes)
-	//{
-	//	auto mesh = mit.get();
-	//	assert(mesh != nullptr);
-	//	for (const auto& pit : mesh->meshParts)
-	//	{
-	//		auto part = pit.get();
-	//		assert(part != nullptr);
-
-	//		auto effect = static_cast<OriginalEffect*>(part->effect.get());
-	//		effect->UpdateType(OriginalEffect::PixelType::Character);
-	//	}
-	//}
+	
 }

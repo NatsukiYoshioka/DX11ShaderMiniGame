@@ -71,25 +71,25 @@ Desk::~Desk()
 	m_modelHandle.reset();
 }
 
-//タイトルシーンオブジェクトの初期化
+//タイトルシーンオブジェクトの初期化(処理なし)
 void Desk::InitializeTitle()
 {
 
 }
 
-//タイトルシーンオブジェクトの更新
+//タイトルシーンオブジェクトの更新(処理なし)
 void Desk::UpdateTitle()
 {
 
 }
 
-//タイトルシーンオブジェクトの描画
+//タイトルシーンオブジェクトの描画(処理なし)
 void Desk::DrawTitle()
 {
 
 }
 
-//オブジェクトの初期化
+//オブジェクトの初期化(処理なし)
 void Desk::Initialize()
 {
 
@@ -133,7 +133,7 @@ void Desk::Draw()
 		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
 }
 
-//リザルトシーンオブジェクトの初期化
+//リザルトシーンオブジェクトの初期化(処理なし)
 void Desk::InitializeResult()
 {
 

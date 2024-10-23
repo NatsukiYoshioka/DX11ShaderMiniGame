@@ -259,7 +259,6 @@
     <ClCompile Include="GameBGM.cpp" />
     <ClCompile Include="GameClearBGM.cpp" />
     <ClCompile Include="GameClearUI.cpp" />
-    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="GameOverBGM.cpp" />
     <ClCompile Include="GameOverEffect.cpp" />

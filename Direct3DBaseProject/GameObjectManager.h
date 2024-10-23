@@ -12,8 +12,14 @@ class GameObject;
 class GameObjectManager
 {
 private:
+	/// <summary>
+	/// 特定範囲でランダムな値を出力
+	/// </summary>
 	float RandomFloat(float min,float max);
 
+	/// <summary>
+	/// Lerp処理
+	/// </summary>
 	float Lerp(float a, float b, float t);
 
 	/// <summary>
@@ -90,7 +96,6 @@ public:
 	/// <summary>
 	/// UI描画用デバイスの取得
 	/// </summary>
-	/// <returns></returns>
 	SpriteBatch* GetSpriteBatch() { return m_batch.get(); }
 
 	/// <summary>
@@ -108,8 +113,14 @@ public:
 	/// </summary>
 	void SetObjectShadowResource();
 
+	/// <summary>
+	/// 影の描画
+	/// </summary>
 	void DrawShadow();
 
+	/// <summary>
+	/// SSAO描画(ポストプロセス)
+	/// </summary>
 	void DrawAmbientOcclusion();
 
 	/// <summary>
@@ -157,10 +168,19 @@ public:
 	/// </summary>
 	void HitCheck();
 
+	/// <summary>
+	/// LUT描画(ポストプロセス)
+	/// </summary>
 	void DrawLUT();
 
+	/// <summary>
+	/// 法線・深度値を取得するためのRTVを取得
+	/// </summary>
 	ID3D11RenderTargetView* GetNormalDepthRTV() { return m_normalDepthRTV.Get(); }
 
+	/// <summary>
+	/// カラーグレーディングするための画面の色サンプリング用RTVを取得
+	/// </summary>
 	ID3D11RenderTargetView* GetLUTColorRTV() { return m_LUTColorRTV.Get(); }
 
 private:
@@ -168,8 +188,11 @@ private:
 
 	vector<GameObject*> m_gameObjects;		//ゲームオブジェクトのコンテナ
 
-	unique_ptr<SpriteBatch> m_batch;
+	unique_ptr<SpriteBatch> m_batch;		//スプライト描画用バッチ
 
+	/// <summary>
+	/// 影描画用デバイスの作成
+	/// </summary>
 	void CreateShadowDevice();
 
 	ComPtr<ID3D11Texture2D> m_objectShadowDepth;				//オブジェクトのテクスチャ
@@ -179,6 +202,9 @@ private:
 	ComPtr<ID3D11ShaderResourceView> m_objectShadowView;		//オブジェクトのテクスチャSRV
 	ComPtr<ID3D11ShaderResourceView> m_characterShadowView;		//プレイヤーのテクスチャSRV
 
+	/// <summary>
+	/// 見つかり判定用デバイスの作成
+	/// </summary>
 	void CreateFindCheckDevice();
 
 	ComPtr<ID3D11RenderTargetView> m_hitCheckRenderTargetView;		//見つかり判定用オブジェクトレンダーターゲット
@@ -187,48 +213,64 @@ private:
 	ComPtr<ID3D11ShaderResourceView> m_hitCheckShaderResourceView;	//見つかり判定用オブジェクトSRV
 	ComPtr<ID3D11ShaderResourceView> m_hitCheckCharacterSRV;		//見つかり判定用プレイヤーSRV
 
-	ComPtr<ID3D11PixelShader> m_spritePixel;
+	ComPtr<ID3D11PixelShader> m_spritePixel;			//スプライト描画用ピクセルシェーダー
 
+	/// <summary>
+	/// SSAO描画用デバイスの作成
+	/// </summary>
 	void CreateAmbientOcclusionDevice();
 
-	ComPtr<ID3D11Texture2D> m_normalDepthTexture;
-	ComPtr<ID3D11RenderTargetView> m_normalDepthRTV;
-	ComPtr<ID3D11ShaderResourceView> m_normalDepthSRV;
+	ComPtr<ID3D11Texture2D> m_normalDepthTexture;		//法線/深度値を参照するためのテクスチャ
+	ComPtr<ID3D11RenderTargetView> m_normalDepthRTV;	//法線/深度値を入力するためのRTV
+	ComPtr<ID3D11ShaderResourceView> m_normalDepthSRV;	//法線/深度値を参照するためのリソースビュー
 
+	/// <summary>
+	/// AO描画用定数構造体
+	/// </summary>
 	struct __declspec(align(16)) AOConstants
 	{
-		XMMATRIX projection;
-		XMMATRIX inverseProjection;
-		Vector4 sampleKernel[64];
-		float radius;
-		float ZFar;
-		float AOPower;
+		XMMATRIX projection;		//射影行列
+		XMMATRIX inverseProjection;	//射影行列の逆行列
+		Vector4 sampleKernel[64];	//AO用のサンプルカーネル
+		float radius;				//AO描画用の半径
+		float ZFar;					//AO描画用の最大深度値
+		float AOPower;				//AOの強さ
 	};
-	ConstantBuffer<AOConstants> m_AOConstantBuffer;
+	ConstantBuffer<AOConstants> m_AOConstantBuffer;		//AO描画用定数バッファ
+
+	/// <summary>
+	/// ポストプロセッシング用の入力構造体
+	/// </summary>
 	struct Vertex
 	{
-		XMFLOAT3 Position;
-		XMFLOAT2 TexCoord;
+		XMFLOAT3 Position;	//ポリゴンの座標
+		XMFLOAT2 TexCoord;	//UV座標
 	};
-	ComPtr<ID3D11Buffer> m_vertexBuffer;
-	ComPtr<ID3D11Buffer> m_indexBuffer;
-	ComPtr<ID3D11InputLayout> m_inputLayout;
-	ComPtr<ID3D11BlendState> m_AOBlend;
-	ComPtr<ID3D11VertexShader> m_PostProccessVertex;
-	ComPtr<ID3D11PixelShader> m_AOPixel;
+	ComPtr<ID3D11Buffer> m_vertexBuffer;				//ポストプロセッシング用頂点バッファ
+	ComPtr<ID3D11Buffer> m_indexBuffer;					//ポストプロセッシング用インデックスバッファ
+	ComPtr<ID3D11InputLayout> m_inputLayout;			//ポストプロセッシング用入力レイアウト
+	ComPtr<ID3D11BlendState> m_AOBlend;					//AOのブレンド状態
+	ComPtr<ID3D11VertexShader> m_PostProccessVertex;	//ポストプロセス用頂点シェーダー
+	ComPtr<ID3D11PixelShader> m_AOPixel;				//AO用ピクセルシェーダー
 
+	/// <summary>
+	/// LUT用デバイスの作成
+	/// </summary>
 	void CreateLUTDevice();
 
+	/// <summary>
+	/// LUT用定数構造体
+	/// </summary>
 	struct __declspec(align(16)) LUTConstants
 	{
-		float gradingPower;
+		float gradingPower;		//カラーグレーディングの強さ
 	};
-	ConstantBuffer<LUTConstants> m_LUTConstantBuffer;
+	ConstantBuffer<LUTConstants> m_LUTConstantBuffer;		//LUT用定数バッファ
 
-	ComPtr<ID3D11Texture2D> m_LUTColorTexture;
-	ComPtr<ID3D11RenderTargetView> m_LUTColorRTV;
-	ComPtr<ID3D11ShaderResourceView> m_LUTColorSRV;
-	ComPtr<ID3D11ShaderResourceView> m_LUTSampleSRV;
-	ComPtr<ID3D11PixelShader> m_LUTPixel;
+	ComPtr<ID3D11Texture2D> m_LUTColorTexture;			//LUT用カラーテクスチャ
+	ComPtr<ID3D11RenderTargetView> m_LUTColorRTV;		//LUT用カラー入力RTV
+	ComPtr<ID3D11ShaderResourceView> m_LUTColorSRV;		//LUT用カラーリソースビュー
+	ComPtr<ID3D11ShaderResourceView> m_LUTSampleSRV;	//LUT用サンプリングリソースビュー
+	ComPtr<ID3D11PixelShader> m_LUTPixel;				//LUT用ピクセルシェーダー
 };
 

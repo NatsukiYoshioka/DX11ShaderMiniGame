@@ -31,13 +31,11 @@ public:
 	/// <summary>
 	/// インスタンス取得
 	/// </summary>
-	/// <returns>アクセサのインスタンス</returns>
 	static CameraAccessor* GetInstance() { return m_instance; }
 	
 	/// <summary>
 	/// カメラの取得
 	/// </summary>
-	/// <returns>カメラのインスタンス</returns>
 	Camera* GetCamera() { return m_camera; }
 private:
 	static CameraAccessor* m_instance;		//アクセサのインスタンス

@@ -2,6 +2,9 @@
 
 class GiftBox;
 
+/// <summary>
+/// プレゼント箱用アクセサ
+/// </summary>
 class GiftBoxAccessor
 {
 private:
@@ -28,13 +31,11 @@ public:
 	/// <summary>
 	/// インスタンス取得
 	/// </summary>
-	/// <returns></returns>
 	static GiftBoxAccessor* GetInstance() { return m_instance; }
 
 	/// <summary>
 	/// オブジェクトインスタンス取得
 	/// </summary>
-	/// <returns></returns>
 	GiftBox* GetGiftBox() { return m_giftBox; }
 
 private:

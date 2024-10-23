@@ -18,9 +18,6 @@ public:
 	/// <summary>
 	/// デスクの初期化
 	/// </summary>
-	/// <param name="fileName">3Dモデルのファイル名</param>
-	/// <param name="pos">オブジェクトの初期座標</param>
-	/// <param name="rotate">オブジェクトのY軸回転量(XM_PI / rotate)</param>
 	Desk(const wchar_t* fileName, Vector3 pos, float rotate);
 
 	/// <summary>

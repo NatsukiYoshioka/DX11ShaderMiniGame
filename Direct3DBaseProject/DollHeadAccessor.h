@@ -2,6 +2,9 @@
 
 class DollHead;
 
+/// <summary>
+/// 人形の頭のアクセサ
+/// </summary>
 class DollHeadAccessor
 {
 private:
@@ -28,13 +31,11 @@ public:
 	/// <summary>
 	/// インスタンス取得
 	/// </summary>
-	/// <returns></returns>
 	static DollHeadAccessor* GetInstance() { return m_instance; }
 
 	/// <summary>
 	/// オブジェクトの取得
 	/// </summary>
-	/// <returns></returns>
 	DollHead* GetDollHead() { return m_dollHead; }
 private:
 	static DollHeadAccessor* m_instance;	//アクセサのインスタンス

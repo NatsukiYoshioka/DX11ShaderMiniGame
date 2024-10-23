@@ -91,25 +91,21 @@ public:
 	/// <summary>
 	/// 敵の目の位置を取得
 	/// </summary>
-	/// <returns></returns>
 	Vector3 GetEyePosition()const { return m_eyePos; }
 
 	/// <summary>
 	/// 敵の目の向きを取得
 	/// </summary>
-	/// <returns></returns>
 	Vector3 GetEyeDirection()const { return m_eyeDirection; }
 
 	/// <summary>
 	/// 敵の目のビュー空間行列
 	/// </summary>
-	/// <returns></returns>
 	Matrix GetEyeView()const { return m_eyeView; }
 
 	/// <summary>
 	/// 敵のアニメーション状態取得
 	/// </summary>
-	/// <returns></returns>
 	AnimationState GetNowAnimationState()const { return m_nowAnimationState; }
 
 private:

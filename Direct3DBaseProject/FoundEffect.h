@@ -6,6 +6,9 @@ using namespace Microsoft::WRL;
 
 class UIBase;
 
+/// <summary>
+/// 見つかりエフェクト管理クラス
+/// </summary>
 class FoundEffect:public UIBase
 {
 public:

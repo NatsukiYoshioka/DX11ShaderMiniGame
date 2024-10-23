@@ -3,14 +3,18 @@
 /// <summary>
 /// シーンの基底クラス
 /// </summary>
-class BaseScene
+class BaseScene abstract
 {
 public:
-	virtual void Update() = 0;
-	virtual void Draw() = 0;
-	virtual void DrawOffScreen() = 0;
+	//純粋仮想関数
+	virtual void Update() abstract;
+	virtual void Draw() abstract;
+	virtual void DrawOffScreen() abstract;
 
+	/// <summary>
+	/// シーンが遷移していいかどうか取得
+	/// </summary>
 	bool GetIsChangeScene()const { return m_isChangeScene; }
 protected:
-	bool m_isChangeScene;
+	bool m_isChangeScene;		//シーンが遷移していいかどうか
 };

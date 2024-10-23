@@ -3,6 +3,9 @@ using namespace std;
 
 class SoundBase;
 
+/// <summary>
+/// サウンドクラス用アクセサ
+/// </summary>
 class SoundAccessor
 {
 private:

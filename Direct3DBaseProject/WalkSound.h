@@ -4,6 +4,9 @@
 
 class SoundBase;
 
+/// <summary>
+/// •à‚«‘«‰¹ŠÇ—ƒNƒ‰ƒX
+/// </summary>
 class WalkSound:public SoundBase
 {
 public:

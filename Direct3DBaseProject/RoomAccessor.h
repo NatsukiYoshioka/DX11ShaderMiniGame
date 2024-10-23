@@ -2,6 +2,9 @@
 
 class Room;
 
+/// <summary>
+/// 部屋モデル用アクセサ
+/// </summary>
 class RoomAccessor
 {
 private:
@@ -28,13 +31,11 @@ public:
 	/// <summary>
 	/// インスタンス取得
 	/// </summary>
-	/// <returns></returns>
 	static RoomAccessor* GetInstance() { return m_instance; }
 
 	/// <summary>
 	/// オブジェクトのインスタンス取得
 	/// </summary>
-	/// <returns></returns>
 	Room* GetRoom() { return m_room; }
 
 private:

@@ -547,7 +547,7 @@
   "SSAOPower": 1,
 
   "LUTTexture": "purplesky.dds",
-  "LUTMaxPower": 0.5,
+  "LUTMaxPower": 0.6,
 
     "TitleBGM": "title.wav",
     "GameBGM": "game.wav",

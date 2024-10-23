@@ -6,6 +6,9 @@ using namespace Microsoft::WRL;
 
 class UIBase;
 
+/// <summary>
+/// Aボタン管理クラス
+/// </summary>
 class ButtonA:public UIBase
 {
 public:

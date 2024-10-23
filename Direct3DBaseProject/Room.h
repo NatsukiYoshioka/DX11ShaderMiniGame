@@ -7,13 +7,15 @@ using namespace Microsoft::WRL;
 class GameObject;
 class OriginalEffect;
 
+/// <summary>
+/// 部屋モデル管理クラス
+/// </summary>
 class Room:public GameObject
 {
 public:
 	/// <summary>
 	/// オブジェクトの初期化
 	/// </summary>
-	/// <param name="fileName"></param>
 	Room(const wchar_t* fileName);
 
 	/// <summary>

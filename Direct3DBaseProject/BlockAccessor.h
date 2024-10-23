@@ -33,13 +33,11 @@ public:
 	/// <summary>
 	/// インスタンス取得
 	/// </summary>
-	/// <returns>クラスのインスタンス</returns>
 	static BlockAccessor* GetInstance() { return m_instance; }
 
 	/// <summary>
 	/// ブロックのコンテナ取得
 	/// </summary>
-	/// <returns>ブロックのコンテナ</returns>
 	vector<Block*> GetBlocks() { return m_blocks; }
 
 private:

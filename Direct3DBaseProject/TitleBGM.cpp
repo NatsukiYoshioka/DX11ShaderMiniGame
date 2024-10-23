@@ -60,7 +60,7 @@ void TitleBGM::InitializeResult()
 	Initialize();
 }
 
-//リザルトでのサウンド更新
+//リザルトでのサウンド更新(処理なし)
 void TitleBGM::UpdateResult()
 {
 

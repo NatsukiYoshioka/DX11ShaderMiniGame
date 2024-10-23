@@ -79,16 +79,14 @@ public:
 	/// <summary>
 	/// 頂点座標の取得
 	/// </summary>
-	/// <returns></returns>
 	vector<XMFLOAT3> GetVertices() { return m_vertices; }
 
 	/// <summary>
 	/// 頂点座標のSRV取得
 	/// </summary>
-	/// <returns></returns>
 	ComPtr<ID3D11ShaderResourceView> GetVertexBufferSRV() { return m_vertexBufferSRV; }
 private:
-	Model* m_model;								//モデル情報が格納されたクラスポインタ
+	Model* m_model;				//モデル情報が格納されたクラスポインタ
 
 	/// <summary>
 	/// 描画時のインスタンシングに必要な変数の構造体
@@ -101,7 +99,7 @@ private:
 	vector<InstanceData> m_instances;			//インスタンシング構造体のコンテナ
 	ComPtr<ID3D11Buffer> m_instanceBuffer;		//インスタンシング構造体バッファ
 	shared_ptr<OriginalEffect> m_effect;		//モデル描画用エフェクトクラス
-	ComPtr<ID3D11InputLayout> m_inputLayout;
+	ComPtr<ID3D11InputLayout> m_inputLayout;	//入力レイアウト
 
 	float m_rotate;		//モデルのY軸回転量
 	Matrix m_world;		//モデルのワールド座標行列

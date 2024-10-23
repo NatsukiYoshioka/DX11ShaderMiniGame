@@ -27,7 +27,7 @@ float4 main(PPPS pout):SV_Target0
     normal.z = -sqrt(max(1 - normal.x * normal.x - normal.y * normal.y, 0));
     normal = normalize(normal);
     
-    //描画ピクセルのテクセル座標からクリップ空間上の座標を計算
+    //描画ピクセルのUV座標からクリップ空間上の座標を計算
     float4 ClipPos;
     ClipPos.xy = (pout.TexCoord * float2(2.f, -2.f) + float2(-1.f, 1.f)) * NormalDepthMap.w;
     ClipPos.zw = NormalDepthMap.zw;

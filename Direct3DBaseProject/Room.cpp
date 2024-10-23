@@ -79,7 +79,7 @@ Room::~Room()
 	m_modelHandle.reset();
 }
 
-//タイトルでの初期化
+//タイトルでの初期化(処理なし)
 void Room::InitializeTitle()
 {
 	
@@ -97,7 +97,7 @@ void Room::DrawTitle()
 	Draw();
 }
 
-//ゲームシーンでの初期化
+//ゲームシーンでの初期化(処理なし)
 void Room::Initialize()
 {
 

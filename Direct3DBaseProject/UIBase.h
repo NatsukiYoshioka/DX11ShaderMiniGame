@@ -6,7 +6,7 @@ class GameObject;
 /// <summary>
 /// UI‚ÌŠî’êƒNƒ‰ƒX
 /// </summary>
-class UIBase:public GameObject
+class UIBase abstract :public GameObject
 {
 public:
 	/// <summary>
@@ -20,15 +20,15 @@ public:
 	~UIBase(){}
 
 	//ƒˆ‰¼‘zŠÖ”
-	virtual void InitializeTitle() = 0;
-	virtual void UpdateTitle() = 0;
-	virtual void DrawTitle() = 0;
-	virtual void Initialize() = 0;
-	virtual void Update() = 0;
-	virtual void Draw() = 0;
-	virtual void InitializeResult() = 0;
-	virtual void UpdateResult() = 0;
-	virtual void DrawResult() = 0;
+	virtual void InitializeTitle() abstract;
+	virtual void UpdateTitle() abstract;
+	virtual void DrawTitle() abstract;
+	virtual void Initialize() abstract;
+	virtual void Update() abstract;
+	virtual void Draw() abstract;
+	virtual void InitializeResult() abstract;
+	virtual void UpdateResult() abstract;
+	virtual void DrawResult() abstract;
 	void DrawShadow()override{}
 
 protected:

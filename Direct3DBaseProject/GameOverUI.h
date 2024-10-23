@@ -6,6 +6,9 @@ using namespace Microsoft::WRL;
 
 class UIBase;
 
+/// <summary>
+/// ゲームオーバーUI管理クラス
+/// </summary>
 class GameOverUI:public UIBase
 {
 public:

@@ -16,6 +16,7 @@
 
 extern void ExitGame() noexcept;
 
+//タイトルシーン初期化
 TitleScene::TitleScene():
 	m_isStartGame(false)
 {
@@ -24,11 +25,13 @@ TitleScene::TitleScene():
 	gameObjectManager->InitializeTitle();
 }
 
+//データ破棄
 TitleScene::~TitleScene()
 {
 
 }
 
+//シーン更新
 void TitleScene::Update()
 {
 	auto pad = DeviceAccessor::GetInstance()->GetGamePad()->GetState(0);
@@ -41,6 +44,7 @@ void TitleScene::Update()
 	{
 		ExitGame();
 	}
+	//Aボタンを押していたらシーン遷移
 	for (int i = 0; i < UIAccessor::GetInstance()->GetUIs().size(); i++)
 	{
 		auto transition = dynamic_cast<Transition*>(UIAccessor::GetInstance()->GetUIs().at(i));
@@ -63,6 +67,7 @@ void TitleScene::Update()
 	}
 }
 
+//シーン描画
 void TitleScene::Draw()
 {
 	auto gameObjectManager = GameObjectManager::GetInstance();
@@ -72,6 +77,7 @@ void TitleScene::Draw()
 	gameObjectManager->DrawTitle();
 }
 
+//オフスクリーン描画
 void TitleScene::DrawOffScreen()
 {
 	auto gameObjectManager = GameObjectManager::GetInstance();

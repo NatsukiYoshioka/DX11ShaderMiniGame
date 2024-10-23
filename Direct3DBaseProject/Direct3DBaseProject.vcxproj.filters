@@ -312,9 +312,6 @@
     <ClCompile Include="Json.cpp">
       <Filter>Json</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="GameObjectManager.cpp">
       <Filter>GameObject\GameObjectManager</Filter>
     </ClCompile>

@@ -31,13 +31,11 @@ public:
 	/// <summary>
 	/// インスタンス取得
 	/// </summary>
-	/// <returns></returns>
 	static EnemyAccessor* GetInstance() { return m_instance; }
 
 	/// <summary>
 	/// 敵のオブジェクト取得
 	/// </summary>
-	/// <returns>Enemyオブジェクト</returns>
 	Enemy* GetEnemy() { return m_enemy; }
 private:
 	static EnemyAccessor* m_instance;	//アクセサのインスタンス

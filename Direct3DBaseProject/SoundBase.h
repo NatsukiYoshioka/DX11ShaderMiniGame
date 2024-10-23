@@ -9,7 +9,7 @@ class GameObject;
 /// <summary>
 /// UIの基底クラス
 /// </summary>
-class SoundBase :public GameObject
+class SoundBase abstract:public GameObject
 {
 public:
 	/// <summary>
@@ -23,17 +23,20 @@ public:
 	~SoundBase() {}
 
 	//純粋仮想関数
-	virtual void InitializeTitle() = 0;
-	virtual void UpdateTitle() = 0;
+	virtual void InitializeTitle() abstract;
+	virtual void UpdateTitle() abstract;
 	void DrawTitle()override{}
-	virtual void Initialize() = 0;
-	virtual void Update() = 0;
+	virtual void Initialize() abstract;
+	virtual void Update() abstract;
 	void Draw()override{}
-	virtual void InitializeResult() = 0;
-	virtual void UpdateResult() = 0;
+	virtual void InitializeResult() abstract;
+	virtual void UpdateResult() abstract;
 	void DrawResult()override{}
 	void DrawShadow()override{}
 
+	/// <summary>
+	/// サウンドの状態取得
+	/// </summary>
 	SoundState GetSoundState()const { return m_soundInstance->GetState(); }
 
 protected:

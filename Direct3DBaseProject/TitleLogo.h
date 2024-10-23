@@ -6,6 +6,9 @@ using namespace Microsoft::WRL;
 
 class UIBase;
 
+/// <summary>
+/// タイトルロゴ管理クラス
+/// </summary>
 class TitleLogo:public UIBase
 {
 public:

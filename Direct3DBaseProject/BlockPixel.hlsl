@@ -106,7 +106,6 @@ PSOut main(BlockPS pout) : SV_Target0
         }
     }
     
-    //テクスチャカラーに求めた光を乗算して最終出力カラーを求める
     float4 finalColor;
     if (pout.textureID == 0)
     {
@@ -124,6 +123,7 @@ PSOut main(BlockPS pout) : SV_Target0
     {
         finalColor = Texture4.Sample(Sampler, pout.TexCoord);
     }
+    //テクスチャカラーに求めた光を乗算して最終出力カラーを求める
     finalColor.xyz *= finalLight;
     
     Out.BackBuffer = finalColor;
