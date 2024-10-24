@@ -104,6 +104,8 @@ PSOut main(PSOutput pout)
         }
     }
     
+    finalLight *= LightColor;
+    
     //テクスチャカラーに求めた光を乗算して最終出力カラーを求める
     float4 finalColor = Texture.Sample(Sampler, pout.TexCoord);
     finalColor.xyz *= finalLight;

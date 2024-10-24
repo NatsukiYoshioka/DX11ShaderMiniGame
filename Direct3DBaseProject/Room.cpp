@@ -6,6 +6,9 @@
 #include"EnemyAccessor.h"
 #include"Camera.h"
 #include"CameraAccessor.h"
+#include"FoundUI.h"
+#include"UIBase.h"
+#include"UIAccessor.h"
 #include"GameObjectManager.h"
 #include "Room.h"
 
@@ -120,6 +123,16 @@ void Room::Update()
 			effect->SetLightDirection(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeDirection());
 			effect->SetEyePosition(CameraAccessor::GetInstance()->GetCamera()->GetPos());
 			effect->SetLightView(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeView());
+			for (int i = 0; i < UIAccessor::GetInstance()->GetUIs().size(); i++)
+			{
+				auto foundUI = dynamic_cast<FoundUI*>(UIAccessor::GetInstance()->GetUIs().at(i));
+				if (foundUI)
+				{
+					//effect->SetLightColor(Vector3(1.f, 1.f - foundUI->GetTimeRatio(), 1.f - foundUI->GetTimeRatio()));
+					effect->SetLightColor(Vector3(1.f, 1.f, 1.f));
+					break;
+				}
+			}
 		}
 	}
 }

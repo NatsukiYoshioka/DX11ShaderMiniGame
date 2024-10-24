@@ -7,6 +7,9 @@
 #include"EnemyAccessor.h"
 #include"GameObject.h"
 #include"OriginalEffect.h"
+#include"FoundUI.h"
+#include"UIBase.h"
+#include"UIAccessor.h"
 #include<WinBase.h>
 #include<random>
 #define _USE_MATH_DEFINES
@@ -199,6 +202,16 @@ void Block::Update()
 	m_effect->SetLightPosition(EnemyAccessor::GetInstance()->GetEnemy()->GetEyePosition());
 	m_effect->SetLightDirection(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeDirection());
 	m_effect->SetEyePosition(CameraAccessor::GetInstance()->GetCamera()->GetPos());
+	for (int i = 0; i < UIAccessor::GetInstance()->GetUIs().size(); i++)
+	{
+		auto foundUI = dynamic_cast<FoundUI*>(UIAccessor::GetInstance()->GetUIs().at(i));
+		if (foundUI)
+		{
+			//m_effect->SetLightColor(Vector3(1.f, 1.f - foundUI->GetTimeRatio(), 1.f - foundUI->GetTimeRatio()));
+			m_effect->SetLightColor(Vector3(1.f, 1.f, 1.f));
+			break;
+		}
+	}
 	m_effect->SetLightView(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeView());
 }
 

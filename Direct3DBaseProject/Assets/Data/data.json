@@ -485,17 +485,17 @@
   "LightAngle": 20,
 
   "TitleLogo": "title.dds",
-    "TitleLogoPosition": [ 500, 300 ],
+  "TitleLogoPosition": [ 500, 300 ],
   "TitleLogoScale": 1,
   "TitleLogoLayerDepth": 0.2,
-    "TitleLogoRenderTime": 1,
+  "TitleLogoRenderTime": 1,
 
-    "ButtonA": "a.dds",
-    "ButtonAPosition": [ 0, 800 ],
-    "ButtonAScale": 0.25,
-    "ButtonAMaxScale": 0.3,
-    "ButtonAScaleAdd": -0.001,
-    "ButtonALayerDepth": 0.2,
+  "ButtonA": "a.dds",
+  "ButtonAPosition": [ 0, 800 ],
+  "ButtonAScale": 0.25,
+  "ButtonAMaxScale": 0.3,
+  "ButtonAScaleAdd": -0.001,
+  "ButtonALayerDepth": 0.2,
 
   "EyeBaseUI": "gaugeBase.dds",
   "EyeFoundUI": "gauge.dds",
@@ -517,7 +517,7 @@
   "ControlUI": "ControlUI.dds",
   "ControlUIScale": 1,
   "ControlUILayerDepth": 0.2,
-  "ControlUIPosition": [1600,900],
+  "ControlUIPosition": [ 1600, 900 ],
 
   "GameClearUI": "GAMECLEAR.dds",
   "GameClearUIScale": 1,
@@ -549,16 +549,16 @@
   "LUTTexture": "Sin-City.dds",
   "LUTMaxPower": 1,
 
-    "TitleBGM": "title.wav",
-    "GameBGM": "game.wav",
-    "WalkSound": "walk.wav",
-    "RunSound": "dash.wav",
-    "FoundSE": "found.wav",
-    "GameClearBGM": "gameclear.wav",
-    "GameOverBGM": "gameover.wav",
+  "TitleBGM": "title.wav",
+  "GameBGM": "game.wav",
+  "WalkSound": "walk.wav",
+  "RunSound": "dash.wav",
+  "FoundSE": "found.wav",
+  "GameClearBGM": "gameclear.wav",
+  "GameOverBGM": "gameover.wav",
 
-    "GameBGMVolume": 0.5,
-    "WalkSoundVolume": 2,
-    "RunSoundVolume": 2,
-    "FoundSEVolume": 2
+  "GameBGMVolume": 0.5,
+  "WalkSoundVolume": 1,
+  "RunSoundVolume": 1,
+  "FoundSEVolume": 1
 }

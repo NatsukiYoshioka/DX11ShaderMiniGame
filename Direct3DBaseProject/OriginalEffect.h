@@ -110,6 +110,11 @@ public:
 	void SetEyePosition(Vector3 eyePosition);
 
 	/// <summary>
+	/// ライトの色設定
+	/// </summary>
+	void SetLightColor(Vector3 lightColor);
+
+	/// <summary>
 	/// ライトのビュー空間行列設定
 	/// </summary>
 	void SetLightView(Matrix view);
@@ -155,6 +160,7 @@ private:
 		float angle;			//ライトの向き
 		Vector3 eyePosition;	//目の座標
 		float pad0;				//パディング
+		Vector3 lightColor;		//ライトの色
 	};
 	
 	LightConstants m_light;							//ライト用定数構造体

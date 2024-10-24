@@ -18,6 +18,7 @@ cbuffer Light : register(b2)
     float3 LightPosition;
     float LightAngle;
     float3 EyePosition;
+    float3 LightColor;
 }
 
 cbuffer LVP : register(b3)

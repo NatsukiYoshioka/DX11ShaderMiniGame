@@ -158,7 +158,7 @@ void FoundUI::Draw()
 //リザルトシーンオブジェクトの初期化(処理なし)
 void FoundUI::InitializeResult()
 {
-
+	m_timeRatio = 0.f;
 }
 
 //リザルトシーンオブジェクトの更新(処理なし)

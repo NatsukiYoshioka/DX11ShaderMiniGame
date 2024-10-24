@@ -209,6 +209,12 @@ void OriginalEffect::SetEyePosition(Vector3 eyePosition)
 	m_light.eyePosition = eyePosition;
 }
 
+//ライトの色設定
+void OriginalEffect::SetLightColor(Vector3 lightColor)
+{
+	m_light.lightColor = lightColor;
+}
+
 //ライトの空間行列設定
 void OriginalEffect::SetLightView(Matrix view)
 {

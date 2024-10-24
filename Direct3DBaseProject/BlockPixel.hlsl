@@ -106,6 +106,8 @@ PSOut main(BlockPS pout) : SV_Target0
         }
     }
     
+    finalLight *= LightColor;
+    
     float4 finalColor;
     if (pout.textureID == 0)
     {
