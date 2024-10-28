@@ -91,6 +91,11 @@ public:
 	void DrawShadow()override;
 
 	/// <summary>
+	/// 深度値描画
+	/// </summary>
+	void DrawDepth();
+
+	/// <summary>
 	/// 見つかり判定用描画
 	/// </summary>
 	void DrawHitCheck();
@@ -125,6 +130,11 @@ public:
 	/// </summary>
 	AnimationState GetNowAnimationState()const { return m_nowAnimationState; }
 
+	/// <summary>
+	/// 深度値SRV取得
+	/// </summary>
+	ComPtr<ID3D11ShaderResourceView> GetDepthSRV() { return m_depthSRV; }
+
 private:
 	AnimationState m_nowAnimationState;			//アニメーションの現在の状態
 	vector<DX::AnimationSDKMESH> m_animations;	//スキニングアニメーションクラスコンテナ
@@ -134,6 +144,10 @@ private:
 
 	float m_rotate;		//モデルのY軸回転量
 	Matrix m_world;		//モデルのワールド行列
+
+	ComPtr<ID3D11Texture2D> m_depthTexture;				//オブジェクトのテクスチャ
+	ComPtr<ID3D11DepthStencilView> m_depthDSV;		//オブジェクトの深度テストデバイス
+	ComPtr<ID3D11ShaderResourceView> m_depthSRV;		//オブジェクトのテクスチャSRV
 
 	/// <summary>
 	/// 見つかり判定情報

@@ -20,14 +20,14 @@ float4 main(PPPS pout):SV_Target0
     lutCoord.x /= 255.f;
     lutCoord.y = (floor(color.g * 15.0) / 15.0);
     
-    float3 left = lutTexture.SampleLevel(Sampler, lutCoord, 0).rgb;
+    float3 left = lutTexture.SampleLevel(Sampler, lutCoord, 1).rgb;
         
     lutCoord.x = ceil(color.b * 15.f) / 15.f * 240.f;
     lutCoord.x = (ceil(color.r * 15.0) / 15.0 * 15.0) + lutCoord.x;
     lutCoord.x /= 255.f;
     lutCoord.y = (ceil(color.g * 15.0) / 15.0);
     
-    float3 right = lutTexture.SampleLevel(Sampler, lutCoord, 0).rgb;
+    float3 right = lutTexture.SampleLevel(Sampler, lutCoord, 1).rgb;
     
     float4 lutColor;
     lutColor.r = lerp(left.r, right.r, frac(color.r * 15.f));

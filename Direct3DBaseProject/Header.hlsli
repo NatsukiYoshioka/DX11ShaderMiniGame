@@ -26,6 +26,11 @@ cbuffer LVP : register(b3)
     float4x4 LVP;
 }
 
+cbuffer ScreenSize : register(b4)
+{
+    float2 ScreenSize;
+}
+
 //頂点構造体
 struct VSOutput
 {
@@ -61,6 +66,15 @@ struct BlockPS
     float3 WorldPos : TEXCOORD2;
     float4 PosInLVP : TEXCOORD3;
     int textureID : TEXCOORD1;
+};
+
+//ディザパターン
+static const int pattern[4][4] =
+{
+    { 0, 32, 8, 40 },
+    { 48, 16, 56, 24 },
+    { 12, 44, 4, 36 },
+    { 60, 28, 52, 20 }
 };
 
 struct PPVS

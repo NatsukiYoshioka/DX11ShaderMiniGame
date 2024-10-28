@@ -124,7 +124,11 @@ void GiftBox::DrawTitle()
 		*DeviceAccessor::GetInstance()->GetStates(),
 		m_world,
 		CameraAccessor::GetInstance()->GetCamera()->GetView(),
-		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
+		CameraAccessor::GetInstance()->GetCamera()->GetProjection(),
+		false, [&]()
+		{
+			DeviceAccessor::GetInstance()->GetContext()->RSSetState(DeviceAccessor::GetInstance()->GetStates()->CullNone());
+		});
 }
 
 //ƒQ[ƒ€ƒV[ƒ“‚Å‚Ì‰Šú‰»(ˆ—‚È‚µ)

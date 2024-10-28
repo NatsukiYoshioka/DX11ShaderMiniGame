@@ -88,6 +88,12 @@ public:
 private:
 	Model* m_model;				//モデル情報が格納されたクラスポインタ
 
+	struct __declspec(align(16)) DitheringConstants
+	{
+		Vector2 screenSize;
+	};
+	ConstantBuffer<DitheringConstants> m_ditheringBuffer;		//ディザリング用の定数バッファ
+
 	/// <summary>
 	/// 描画時のインスタンシングに必要な変数の構造体
 	/// </summary>

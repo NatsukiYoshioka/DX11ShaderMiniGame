@@ -3,6 +3,8 @@
 #include"DeviceAccessor.h"
 #include"Camera.h"
 #include"CameraAccessor.h"
+#include"Player.h"
+#include"PlayerAccessor.h"
 #include"Enemy.h"
 #include"EnemyAccessor.h"
 #include"GameObject.h"
@@ -19,7 +21,8 @@
 
 //積み木ブロックの初期化
 Block::Block(Model* modelHandle, vector<Vector3> pos, vector<float> rotate, vector<int> textureID):
-	m_rotate()
+	m_rotate(),
+	m_ditheringBuffer(DeviceAccessor::GetInstance()->GetDevice())
 {
 	m_model = modelHandle;
 
@@ -251,17 +254,16 @@ void Block::Draw()
 			context->PSSetSamplers(0, 2, samplers);
 
 			m_effect->Apply(context);
+			DitheringConstants constants;
+			constants.screenSize = Vector2(DeviceAccessor::GetInstance()->GetScreenSize().right, DeviceAccessor::GetInstance()->GetScreenSize().bottom);
+			m_ditheringBuffer.SetData(context, constants);
+			auto cb = m_ditheringBuffer.GetBuffer();
+			context->PSSetConstantBuffers(4, 1, &cb);
+			context->PSSetShaderResources(4, 1, PlayerAccessor::GetInstance()->GetPlayer()->GetDepthSRV().GetAddressOf());
 			context->IASetInputLayout(m_inputLayout.Get());
 			context->DrawIndexedInstanced(part->indexCount, m_instances.size(), 0, 0, 0);
 		}
 	}
-	
-	/*m_modelHandle->Draw(DeviceAccessor::GetInstance()->GetContext(),
-		*DeviceAccessor::GetInstance()->GetStates(),
-		m_world,
-		CameraAccessor::GetInstance()->GetCamera()->GetView(),
-		CameraAccessor::GetInstance()->GetCamera()->GetProjection());*/
-	//m_primitiveBatch->DrawIndexed()
 }
 
 //リザルトシーンオブジェクトの初期化

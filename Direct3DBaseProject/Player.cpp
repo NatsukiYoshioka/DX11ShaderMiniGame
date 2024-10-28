@@ -141,6 +141,43 @@ Player::Player(const wchar_t* fileName):
 	UAVDesc.Buffer.NumElements = 1;
 	deviceAccessor->GetDevice()->CreateUnorderedAccessView(m_bufferResult.Get(), &UAVDesc, m_hitInfo.ReleaseAndGetAddressOf());
 	deviceAccessor->GetDevice()->CreateUnorderedAccessView(m_sphereResult.Get(), &UAVDesc, m_sphereInfo.ReleaseAndGetAddressOf());
+
+	auto device = deviceAccessor->GetDevice();
+	//オブジェクトシャドウ描画用デバイスの作成
+	CD3D11_TEXTURE2D_DESC textureDesc(
+		DXGI_FORMAT_R32_TYPELESS,
+		deviceAccessor->GetScreenSize().right,
+		deviceAccessor->GetScreenSize().bottom,
+		1,
+		1,
+		D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL,
+		D3D11_USAGE_DEFAULT,
+		0,
+		1,
+		0,
+		0
+	);
+	device->CreateTexture2D(&textureDesc, NULL, m_depthTexture.ReleaseAndGetAddressOf());
+
+	CD3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc(
+		D3D11_DSV_DIMENSION_TEXTURE2D,
+		DXGI_FORMAT_D32_FLOAT,
+		0,
+		0,
+		1,
+		0
+	);
+	device->CreateDepthStencilView(m_depthTexture.Get(), &dsvDesc, m_depthDSV.ReleaseAndGetAddressOf());
+
+	CD3D11_SHADER_RESOURCE_VIEW_DESC srvDesc(
+		D3D11_SRV_DIMENSION_TEXTURE2D,
+		DXGI_FORMAT_R32_FLOAT,
+		0,
+		1,
+		0,
+		1
+	);
+	device->CreateShaderResourceView(m_depthTexture.Get(), &srvDesc, m_depthSRV.ReleaseAndGetAddressOf());
 }
 
 //データ破棄
@@ -455,6 +492,62 @@ void Player::DrawShadow()
 		m_drawBones.get(),
 		m_world,
 		EnemyAccessor::GetInstance()->GetEnemy()->GetEyeView(),
+		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
+
+	for (const auto& mit : m_modelHandle->meshes)
+	{
+		auto mesh = mit.get();
+		assert(mesh != nullptr);
+		for (const auto& pit : mesh->meshParts)
+		{
+			auto part = pit.get();
+			assert(part != nullptr);
+
+			auto effect = static_cast<OriginalEffect*>(part->effect.get());
+			effect->UpdateType(OriginalEffect::PixelType::Character);
+		}
+	}
+}
+
+//深度値描画
+void Player::DrawDepth()
+{
+	auto context = DeviceAccessor::GetInstance()->GetContext();
+
+	context->ClearDepthStencilView(m_depthDSV.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
+
+	ID3D11RenderTargetView* rtv = NULL;
+	context->OMSetRenderTargets(1, &rtv, m_depthDSV.Get());
+
+	int width = DeviceAccessor::GetInstance()->GetScreenSize().right;
+	int height = DeviceAccessor::GetInstance()->GetScreenSize().bottom;
+	CD3D11_VIEWPORT view(0.f, 0.f, float(width), float(height));
+	context->RSSetViewports(1, &view);
+
+	for (const auto& mit : m_modelHandle->meshes)
+	{
+		auto mesh = mit.get();
+		assert(mesh != nullptr);
+		for (const auto& pit : mesh->meshParts)
+		{
+			auto part = pit.get();
+			assert(part != nullptr);
+
+			auto effect = static_cast<OriginalEffect*>(part->effect.get());
+			effect->UpdateType(OriginalEffect::PixelType::Shadow);
+		}
+	}
+
+	size_t nbones = m_modelHandle->bones.size();
+
+	m_animations.at(static_cast<int>(m_nowAnimationState)).Apply(*m_modelHandle, nbones, m_drawBones.get());
+
+	m_modelHandle->DrawSkinned(DeviceAccessor::GetInstance()->GetContext(),
+		*DeviceAccessor::GetInstance()->GetStates(),
+		nbones,
+		m_drawBones.get(),
+		m_world,
+		CameraAccessor::GetInstance()->GetCamera()->GetView(),
 		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
 
 	for (const auto& mit : m_modelHandle->meshes)

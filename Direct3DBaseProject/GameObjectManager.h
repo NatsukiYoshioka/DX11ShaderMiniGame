@@ -196,11 +196,8 @@ private:
 	void CreateShadowDevice();
 
 	ComPtr<ID3D11Texture2D> m_objectShadowDepth;				//オブジェクトのテクスチャ
-	ComPtr<ID3D11Texture2D> m_characterShadowDepth;				//プレイヤーのテクスチャ
 	ComPtr<ID3D11DepthStencilView> m_objectShadowDepthView;		//オブジェクトの深度テストデバイス
-	ComPtr<ID3D11DepthStencilView> m_characterShadowDepthView;	//プレイヤーの深度テストデバイス
 	ComPtr<ID3D11ShaderResourceView> m_objectShadowView;		//オブジェクトのテクスチャSRV
-	ComPtr<ID3D11ShaderResourceView> m_characterShadowView;		//プレイヤーのテクスチャSRV
 
 	/// <summary>
 	/// 見つかり判定用デバイスの作成

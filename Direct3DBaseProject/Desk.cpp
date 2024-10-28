@@ -55,7 +55,7 @@ Desk::Desk(const wchar_t* fileName, Vector3 pos, float rotate)
 	ComPtr<ID3D11ShaderResourceView> ao;
 	SetCurrentDirectory(L"Assets/Models");
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(deviceAccessor->GetDevice(),
-		json->Widen(json->GetData()["DeskTexture"].at(0)).c_str(),
+		json->Widen(json->GetData()["DeskTexture"]).c_str(),
 		nullptr,
 		texture.ReleaseAndGetAddressOf()));
 	SetCurrentDirectory(L"../../");
@@ -143,7 +143,15 @@ void Desk::Draw()
 		*DeviceAccessor::GetInstance()->GetStates(),
 		m_world,
 		CameraAccessor::GetInstance()->GetCamera()->GetView(),
-		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
+		CameraAccessor::GetInstance()->GetCamera()->GetProjection(),
+		false, [&]()
+		{
+			ID3D11SamplerState* sampler[] = {
+				DeviceAccessor::GetInstance()->GetStates()->AnisotropicClamp(),
+				DeviceAccessor::GetInstance()->GetStates()->AnisotropicClamp()
+			};
+			DeviceAccessor::GetInstance()->GetContext()->PSSetSamplers(0, 1, sampler);
+		});
 }
 
 //リザルトシーンオブジェクトの初期化(処理なし)

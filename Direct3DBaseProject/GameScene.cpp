@@ -82,6 +82,10 @@ void GameScene::Draw()
 void GameScene::DrawOffScreen()
 {
     auto gameObjectManager = GameObjectManager::GetInstance();
+
+    //ƒvƒŒƒCƒ„[‚Ì[“x’l•`‰æ
+    PlayerAccessor::GetInstance()->GetPlayer()->DrawDepth();
+
     //‰e‚Ì•`‰æ
     gameObjectManager->ClearObjectShadow();
     gameObjectManager->SetObjectShadowRenderTarget();

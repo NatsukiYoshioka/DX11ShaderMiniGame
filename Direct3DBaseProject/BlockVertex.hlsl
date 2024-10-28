@@ -14,7 +14,7 @@ BlockPS main(BlockVS vout, uniform bool hasSkin)
     pout.TexCoord = vout.TexCoord;
     
     pout.PosInLVP = mul(LVP, worldPos);
-    
+        
     pout.textureID = vout.textureID;
     
     return pout;

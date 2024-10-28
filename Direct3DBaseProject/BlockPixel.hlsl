@@ -4,6 +4,7 @@ Texture2D<float4> Texture1 : register(t0);
 Texture2D<float4> Texture2 : register(t1);
 Texture2D<float4> Texture3 : register(t2);
 Texture2D<float4> Texture4 : register(t3);
+Texture2D<float4> playerDepth : register(t4);
 Texture2D<float4> Shadow : register(t10);
 SamplerState Sampler : register(s0);
 
@@ -127,6 +128,24 @@ PSOut main(BlockPS pout) : SV_Target0
     }
     //テクスチャカラーに求めた光を乗算して最終出力カラーを求める
     finalColor.xyz *= finalLight;
+    
+    //ディザリング処理
+    float2 depthUV = float2(pout.Position.x / ScreenSize.x, pout.Position.y / ScreenSize.y);
+    float depth = pout.Position.z;
+    if (depthUV.x > 0.f && depthUV.x < 1.f && depthUV.y > 0.f && depthUV.y < 1.f)
+    {
+        //プレイヤーの深度値をサンプリングしてブロックの深度値の方が低ければピクセルキルする
+        float zInPlayerDepth = playerDepth.Sample(Sampler, depthUV).r;
+        if (depth < zInPlayerDepth && zInPlayerDepth != 1.f)
+        {
+            int x = (int) fmod(pout.Position.x, 4.f);
+            int y = (int) fmod(pout.Position.y, 4.f);
+            int dither = pattern[y][x];
+            
+            clip(dither - 55.f);
+            finalColor.xyz = float3(1.f, 1.f, 1.f);
+        }
+    }
     
     Out.BackBuffer = finalColor;
     //法線ベクトル計算要素の出力

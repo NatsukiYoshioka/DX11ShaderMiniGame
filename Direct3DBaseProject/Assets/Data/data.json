@@ -391,11 +391,7 @@
     [ 0, -31.5, 20, 90 ]
   ],
 
-  "DeskTexture": [
-    "Wood_Oak.dds",
-    "Wood_Oak-normal.dds",
-    "Wood_Oak-ao.dds"
-  ],
+  "DeskTexture": "Wood_Oak.dds",
 
   "GiftBox": [
     "Gift.sdkmesh",
@@ -546,7 +542,7 @@
   "SSAOZFar": 5,
   "SSAOPower": 1,
 
-  "LUTTexture": "Sin-City.dds",
+  "LUTTexture": "Fallen-World.dds",
   "LUTMaxPower": 1,
 
   "TitleBGM": "title.wav",

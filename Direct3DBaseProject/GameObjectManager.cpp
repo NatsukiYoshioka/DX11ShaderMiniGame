@@ -290,7 +290,6 @@ void GameObjectManager::CreateShadowDevice()
 		0
 	);
 	device->CreateTexture2D(&textureDesc, NULL, m_objectShadowDepth.ReleaseAndGetAddressOf());
-	device->CreateTexture2D(&textureDesc, NULL, m_characterShadowDepth.ReleaseAndGetAddressOf());
 
 	CD3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc(
 		D3D11_DSV_DIMENSION_TEXTURE2D,
@@ -301,7 +300,6 @@ void GameObjectManager::CreateShadowDevice()
 		0
 	);
 	device->CreateDepthStencilView(m_objectShadowDepth.Get(), &dsvDesc, m_objectShadowDepthView.ReleaseAndGetAddressOf());
-	device->CreateDepthStencilView(m_characterShadowDepth.Get(), &dsvDesc, m_characterShadowDepthView.ReleaseAndGetAddressOf());
 
 	CD3D11_SHADER_RESOURCE_VIEW_DESC srvDesc(
 		D3D11_SRV_DIMENSION_TEXTURE2D,
@@ -312,7 +310,6 @@ void GameObjectManager::CreateShadowDevice()
 		1
 	);
 	device->CreateShaderResourceView(m_objectShadowDepth.Get(), &srvDesc, m_objectShadowView.ReleaseAndGetAddressOf());
-	device->CreateShaderResourceView(m_characterShadowDepth.Get(), &srvDesc, m_characterShadowView.ReleaseAndGetAddressOf());
 }
 
 //オブジェクトの影の初期化
@@ -682,7 +679,7 @@ void GameObjectManager::CreateLUTDevice()
 	device->CreateShaderResourceView(m_LUTColorTexture.Get(), &srvDesc, m_LUTColorSRV.ReleaseAndGetAddressOf());
 
 	D3D11_SAMPLER_DESC samplerDesc = {};
-	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	samplerDesc.Filter = D3D11_FILTER_ANISOTROPIC;
 	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
 	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
 	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
