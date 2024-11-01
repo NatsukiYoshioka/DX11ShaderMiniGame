@@ -19,7 +19,7 @@ UIAccessor::UIAccessor()
 	m_UIs.push_back(new TitleLogo());
 	m_UIs.push_back(new ButtonA());
 	m_UIs.push_back(new FoundUI());
-	//m_UIs.push_back(new FoundEffect());
+	m_UIs.push_back(new FoundEffect());
 	m_UIs.push_back(new ControlUI());
 	m_UIs.push_back(new GameClearUI());
 	m_UIs.push_back(new GameOverUI());

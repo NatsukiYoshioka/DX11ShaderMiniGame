@@ -142,8 +142,8 @@ PSOut main(BlockPS pout) : SV_Target0
             int y = (int) fmod(pout.Position.y, 4.f);
             int dither = pattern[y][x];
             
-            clip(dither - 55.f);
-            finalColor.xyz = float3(1.f, 1.f, 1.f);
+            clip(dither - 30.f);
+            //finalColor.xyz = float3(1.f, 1.f, 1.f);
         }
     }
     

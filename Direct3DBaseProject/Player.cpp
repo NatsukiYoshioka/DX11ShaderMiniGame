@@ -69,6 +69,7 @@ Player::Player(const wchar_t* fileName):
 		csBlob.size(),
 		nullptr,
 		m_csForCollision.ReleaseAndGetAddressOf()));
+	m_sphereEffect = make_unique<OriginalEffect>(deviceAccessor->GetDevice(), OriginalEffect::PixelType::Object);
 	SetCurrentDirectory(L"../../");
 
 	//モデルの各メッシュの描画設定
@@ -178,6 +179,9 @@ Player::Player(const wchar_t* fileName):
 		1
 	);
 	device->CreateShaderResourceView(m_depthTexture.Get(), &srvDesc, m_depthSRV.ReleaseAndGetAddressOf());
+
+	m_sphere = GeometricPrimitive::CreateSphere(deviceAccessor->GetContext(), 1.25f);
+	m_sphere->CreateInputLayout(m_sphereEffect.get(), m_sphereLayout.ReleaseAndGetAddressOf());
 }
 
 //データ破棄
@@ -201,33 +205,7 @@ void Player::InitializeTitle()
 //タイトルシーンオブジェクトの更新
 void Player::UpdateTitle()
 {
-	//ライト用情報設定
-	for (const auto& mit : m_modelHandle->meshes)
-	{
-		auto mesh = mit.get();
-		assert(mesh != nullptr);
-		for (const auto& pit : mesh->meshParts)
-		{
-			auto part = pit.get();
-			assert(part != nullptr);
-
-			auto effect = static_cast<OriginalEffect*>(part->effect.get());
-			effect->SetLightPosition(EnemyAccessor::GetInstance()->GetEnemy()->GetEyePosition());
-			effect->SetLightDirection(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeDirection());
-			effect->SetEyePosition(CameraAccessor::GetInstance()->GetCamera()->GetPos());
-			effect->SetLightView(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeView());
-			for (int i = 0; i < UIAccessor::GetInstance()->GetUIs().size(); i++)
-			{
-				auto foundUI = dynamic_cast<FoundUI*>(UIAccessor::GetInstance()->GetUIs().at(i));
-				if (foundUI)
-				{
-					//effect->SetLightColor(Vector3(1.f, 1.f - foundUI->GetTimeRatio(), 1.f - foundUI->GetTimeRatio()));
-					effect->SetLightColor(Vector3(1.f, 1.f, 1.f));
-					break;
-				}
-			}
-		}
-	}
+	UpdateEffect();
 }
 
 //タイトルシーンオブジェクトの描画
@@ -332,33 +310,7 @@ void Player::Update()
 		m_isClear = true;
 	}
 
-	//ライト用情報設定
-	for (const auto& mit : m_modelHandle->meshes)
-	{
-		auto mesh = mit.get();
-		assert(mesh != nullptr);
-		for (const auto& pit : mesh->meshParts)
-		{
-			auto part = pit.get();
-			assert(part != nullptr);
-
-			auto effect = static_cast<OriginalEffect*>(part->effect.get());
-			effect->SetLightPosition(EnemyAccessor::GetInstance()->GetEnemy()->GetEyePosition());
-			effect->SetLightDirection(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeDirection());
-			effect->SetEyePosition(CameraAccessor::GetInstance()->GetCamera()->GetPos());
-			effect->SetLightView(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeView());
-			for (int i = 0; i < UIAccessor::GetInstance()->GetUIs().size(); i++)
-			{
-				auto foundUI = dynamic_cast<FoundUI*>(UIAccessor::GetInstance()->GetUIs().at(i));
-				if (foundUI)
-				{
-					//effect->SetLightColor(Vector3(1.f, 1.f - foundUI->GetTimeRatio(), 1.f - foundUI->GetTimeRatio()));
-					effect->SetLightColor(Vector3(1.f, 1.f, 1.f));
-					break;
-				}
-			}
-		}
-	}
+	UpdateEffect();
 
 	//当たり判定処理
 	HitCheckObject();
@@ -421,33 +373,7 @@ void Player::UpdateResult()
 		m_nowAnimationState = AnimationState::Dance;
 	}
 
-	//ライト用情報設定
-	for (const auto& mit : m_modelHandle->meshes)
-	{
-		auto mesh = mit.get();
-		assert(mesh != nullptr);
-		for (const auto& pit : mesh->meshParts)
-		{
-			auto part = pit.get();
-			assert(part != nullptr);
-
-			auto effect = static_cast<OriginalEffect*>(part->effect.get());
-			effect->SetLightPosition(EnemyAccessor::GetInstance()->GetEnemy()->GetEyePosition());
-			effect->SetLightDirection(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeDirection());
-			effect->SetEyePosition(CameraAccessor::GetInstance()->GetCamera()->GetPos());
-			effect->SetLightView(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeView());
-			for (int i = 0; i < UIAccessor::GetInstance()->GetUIs().size(); i++)
-			{
-				auto foundUI = dynamic_cast<FoundUI*>(UIAccessor::GetInstance()->GetUIs().at(i));
-				if (foundUI)
-				{
-					//effect->SetLightColor(Vector3(1.f, 1.f - foundUI->GetTimeRatio(), 1.f - foundUI->GetTimeRatio()));
-					effect->SetLightColor(Vector3(1.f, 1.f, 1.f));
-					break;
-				}
-			}
-		}
-	}
+	UpdateEffect();
 
 	//ワールド座標行列の更新
 	m_world = Matrix::Identity;
@@ -509,6 +435,38 @@ void Player::DrawShadow()
 	}
 }
 
+//シェーダーの更新
+void Player::UpdateEffect()
+{
+	//シェーダー設定
+	for (const auto& mit : m_modelHandle->meshes)
+	{
+		auto mesh = mit.get();
+		assert(mesh != nullptr);
+		for (const auto& pit : mesh->meshParts)
+		{
+			auto part = pit.get();
+			assert(part != nullptr);
+
+			auto effect = static_cast<OriginalEffect*>(part->effect.get());
+			effect->SetLightPosition(EnemyAccessor::GetInstance()->GetEnemy()->GetEyePosition());
+			effect->SetLightDirection(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeDirection());
+			effect->SetEyePosition(CameraAccessor::GetInstance()->GetCamera()->GetPos());
+			effect->SetLightView(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeView());
+			for (int i = 0; i < UIAccessor::GetInstance()->GetUIs().size(); i++)
+			{
+				auto foundUI = dynamic_cast<FoundUI*>(UIAccessor::GetInstance()->GetUIs().at(i));
+				if (foundUI)
+				{
+					//effect->SetLightColor(Vector3(1.f, 1.f - foundUI->GetTimeRatio(), 1.f - foundUI->GetTimeRatio()));
+					effect->SetLightColor(Vector3(1.f, 1.f, 1.f));
+					break;
+				}
+			}
+		}
+	}
+}
+
 //深度値描画
 void Player::DrawDepth()
 {
@@ -524,45 +482,16 @@ void Player::DrawDepth()
 	CD3D11_VIEWPORT view(0.f, 0.f, float(width), float(height));
 	context->RSSetViewports(1, &view);
 
-	for (const auto& mit : m_modelHandle->meshes)
-	{
-		auto mesh = mit.get();
-		assert(mesh != nullptr);
-		for (const auto& pit : mesh->meshParts)
-		{
-			auto part = pit.get();
-			assert(part != nullptr);
+	auto world = Matrix::Identity;
+	world = XMMatrixMultiply(world, Matrix::CreateRotationY(m_rotate));
+	world = XMMatrixMultiply(world, XMMatrixTranslation(m_pos.x, m_pos.y+0.5f, m_pos.z));
 
-			auto effect = static_cast<OriginalEffect*>(part->effect.get());
-			effect->UpdateType(OriginalEffect::PixelType::Shadow);
-		}
-	}
-
-	size_t nbones = m_modelHandle->bones.size();
-
-	m_animations.at(static_cast<int>(m_nowAnimationState)).Apply(*m_modelHandle, nbones, m_drawBones.get());
-
-	m_modelHandle->DrawSkinned(DeviceAccessor::GetInstance()->GetContext(),
-		*DeviceAccessor::GetInstance()->GetStates(),
-		nbones,
-		m_drawBones.get(),
-		m_world,
+	m_sphereEffect->UpdateType(OriginalEffect::PixelType::Shadow);
+	m_sphere->Draw(
+		world,
 		CameraAccessor::GetInstance()->GetCamera()->GetView(),
-		CameraAccessor::GetInstance()->GetCamera()->GetProjection());
-
-	for (const auto& mit : m_modelHandle->meshes)
-	{
-		auto mesh = mit.get();
-		assert(mesh != nullptr);
-		for (const auto& pit : mesh->meshParts)
-		{
-			auto part = pit.get();
-			assert(part != nullptr);
-
-			auto effect = static_cast<OriginalEffect*>(part->effect.get());
-			effect->UpdateType(OriginalEffect::PixelType::Character);
-		}
-	}
+		CameraAccessor::GetInstance()->GetCamera()->GetProjection()
+	);
 }
 
 //見つかり判定用描画

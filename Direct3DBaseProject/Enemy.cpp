@@ -22,6 +22,7 @@
 //オブジェクト初期化
 Enemy::Enemy(const wchar_t* fileName):
 	m_nowAnimationState(AnimationState::Idle),
+	m_rotate(0),
 	m_posAngle(0),
 	m_eyeDirection(Vector3::Zero),
 	m_eyeView(),
@@ -136,33 +137,7 @@ void Enemy::UpdateTitle()
 	m_eyeDirection = playerPos - m_eyePos;
 	m_eyeDirection.Normalize();
 
-	//シェーダー描画用の情報設定
-	for (const auto& mit : m_modelHandle->meshes)
-	{
-		auto mesh = mit.get();
-		assert(mesh != nullptr);
-		for (const auto& pit : mesh->meshParts)
-		{
-			auto part = pit.get();
-			assert(part != nullptr);
-
-			auto effect = static_cast<OriginalEffect*>(part->effect.get());
-			effect->SetLightPosition(m_eyePos);
-			effect->SetLightDirection(m_eyeDirection);
-			effect->SetEyePosition(CameraAccessor::GetInstance()->GetCamera()->GetPos());
-			effect->SetLightView(m_eyeView);
-			for (int i = 0; i < UIAccessor::GetInstance()->GetUIs().size(); i++)
-			{
-				auto foundUI = dynamic_cast<FoundUI*>(UIAccessor::GetInstance()->GetUIs().at(i));
-				if (foundUI)
-				{
-					//effect->SetLightColor(Vector3(1.f, 1.f - foundUI->GetTimeRatio(), 1.f - foundUI->GetTimeRatio()));
-					effect->SetLightColor(Vector3(1.f, 1.f, 1.f));
-					break;
-				}
-			}
-		}
-	}
+	UpdateEffect();
 
 	//ワールド座標行列の更新
 	m_world = Matrix::Identity;
@@ -270,33 +245,7 @@ void Enemy::Update()
 	m_eyeDirection = playerPos - m_eyePos;
 	m_eyeDirection.Normalize();
 
-	//シェーダーの設定
-	for (const auto& mit : m_modelHandle->meshes)
-	{
-		auto mesh = mit.get();
-		assert(mesh != nullptr);
-		for (const auto& pit : mesh->meshParts)
-		{
-			auto part = pit.get();
-			assert(part != nullptr);
-
-			auto effect = static_cast<OriginalEffect*>(part->effect.get());
-			effect->SetLightPosition(m_eyePos);
-			effect->SetLightDirection(m_eyeDirection);
-			effect->SetEyePosition(CameraAccessor::GetInstance()->GetCamera()->GetPos());
-			effect->SetLightView(m_eyeView);
-			for (int i = 0; i < UIAccessor::GetInstance()->GetUIs().size(); i++)
-			{
-				auto foundUI = dynamic_cast<FoundUI*>(UIAccessor::GetInstance()->GetUIs().at(i));
-				if (foundUI)
-				{
-					//effect->SetLightColor(Vector3(1.f, 1.f - foundUI->GetTimeRatio(), 1.f - foundUI->GetTimeRatio()));
-					effect->SetLightColor(Vector3(1.f, 1.f, 1.f));
-					break;
-				}
-			}
-		}
-	}
+	UpdateEffect();
 
 	//ワールド座標行列の更新
 	m_world = Matrix::Identity;
@@ -363,6 +312,32 @@ void Enemy::UpdateResult()
 	
 	m_eyeDirection.Normalize();
 
+	UpdateEffect();
+
+	//ワールド座標行列の更新
+	m_world = Matrix::Identity;
+	m_world = XMMatrixMultiply(m_world, Matrix::CreateScale(m_scale));
+	m_world = XMMatrixMultiply(m_world, Matrix::CreateRotationY(m_rotate));
+	m_world = XMMatrixMultiply(m_world, XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
+
+	m_animations.at(static_cast<int>(m_nowAnimationState)).Update(*DeviceAccessor::GetInstance()->GetElapsedTime());
+}
+
+//リザルトシーンオブジェクトの描画
+void Enemy::DrawResult()
+{
+	Draw();
+}
+
+//影の描画(描画なし)
+void Enemy::DrawShadow()
+{
+	
+}
+
+//シェーダーの更新
+void Enemy::UpdateEffect()
+{
 	//シェーダーの設定
 	for (const auto& mit : m_modelHandle->meshes)
 	{
@@ -390,24 +365,4 @@ void Enemy::UpdateResult()
 			}
 		}
 	}
-
-	//ワールド座標行列の更新
-	m_world = Matrix::Identity;
-	m_world = XMMatrixMultiply(m_world, Matrix::CreateScale(m_scale));
-	m_world = XMMatrixMultiply(m_world, Matrix::CreateRotationY(m_rotate));
-	m_world = XMMatrixMultiply(m_world, XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
-
-	m_animations.at(static_cast<int>(m_nowAnimationState)).Update(*DeviceAccessor::GetInstance()->GetElapsedTime());
-}
-
-//リザルトシーンオブジェクトの描画
-void Enemy::DrawResult()
-{
-	Draw();
-}
-
-//影の描画(描画なし)
-void Enemy::DrawShadow()
-{
-	
 }

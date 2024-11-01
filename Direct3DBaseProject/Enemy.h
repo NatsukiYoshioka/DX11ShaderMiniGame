@@ -86,7 +86,15 @@ public:
 	/// </summary>
 	void DrawResult()override;
 
+	/// <summary>
+	/// 影の描画
+	/// </summary>
 	void DrawShadow()override;
+
+	/// <summary>
+	/// シェーダーの更新
+	/// </summary>
+	void UpdateEffect();
 
 	/// <summary>
 	/// 敵の目の位置を取得

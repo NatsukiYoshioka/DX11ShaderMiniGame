@@ -91,6 +91,11 @@ public:
 	void DrawShadow()override;
 
 	/// <summary>
+	/// シェーダーの更新
+	/// </summary>
+	void UpdateEffect();
+
+	/// <summary>
 	/// 深度値描画
 	/// </summary>
 	void DrawDepth();
@@ -176,6 +181,10 @@ private:
 	float m_sphereHeight;				//当たり判定用スフィアの高さ
 	const float m_sphereRadius;			//スフィアの半径
 	const float m_sphereDefaultHeight;	//スフィアの通常高さ
+
+	unique_ptr<GeometricPrimitive> m_sphere;	//ディザリング用球モデル
+	unique_ptr<OriginalEffect> m_sphereEffect;	//スフィア用シェーダー
+	ComPtr<ID3D11InputLayout> m_sphereLayout;	//スフィア用入力レイアウト
 
 	bool m_beFound;		//見つかったかどうか
 	bool m_isClear;		//クリアしたかどうか
