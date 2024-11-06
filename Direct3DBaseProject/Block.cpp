@@ -29,7 +29,7 @@ Block::Block(Model* modelHandle, vector<Vector3> pos, vector<float> rotate, vect
 	//インスタンシング用のワールド座標とテクスチャIDの設定
 	for (int i = 0; i < pos.size(); i++)
 	{
-		InstanceData instance;
+		InstanceData instance = {};
 		instance.world = Matrix::Identity;
 		instance.world = XMMatrixMultiply(instance.world, Matrix::CreateScale(0.0125f));
 		instance.world = XMMatrixMultiply(instance.world, Matrix::CreateRotationY(rotate.at(i) * XM_PI / 180.f));
@@ -120,8 +120,9 @@ Block::Block(Model* modelHandle, vector<Vector3> pos, vector<float> rotate, vect
 			vbufferDesc.BindFlags = 0;
 			vbufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
 			vbufferDesc.StructureByteStride = sizeof(VertexPositionNormalTexture);
-			ID3D11Buffer* vBuffer;
+			_Post_ _Notnull_ ID3D11Buffer* vBuffer;
 			deviceAccessor->GetDevice()->CreateBuffer(&vbufferDesc, NULL, &vBuffer);
+			assert(vBuffer);
 			deviceAccessor->GetContext()->CopyResource(vBuffer, part->vertexBuffer.Get());
 
 			D3D11_MAPPED_SUBRESOURCE mapped;
@@ -163,6 +164,7 @@ Block::Block(Model* modelHandle, vector<Vector3> pos, vector<float> rotate, vect
 	srvDesc.Format = DXGI_FORMAT_UNKNOWN;
 	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
 	srvDesc.Buffer.ElementWidth = m_vertices.size();
+	assert(vertexBuffer);
 	device->CreateShaderResourceView(vertexBuffer, &srvDesc, m_vertexBufferSRV.ReleaseAndGetAddressOf());
 }
 
@@ -226,7 +228,7 @@ void Block::Draw()
 
 	UINT strides[2] = { sizeof(VertexPositionNormalTexture),sizeof(InstanceData) };
 	UINT offsets[2] = { 0,0 };
-	ID3D11Buffer* buffers[2];
+	ID3D11Buffer* buffers[2] = {};
 	for (const auto& mit : m_model->meshes)
 	{
 		auto mesh = mit.get();

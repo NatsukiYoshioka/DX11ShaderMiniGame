@@ -13,9 +13,10 @@ OriginalEffect::OriginalEffect(ID3D11Device* device, PixelType type, bool isSkin
 	m_skinnedConstants(),
 	m_light()
 {
-	assert((sizeof(OriginalEffect::MatrixConstants) % 16) == 0, "CB size alignment");
-	assert((sizeof(OriginalEffect::SkinnedConstants) % 16) == 0, "CB size alignment");
-	assert((sizeof(OriginalEffect::LightConstants) % 16) == 0, "CB size alignment");
+	assert((sizeof(OriginalEffect::MatrixConstants) % 16) == 0);
+	assert((sizeof(OriginalEffect::SkinnedConstants) % 16) == 0);
+	assert((sizeof(OriginalEffect::LightConstants) % 16) == 0);
+	assert((sizeof(OriginalEffect::LVPConstants) % 16) == 0);
 
 	//頂点シェーダーのロード
 	if (isSkinning)m_vsBlob = DX::ReadData(L"SkinningVertex.cso");
@@ -60,7 +61,7 @@ OriginalEffect::OriginalEffect(ID3D11Device* device, PixelType type, bool isSkin
 void OriginalEffect::Apply(ID3D11DeviceContext* context)
 {
 	//定数バッファの設定
-	MatrixConstants matrixConstants;
+	MatrixConstants matrixConstants = {};
 	matrixConstants.world = m_world;
 	matrixConstants.view = m_view;
 	matrixConstants.projection = m_projection;
@@ -70,7 +71,7 @@ void OriginalEffect::Apply(ID3D11DeviceContext* context)
 	m_skinnedBuffer.SetData(context, m_skinnedConstants);
 	m_lightBuffer.SetData(context, m_light);
 
-	LVPConstants LVP;
+	LVPConstants LVP = {};
 	LVP.LVP = XMMatrixMultiply(m_lightView, m_projection);
 	m_LVPBuffer.SetData(context, LVP);
 
@@ -166,7 +167,7 @@ void OriginalEffect::SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX proj
 //影響を受けるボーン数の設定(処理なし)
 void OriginalEffect::SetWeightsPerVertex(int value)
 {
-	
+	UNREFERENCED_PARAMETER(value);
 }
 
 //ボーン変換行列の設定

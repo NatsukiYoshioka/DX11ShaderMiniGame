@@ -34,8 +34,8 @@ GameOverEffect::GameOverEffect():
 	m_origin.x = float(texDesc.Width / 2);
 	m_origin.y = float(texDesc.Height / 2);
 
-	m_pos.x = deviceAccessor->GetScreenSize().right / 2;
-	m_pos.y = deviceAccessor->GetScreenSize().bottom / 2;
+	m_pos.x = (float)deviceAccessor->GetScreenSize().right / 2;
+	m_pos.y = (float)deviceAccessor->GetScreenSize().bottom / 2;
 }
 
 //ƒf[ƒ^”jŠü

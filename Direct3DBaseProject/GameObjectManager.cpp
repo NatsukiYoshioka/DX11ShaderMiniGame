@@ -123,15 +123,6 @@ void GameObjectManager::DestroyInstance()
 //タイトルシーンオブジェクトの初期化
 void GameObjectManager::InitializeTitle()
 {
-	for (int i = 0; i < m_gameObjects.size(); i++)
-	{
-		m_gameObjects.at(i)->InitializeTitle();
-	}
-}
-
-//タイトルシーンオブジェクトの更新
-void GameObjectManager::UpdateTitle()
-{
 	m_gameObjects.clear();
 	m_gameObjects.push_back(dynamic_cast<GameObject*>(EnemyAccessor::GetInstance()->GetEnemy()));
 	m_gameObjects.push_back(dynamic_cast<GameObject*>(GiftBoxAccessor::GetInstance()->GetGiftBox()));
@@ -146,7 +137,15 @@ void GameObjectManager::UpdateTitle()
 	{
 		m_gameObjects.push_back(dynamic_cast<GameObject*>(SoundAccessor::GetInstance()->GetSounds().at(i)));
 	}
+	for (int i = 0; i < m_gameObjects.size(); i++)
+	{
+		m_gameObjects.at(i)->InitializeTitle();
+	}
+}
 
+//タイトルシーンオブジェクトの更新
+void GameObjectManager::UpdateTitle()
+{
 	for (int i = 0; i < m_gameObjects.size(); i++)
 	{
 		m_gameObjects.at(i)->UpdateTitle();
@@ -328,8 +327,6 @@ void GameObjectManager::SetObjectShadowRenderTarget()
 	ID3D11RenderTargetView* rtv = NULL;
 	context->OMSetRenderTargets(1, &rtv, m_objectShadowDepthView.Get());
 
-	int width = DeviceAccessor::GetInstance()->GetScreenSize().right;
-	int height = DeviceAccessor::GetInstance()->GetScreenSize().bottom;
 	CD3D11_VIEWPORT view(0.f, 0.f, float(15000), float(15000));
 	context->RSSetViewports(1, &view);
 }
@@ -342,6 +339,7 @@ void GameObjectManager::SetObjectShadowResource()
 	context->PSSetShaderResources(10, 1, m_objectShadowView.GetAddressOf());
 }
 
+//影の描画
 void GameObjectManager::DrawShadow()
 {
 	for (int i = 0; i < m_gameObjects.size(); i++)
@@ -594,7 +592,6 @@ void GameObjectManager::ClearHitCheckCharacterRenderTarget()
 void GameObjectManager::SetHitCheckRenderTarget()
 {
 	auto context = DeviceAccessor::GetInstance()->GetContext();
-	auto depthStencil = DeviceAccessor::GetInstance()->GetDepthStencilView();
 
 	context->OMSetRenderTargets(1, m_hitCheckRenderTargetView.GetAddressOf(), m_hitCheckDSV.Get());
 
@@ -607,7 +604,6 @@ void GameObjectManager::SetHitCheckRenderTarget()
 void GameObjectManager::SetHitCheckCharacterRenderTarget()
 {
 	auto context = DeviceAccessor::GetInstance()->GetContext();
-	auto depthStencil = DeviceAccessor::GetInstance()->GetDepthStencilView();
 
 	context->OMSetRenderTargets(1, m_hitCheckCharacterRTV.GetAddressOf(), m_hitCheckDSV.Get());
 
@@ -717,7 +713,7 @@ void GameObjectManager::DrawLUT()
 	context->OMSetBlendState(states->Opaque(), 0, 0xffffffff);
 	context->OMSetDepthStencilState(states->DepthDefault(), 0);
 
-	LUTConstants constants;
+	LUTConstants constants = {};
 	for (int i = 0; i < UIAccessor::GetInstance()->GetUIs().size(); i++)
 	{
 		auto foundUI = dynamic_cast<FoundUI*>(UIAccessor::GetInstance()->GetUIs().at(i));

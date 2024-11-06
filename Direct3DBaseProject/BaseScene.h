@@ -16,5 +16,5 @@ public:
 	/// </summary>
 	bool GetIsChangeScene()const { return m_isChangeScene; }
 protected:
-	bool m_isChangeScene;		//シーンが遷移していいかどうか
+	bool m_isChangeScene = false;		//シーンが遷移していいかどうか
 };

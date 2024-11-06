@@ -226,12 +226,12 @@ private:
 	/// </summary>
 	struct __declspec(align(16)) AOConstants
 	{
-		XMMATRIX projection;		//射影行列
-		XMMATRIX inverseProjection;	//射影行列の逆行列
-		Vector4 sampleKernel[64];	//AO用のサンプルカーネル
-		float radius;				//AO描画用の半径
-		float ZFar;					//AO描画用の最大深度値
-		float AOPower;				//AOの強さ
+		XMMATRIX projection = Matrix::Identity;			//射影行列
+		XMMATRIX inverseProjection = Matrix::Identity;	//射影行列の逆行列
+		Vector4 sampleKernel[64] = { Vector4::Zero };	//AO用のサンプルカーネル
+		float radius = 0.f;								//AO描画用の半径
+		float ZFar = 0.f;								//AO描画用の最大深度値
+		float AOPower = 0.f;							//AOの強さ
 	};
 	ConstantBuffer<AOConstants> m_AOConstantBuffer;		//AO描画用定数バッファ
 

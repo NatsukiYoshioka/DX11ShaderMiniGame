@@ -154,15 +154,15 @@ private:
 	/// </summary>
 	struct __declspec(align(16)) LightConstants
 	{
-		Vector3 direction;		//ライトの向きベクトル
-		float range;			//ライトの範囲
-		Vector3 position;		//ライトの光源座標
-		float angle;			//ライトの向き
-		Vector3 eyePosition;	//目の座標
-		float pad0;				//パディング
-		Vector3 lightColor;		//ライトの色
+		Vector3 direction = Vector3::Zero;		//ライトの向きベクトル
+		float range = 0;						//ライトの範囲
+		Vector3 position = Vector3::Zero;		//ライトの光源座標
+		float angle = 0;						//ライトの向き
+		Vector3 eyePosition = Vector3::Zero;	//目の座標
+		float pad0 = 0;							//パディング
+		Vector3 lightColor = Vector3::Zero;		//ライトの色
+		float pad1 = 0;							//パディング
 	};
-	
 	LightConstants m_light;							//ライト用定数構造体
 	ConstantBuffer<LightConstants> m_lightBuffer;	//ライト用定数バッファ
 

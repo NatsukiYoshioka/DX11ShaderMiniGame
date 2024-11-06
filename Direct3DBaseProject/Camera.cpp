@@ -132,8 +132,8 @@ void Camera::Update()
 		float yawSpeed = m_speed;
 		if (mouseState.x != 0 || mouseState.y != 0)
 		{
-			x = mouseState.x;
-			y = -mouseState.y;
+			x = (float)mouseState.x;
+			y = (float)-mouseState.y;
 			pitchSpeed = m_speed * (x / m_mouseSpeed);
 			if (pitchSpeed < 0)pitchSpeed *= -1;
 			yawSpeed = m_speed * (y / m_mouseSpeed);
