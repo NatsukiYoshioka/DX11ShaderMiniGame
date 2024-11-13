@@ -19,6 +19,7 @@ public:
 		Object,
 		Block,
 		Character,
+		Light,
 		Shadow,
 		BlockShadow,
 		Red,

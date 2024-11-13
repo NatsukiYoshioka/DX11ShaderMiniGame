@@ -149,6 +149,12 @@
     <Filter Include="GameObject\UI\ButtonA">
       <UniqueIdentifier>{3973e250-23a9-4920-b664-4b489d9f6bc9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\GoalObject">
+      <UniqueIdentifier>{52c2884a-0644-4fdb-a22c-f54cc71aae57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\GoalObject\GoalObjectAccessor">
+      <UniqueIdentifier>{09a7add2-fd76-471f-a96b-e0f8ae8d9ec8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -301,6 +307,12 @@
     <ClInclude Include="ButtonA.h">
       <Filter>GameObject\UI\ButtonA</Filter>
     </ClInclude>
+    <ClInclude Include="GoalObject.h">
+      <Filter>GameObject\GoalObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GoalObjectAccessor.h">
+      <Filter>GameObject\GoalObject\GoalObjectAccessor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -436,6 +448,12 @@
     <ClCompile Include="ButtonA.cpp">
       <Filter>GameObject\UI\ButtonA</Filter>
     </ClCompile>
+    <ClCompile Include="GoalObject.cpp">
+      <Filter>GameObject\GoalObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GoalObjectAccessor.cpp">
+      <Filter>GameObject\GoalObject\GoalObjectAccessor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -506,6 +524,18 @@
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="LookUpTablePixel.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="XBlurVertex.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="YBlurVertex.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="BlurPixel.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Light.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>

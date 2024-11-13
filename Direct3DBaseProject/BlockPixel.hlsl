@@ -13,6 +13,7 @@ struct PSOut
     float4 BackBuffer : SV_Target0;
     float4 Normal : SV_Target1;
     float4 Color : SV_Target2;
+    float4 Brightness : SV_Target3;
 };
 
 PSOut main(BlockPS pout) : SV_Target0
@@ -153,7 +154,16 @@ PSOut main(BlockPS pout) : SV_Target0
     //深度値を出力
     Out.Normal.zw = pout.Position.zw;
     
+    //色素出力
     Out.Color = Out.BackBuffer;
+    
+    //輝度出力
+    t = dot(finalColor.xyz, float3(0.2125f, 0.7154f, 0.0721f));
+    if (t - 1.f < 0.f)
+    {
+        finalColor = float4(0.f, 0.f, 0.f, 0.f);
+    }
+    Out.Brightness = finalColor;
     
     return Out;
 }

@@ -37,6 +37,9 @@ OriginalEffect::OriginalEffect(ID3D11Device* device, PixelType type, bool isSkin
 	case PixelType::Block:
 		psBlob = DX::ReadData(L"BlockPixel.cso");
 		break;
+	case PixelType::Light:
+		psBlob = DX::ReadData(L"Light.cso");
+		break;
 	default:
 		break;
 	}

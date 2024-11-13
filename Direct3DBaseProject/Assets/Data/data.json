@@ -399,6 +399,8 @@
 
     "DeskTexture": "Wood_Oak.dds",
 
+    "GoalBoxScale": [ 10, 30, 10 ],
+
     "GiftBox": [
         "Gift.sdkmesh",
         [ 0, -31, 0, 0 ]
@@ -419,7 +421,7 @@
     "CameraTitleMoveSpeed": 1,
     "CameraFirstDistance": 7.5,
     "CameraMaxFirstDistance": 75,
-    "CameraDistance": 12.5,
+    "CameraDistance": 10,
     "CameraClearDistance": 5,
     "CameraPadSpeed": 1.5,
     "CameraMouseSpeed": 25,
@@ -429,7 +431,7 @@
     "CameraInitializeClearYaw": 5,
     "CameraResultHeight": 1,
     "CameraGameOverPos": [ 0, 15, 19.9 ],
-    "CameraMinYaw": 22,
+    "CameraMinYaw": 10,
     "CameraMaxYaw": 70,
 
     "Player": [

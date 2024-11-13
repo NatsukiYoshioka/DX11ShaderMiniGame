@@ -5,6 +5,8 @@
 #include"CameraAccessor.h"
 #include"Block.h"
 #include"BlockAccessor.h"
+#include"GoalObject.h"
+#include"GoalObjectAccessor.h"
 #include"Desk.h"
 #include"DeskAccessor.h"
 #include"Player.h"
@@ -52,6 +54,7 @@ GameObjectManager::GameObjectManager():
 	CameraAccessor::CreateInstance();
 	BlockAccessor::CreateInstance();
 	GiftBoxAccessor::CreateInstance();
+	GoalObjectAccessor::CreateInstance();
 	DeskAccessor::CreateInstance();
 	PlayerAccessor::CreateInstance();
 	DollHeadAccessor::CreateInstance();
@@ -98,6 +101,7 @@ GameObjectManager::~GameObjectManager()
 	CameraAccessor::DestroyInstance();
 	BlockAccessor::DestroyInstance();
 	GiftBoxAccessor::DestroyInstance();
+	GoalObjectAccessor::DestroyInstance();
 	DeskAccessor::DestroyInstance();
 	PlayerAccessor::DestroyInstance();
 	DollHeadAccessor::DestroyInstance();
@@ -178,6 +182,7 @@ void GameObjectManager::Initialize()
 	{
 		m_gameObjects.push_back(dynamic_cast<GameObject*>(BlockAccessor::GetInstance()->GetBlocks().at(i)));
 	}
+	//m_gameObjects.push_back(dynamic_cast<GameObject*>(GoalObjectAccessor::GetInstance()->GetGoalObject()));
 	m_gameObjects.push_back(dynamic_cast<GameObject*>(DeskAccessor::GetInstance()->GetDesk()));
 	m_gameObjects.push_back(dynamic_cast<GameObject*>(PlayerAccessor::GetInstance()->GetPlayer()));
 	m_gameObjects.push_back(dynamic_cast<GameObject*>(RoomAccessor::GetInstance()->GetRoom()));

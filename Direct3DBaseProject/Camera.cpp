@@ -204,6 +204,7 @@ void Camera::Update()
 
 	//カメラの注視点をプレイヤーにする
 	auto playerPos = PlayerAccessor::GetInstance()->GetPlayer()->GetPos();
+	playerPos.y += 2.5f;
 	float radianX = m_pitch * XM_PI / 180;
 	float radianY = m_yaw * XM_PI / 180;
 
