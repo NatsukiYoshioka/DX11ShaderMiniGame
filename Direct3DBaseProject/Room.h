@@ -79,5 +79,7 @@ private:
 
 	Matrix m_world;		//ワールド行列
 	float m_rotate;		//オブジェクトの回転量
+
+	const float m_scale;	//モデルのスケール
 };
 

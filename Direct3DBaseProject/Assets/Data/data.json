@@ -346,6 +346,8 @@
         ]
     ],
 
+    "BlockScale": 0.0125,
+
     "BlockTexture": [
         "Red.dds",
         "Blue.dds",
@@ -386,10 +388,14 @@
     "Mesh_CTRL_Hole": "None",
     "Mesh_CTRL_Baseboard": "None",
 
+    "RoomScale": 25,
+
     "Desk": [
         "Furniture_Desk.sdkmesh",
         [ 0, -31.5, 20, 90 ]
     ],
+
+    "DeskScale": 0.2,
 
     "DeskTexture": "Wood_Oak.dds",
 
@@ -398,20 +404,26 @@
         [ 0, -31, 0, 0 ]
     ],
 
+    "GiftBoxScale": 0.5,
+
     "GiftBoxTexture": [
         "gift.dds",
         "gift_N.dds"
     ],
 
+    "CameraNearPlane": 1,
+    "CameraFarPlane": 5000,
     "CameraTitleLogoWaitTime": 0.5,
     "CameraTitleEyePosition": [ 12, 5, 9.9 ],
     "CameraTitleFinalEyePos": [ 12, -5, -62.5 ],
     "CameraTitleMoveSpeed": 1,
+    "CameraFirstDistance": 7.5,
+    "CameraMaxFirstDistance": 75,
     "CameraDistance": 12.5,
     "CameraClearDistance": 5,
     "CameraPadSpeed": 1.5,
     "CameraMouseSpeed": 25,
-    "CameraInitializePitch": 210,
+    "CameraInitializePitch": 250,
     "CameraInitializeYaw": 40,
     "CameraInitializeClearPitch": 30,
     "CameraInitializeClearYaw": 5,
@@ -438,6 +450,7 @@
     "PlayerHeadFirstSpeed": 0.075,
     "PlayerHeadSubSpeed": 0.00015,
     "PlayerHeadFirstRotate": 30,
+    "PlayerHeadScale": 0.05,
     "PlayerHeadRotationFirstSpeed": 3,
     "PlayerHeadRotationSubSpeed": 0.0035,
     "PlayerTitlePosition": [ 12, -28.5, 10 ],
@@ -452,6 +465,7 @@
     "PlayerSpeed": 0.025,
     "PlayerRunSpeed": 0.05,
     "PlayerCrouchSpeed": 0.0125,
+    "PlayerDepthSphereDiameter": 1.25,
 
     "SphereRadius": 0.4,
     "SphereDefaultHeight": -0.6,

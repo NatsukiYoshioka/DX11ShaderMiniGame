@@ -53,6 +53,7 @@ void TitleScene::Update()
 			if (EnemyAccessor::GetInstance()->GetEnemy()->GetNowAnimationState() == Enemy::AnimationState::PickUp)
 			{
 				m_isChangeScene = true;
+				transition->SetTransitionStart(true);
 			}
 			if (key.Enter || pad.IsAPressed())
 			{
@@ -61,6 +62,7 @@ void TitleScene::Update()
 		}
 		if (transition && transition->GetIsFinishFadeout())
 		{
+			transition->SetTransitionStart(false);
 			SceneManager::ChangeScene(SceneManager::Scene::Game);
 			break;
 		}

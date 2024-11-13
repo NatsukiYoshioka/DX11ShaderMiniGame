@@ -51,8 +51,13 @@ void GameScene::Update()
             m_isChangeScene = true;
         }
         auto transition = dynamic_cast<Transition*>(UIAccessor::GetInstance()->GetUIs().at(i));
-        if (transition && transition->GetIsFinishFadeout())
+        if (transition && m_isChangeScene)
         {
+            transition->SetTransitionStart(true);
+        }
+        if (transition && transition->GetIsFinishFadeout() && m_isChangeScene)
+        {
+            transition->SetTransitionStart(false);
             SceneManager::GetInstance()->ChangeScene(SceneManager::Scene::Result);
         }
     }

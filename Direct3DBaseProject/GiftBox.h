@@ -74,5 +74,7 @@ private:
 
 	float m_rotate;		//オブジェクトの回転量
 	Matrix m_world;		//モデルのワールド行列
+	
+	const float m_scale;	//モデルのスケール
 };
 

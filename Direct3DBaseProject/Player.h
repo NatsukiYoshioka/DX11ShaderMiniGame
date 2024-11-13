@@ -183,6 +183,7 @@ private:
 	const float m_sphereDefaultHeight;	//スフィアの通常高さ
 
 	unique_ptr<GeometricPrimitive> m_sphere;	//ディザリング用球モデル
+	const float m_sphereDiameter;				//スフィアの直径
 	unique_ptr<OriginalEffect> m_sphereEffect;	//スフィア用シェーダー
 	ComPtr<ID3D11InputLayout> m_sphereLayout;	//スフィア用入力レイアウト
 

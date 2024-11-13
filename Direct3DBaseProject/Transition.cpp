@@ -10,6 +10,7 @@
 //トランジションの初期化
 Transition::Transition():
 	m_alpha(0),
+	m_isStartTransition(false),
 	m_isFinishFadeout(false),
 	m_isFinishFadein(false),
 	m_scale(float(Json::GetInstance()->GetData()["TransitionScale"])),
@@ -69,10 +70,8 @@ void Transition::Initialize()
 //UI更新(処理なし)
 void Transition::Update()
 {
-	auto scene = SceneManager::GetInstance()->GetNowScene();
-	auto isChangeScene = SceneManager::GetInstance()->GetNowScene()->GetIsChangeScene();
 	//シーン遷移が有効な場合はフェードアウト処理を行う
-	if (isChangeScene)
+	if (m_isStartTransition)
 	{
 		if (!m_isFinishFadeout)
 		{

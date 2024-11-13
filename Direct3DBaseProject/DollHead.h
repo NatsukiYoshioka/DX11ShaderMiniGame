@@ -84,6 +84,7 @@ private:
 
 	float m_posRatio;						//座標移動割合
 
+	const float m_scale;					//モデルのスケール
 	const Vector3 m_firstPos;				//初期座標
 	const Vector3 m_finalPos;				//最終座標
 	const float m_firstSpeed;				//初期スピード

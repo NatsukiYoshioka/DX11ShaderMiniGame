@@ -14,7 +14,8 @@
 #include "Desk.h"
 
 //デスクの初期化
-Desk::Desk(const wchar_t* fileName, Vector3 pos, float rotate)
+Desk::Desk(const wchar_t* fileName, Vector3 pos, float rotate) :
+	m_scale(float(Json::GetInstance()->GetData()["DeskScale"]))
 {
 	auto deviceAccessor = DeviceAccessor::GetInstance();
 
@@ -116,22 +117,13 @@ void Desk::Update()
 			effect->SetLightDirection(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeDirection());
 			effect->SetEyePosition(CameraAccessor::GetInstance()->GetCamera()->GetPos());
 			effect->SetLightView(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeView());
-			for (int i = 0; i < UIAccessor::GetInstance()->GetUIs().size(); i++)
-			{
-				auto foundUI = dynamic_cast<FoundUI*>(UIAccessor::GetInstance()->GetUIs().at(i));
-				if (foundUI)
-				{
-					//effect->SetLightColor(Vector3(1.f, 1.f - foundUI->GetTimeRatio(), 1.f - foundUI->GetTimeRatio()));
-					effect->SetLightColor(Vector3(1.f, 1.f, 1.f));
-					break;
-				}
-			}
+			effect->SetLightColor(Vector3(1.f, 1.f, 1.f));
 		}
 	}
 
 	//ワールド座標行列の更新
 	m_world = Matrix::Identity;
-	m_world = XMMatrixMultiply(m_world, Matrix::CreateScale(0.2f));
+	m_world = XMMatrixMultiply(m_world, Matrix::CreateScale(m_scale));
 	m_world = XMMatrixMultiply(m_world, Matrix::CreateRotationY(m_rotate));
 	m_world = XMMatrixMultiply(m_world, XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
 }

@@ -48,9 +48,11 @@ void ResultScene::Update()
 		if (transition && transition->GetIsFinishFadein() && (pad.IsAPressed() || key.Enter))
 		{
 			m_isChangeScene = true;
+			transition->SetTransitionStart(true);
 		}
 		if (transition && transition->GetIsFinishFadeout())
 		{
+			transition->SetTransitionStart(false);
 			SceneManager::ChangeScene(SceneManager::Scene::Title);
 			break;
 		}

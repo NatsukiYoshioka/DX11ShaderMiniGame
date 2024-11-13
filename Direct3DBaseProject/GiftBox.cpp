@@ -14,7 +14,8 @@
 #include "GiftBox.h"
 
 //オブジェクトの初期化
-GiftBox::GiftBox(const wchar_t* fileName, Vector3 pos, float rotate)
+GiftBox::GiftBox(const wchar_t* fileName, Vector3 pos, float rotate):
+	m_scale(float(Json::GetInstance()->GetData()["GiftBoxScale"]))
 {
 	auto deviceAccessor = DeviceAccessor::GetInstance();
 
@@ -68,7 +69,7 @@ GiftBox::GiftBox(const wchar_t* fileName, Vector3 pos, float rotate)
 
 	//ワールド座標行列の更新
 	m_world = Matrix::Identity;
-	m_world = XMMatrixMultiply(m_world, Matrix::CreateScale(0.5f));
+	m_world = XMMatrixMultiply(m_world, Matrix::CreateScale(m_scale));
 	m_world = XMMatrixMultiply(m_world, Matrix::CreateRotationY(m_rotate));
 	m_world = XMMatrixMultiply(m_world, XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
 }
@@ -103,16 +104,7 @@ void GiftBox::UpdateTitle()
 			effect->SetLightDirection(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeDirection());
 			effect->SetEyePosition(CameraAccessor::GetInstance()->GetCamera()->GetPos());
 			effect->SetLightView(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeView());
-			for (int i = 0; i < UIAccessor::GetInstance()->GetUIs().size(); i++)
-			{
-				auto foundUI = dynamic_cast<FoundUI*>(UIAccessor::GetInstance()->GetUIs().at(i));
-				if (foundUI)
-				{
-					//effect->SetLightColor(Vector3(1.f, 1.f - foundUI->GetTimeRatio(), 1.f - foundUI->GetTimeRatio()));
-					effect->SetLightColor(Vector3(1.f, 1.f, 1.f));
-					break;
-				}
-			}
+			effect->SetLightColor(Vector3(1.f, 1.f, 1.f));
 		}
 	}
 }

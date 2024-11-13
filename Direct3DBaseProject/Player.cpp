@@ -34,6 +34,7 @@ Player::Player(const wchar_t* fileName):
 	m_initializeRotate(float(Json::GetInstance()->GetData()["PlayerPosition"].at(3))* XM_PI / 180.f),
 	m_sphereRadius(float(Json::GetInstance()->GetData()["SphereRadius"])),
 	m_sphereDefaultHeight(float(Json::GetInstance()->GetData()["SphereDefaultHeight"])),
+	m_sphereDiameter(float(Json::GetInstance()->GetData()["PlayerDepthSphereDiameter"])),
 	m_scale(float(Json::GetInstance()->GetData()["PlayerScale"])),
 	m_speed(float(Json::GetInstance()->GetData()["PlayerSpeed"])),
 	m_runSpeed(float(Json::GetInstance()->GetData()["PlayerRunSpeed"])),
@@ -180,7 +181,7 @@ Player::Player(const wchar_t* fileName):
 	);
 	device->CreateShaderResourceView(m_depthTexture.Get(), &srvDesc, m_depthSRV.ReleaseAndGetAddressOf());
 
-	m_sphere = GeometricPrimitive::CreateSphere(deviceAccessor->GetContext(), 1.25f);
+	m_sphere = GeometricPrimitive::CreateSphere(deviceAccessor->GetContext(), m_sphereDiameter);
 	m_sphere->CreateInputLayout(m_sphereEffect.get(), m_sphereLayout.ReleaseAndGetAddressOf());
 }
 
@@ -453,16 +454,7 @@ void Player::UpdateEffect()
 			effect->SetLightDirection(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeDirection());
 			effect->SetEyePosition(CameraAccessor::GetInstance()->GetCamera()->GetPos());
 			effect->SetLightView(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeView());
-			for (int i = 0; i < UIAccessor::GetInstance()->GetUIs().size(); i++)
-			{
-				auto foundUI = dynamic_cast<FoundUI*>(UIAccessor::GetInstance()->GetUIs().at(i));
-				if (foundUI)
-				{
-					//effect->SetLightColor(Vector3(1.f, 1.f - foundUI->GetTimeRatio(), 1.f - foundUI->GetTimeRatio()));
-					effect->SetLightColor(Vector3(1.f, 1.f, 1.f));
-					break;
-				}
-			}
+			effect->SetLightColor(Vector3(1.f, 1.f, 1.f));
 		}
 	}
 }
@@ -548,8 +540,8 @@ void Player::HitCheck()
 	D3D11_BUFFER_DESC BufferDesc;
 	ZeroMemory(&BufferDesc, sizeof(D3D11_BUFFER_DESC));
 	m_bufferResult->GetDesc(&BufferDesc);
-	BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE | D3D11_CPU_ACCESS_READ;  // CPU から読み込みできるように設定する
-	BufferDesc.Usage = D3D11_USAGE_STAGING;             // GPU から CPU へのデータ転送 (コピー) をサポートするリソース
+	BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE | D3D11_CPU_ACCESS_READ;
+	BufferDesc.Usage = D3D11_USAGE_STAGING;
 	BufferDesc.BindFlags = 0;
 	BufferDesc.MiscFlags = 0;
 	deviceAccessor->GetDevice()->CreateBuffer(&BufferDesc, NULL, &debugBuffer);
@@ -597,8 +589,8 @@ void Player::HitCheckObject()
 		D3D11_BUFFER_DESC BufferDesc;
 		ZeroMemory(&BufferDesc, sizeof(D3D11_BUFFER_DESC));
 		m_sphereResult->GetDesc(&BufferDesc);
-		BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE | D3D11_CPU_ACCESS_READ;  //CPUから読み込みできるように設定する
-		BufferDesc.Usage = D3D11_USAGE_STAGING;             //GPUからCPUへのデータ転送(コピー)をサポートするリソース
+		BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE | D3D11_CPU_ACCESS_READ;
+		BufferDesc.Usage = D3D11_USAGE_STAGING;
 		BufferDesc.BindFlags = 0;
 		BufferDesc.MiscFlags = 0;
 		device->CreateBuffer(&BufferDesc, NULL, &debugBuffer);

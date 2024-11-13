@@ -99,6 +99,9 @@ private:
 	float m_pitch;			//カメラの縦軸回転量
 	float m_yaw;			//カメラの横軸回転量
 
+	const float m_near;
+	const float m_far;
+
 	float m_titlePosRatio;	//タイトルの座標移動割合
 
 	const float m_speed;		//カメラのデフォルトスピード
@@ -113,6 +116,10 @@ private:
 	const Vector3 m_titleInitializePos;	//タイトルでの初期座標
 	const Vector3 m_titleFinalPos;		//タイトルでの最終座標
 	const float m_titleSpeed;			//タイトルでの座標移動スピード
+
+	float m_firstDistance;				//ゲームシーン初期ターゲットからの距離
+	const float m_maxFirstDistance;		//最大距離
+	const Vector3 m_firstTargetPos;		//初期ターゲット座標
 
 	const float m_initializePitch;		//カメラの初期ピッチ
 	const float m_initializeYaw;		//カメラの初期ヨー

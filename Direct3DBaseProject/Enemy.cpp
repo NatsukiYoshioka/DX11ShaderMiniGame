@@ -353,16 +353,7 @@ void Enemy::UpdateEffect()
 			effect->SetLightDirection(m_eyeDirection);
 			effect->SetEyePosition(CameraAccessor::GetInstance()->GetCamera()->GetPos());
 			effect->SetLightView(m_eyeView);
-			for (int i = 0; i < UIAccessor::GetInstance()->GetUIs().size(); i++)
-			{
-				auto foundUI = dynamic_cast<FoundUI*>(UIAccessor::GetInstance()->GetUIs().at(i));
-				if (foundUI)
-				{
-					//effect->SetLightColor(Vector3(1.f, 1.f - foundUI->GetTimeRatio(), 1.f - foundUI->GetTimeRatio()));
-					effect->SetLightColor(Vector3(1.f, 1.f, 1.f));
-					break;
-				}
-			}
+			effect->SetLightColor(Vector3(1.f, 1.f, 1.f));
 		}
 	}
 }

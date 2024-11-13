@@ -20,6 +20,7 @@ DollHead::DollHead(const wchar_t* fileName, Vector3 pos):
 	m_finalPos(Vector3(Json::GetInstance()->GetData()["PlayerHeadFinalPos"].at(0),
 		Json::GetInstance()->GetData()["PlayerHeadFinalPos"].at(1),
 		Json::GetInstance()->GetData()["PlayerHeadFinalPos"].at(2))),
+	m_scale(float(Json::GetInstance()->GetData()["PlayerHeadScale"])),
 	m_posRatio(0),
 	m_speed(),
 	m_firstSpeed(float(Json::GetInstance()->GetData()["PlayerHeadFirstSpeed"])),
@@ -147,16 +148,7 @@ void DollHead::UpdateResult()
 			effect->SetLightDirection(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeDirection());
 			effect->SetEyePosition(CameraAccessor::GetInstance()->GetCamera()->GetPos());
 			effect->SetLightView(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeView());
-			for (int i = 0; i < UIAccessor::GetInstance()->GetUIs().size(); i++)
-			{
-				auto foundUI = dynamic_cast<FoundUI*>(UIAccessor::GetInstance()->GetUIs().at(i));
-				if (foundUI)
-				{
-					//effect->SetLightColor(Vector3(1.f, 1.f - foundUI->GetTimeRatio(), 1.f - foundUI->GetTimeRatio()));
-					effect->SetLightColor(Vector3(1.f, 1.f, 1.f));
-					break;
-				}
-			}
+			effect->SetLightColor(Vector3(1.f, 1.f, 1.f));
 		}
 	}
 
@@ -172,7 +164,7 @@ void DollHead::UpdateResult()
 
 	//ワールド座標行列の更新
 	m_world = Matrix::Identity;
-	m_world = XMMatrixMultiply(m_world, Matrix::CreateScale(0.05f));
+	m_world = XMMatrixMultiply(m_world, Matrix::CreateScale(m_scale));
 	m_world = XMMatrixMultiply(m_world, Matrix::CreateRotationX(90.f * XM_PI / 180.f));
 	m_world = XMMatrixMultiply(m_world, Matrix::CreateRotationZ(m_rotate * XM_PI / 180.f));
 	m_world = XMMatrixMultiply(m_world, XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));

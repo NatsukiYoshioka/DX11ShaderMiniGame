@@ -11,6 +11,7 @@
 #include"DeskAccessor.h"
 #include"Player.h"
 #include"PlayerAccessor.h"
+#include"Transition.h"
 #include"TitleLogo.h"
 #include"UIBase.h"
 #include"UIAccessor.h"
@@ -19,6 +20,8 @@
 //カメラの初期化
 Camera::Camera():
 	m_titlePosRatio(1.f),
+	m_near(float(Json::GetInstance()->GetData()["CameraNearPlane"])),
+	m_far(float(Json::GetInstance()->GetData()["CameraFarPlane"])),
 	m_speed(float(Json::GetInstance()->GetData()["CameraPadSpeed"])),
 	m_mouseSpeed(float(Json::GetInstance()->GetData()["CameraMouseSpeed"])),
 	m_distance(float(Json::GetInstance()->GetData()["CameraDistance"])),
@@ -40,12 +43,18 @@ Camera::Camera():
 	m_initializeYaw(float(Json::GetInstance()->GetData()["CameraInitializeYaw"])),
 	m_resultCameraHeight(float(Json::GetInstance()->GetData()["CameraResultHeight"])),
 	m_moveWaitTime(0.f),
-	m_maxMoveWaitTime(float(Json::GetInstance()->GetData()["CameraTitleLogoWaitTime"]))
+	m_maxMoveWaitTime(float(Json::GetInstance()->GetData()["CameraTitleLogoWaitTime"])),
+	m_firstTargetPos(Vector3(
+		Json::GetInstance()->GetData()["PlayerClearPosition"].at(0),
+		Json::GetInstance()->GetData()["PlayerClearPosition"].at(1),
+		Json::GetInstance()->GetData()["PlayerClearPosition"].at(2))),
+	m_firstDistance(float(Json::GetInstance()->GetData()["CameraFirstDistance"])),
+	m_maxFirstDistance(float(Json::GetInstance()->GetData()["CameraMaxFirstDistance"]))
 {
 	m_modelHandle = nullptr;
 
 	auto size = DeviceAccessor::GetInstance()->GetScreenSize();
-	m_projection = Matrix::CreatePerspectiveFieldOfView(XM_PI / 4.f, float(size.right) / float(size.bottom), 1.f, 5000.f);
+	m_projection = Matrix::CreatePerspectiveFieldOfView(XM_PI / 4.f, float(size.right) / float(size.bottom), m_near, m_far);
 	m_pitch = m_initializePitch;
 	m_yaw = m_initializeYaw;
 }
@@ -113,15 +122,53 @@ void Camera::Initialize()
 	m_pitch = m_initializePitch;
 	m_yaw = m_initializeYaw;
 	m_distance = float(json->GetData()["CameraDistance"]);
+	m_isFinishMoving = false;
+	m_moveWaitTime = 0.f;
 }
 
 //カメラの更新
 void Camera::Update()
 {
+	if (!m_isFinishMoving)
+	{
+		m_moveWaitTime += *DeviceAccessor::GetInstance()->GetElapsedTime();
+		if (m_moveWaitTime >= 1.f)
+		{
+			m_firstDistance += m_speed / 5.f;
+		}
+		if (m_firstDistance >= m_maxFirstDistance)
+		{
+			m_firstDistance = m_maxFirstDistance;
+			for (int i = 0;i < UIAccessor::GetInstance()->GetUIs().size();i++)
+			{
+				auto transition = dynamic_cast<Transition*>(UIAccessor::GetInstance()->GetUIs().at(i));
+				if (transition)
+				{
+					//トランジションをスタートさせる
+					transition->SetTransitionStart(true);
+					if (transition->GetIsFinishFadeout())
+					{
+						m_isFinishMoving = true;
+						transition->SetTransitionStart(false);
+					}
+					break;
+				}
+			}
+		}
+
+		float radianX = m_pitch * XM_PI / 180;
+		float radianY = m_yaw * XM_PI / 180;
+
+		float z = m_firstTargetPos.z + cos(radianY) * cos(radianX) * m_firstDistance;
+		float x = m_firstTargetPos.x + cos(radianY) * sin(radianX) * m_firstDistance;
+		float y = m_firstTargetPos.y + sin(radianY) * m_firstDistance;
+		m_pos = Vector3(x, y, z);
+		m_view = Matrix::CreateLookAt(m_pos, m_firstTargetPos, Vector3::Up);
+
+		return;
+	}
 	auto pad = DeviceAccessor::GetInstance()->GetGamePad()->GetState(0);
-	auto mouse = DeviceAccessor::GetInstance()->GetMouse();
-	//mouse->SetMode(Mouse::MODE_RELATIVE);
-	auto mouseState = mouse->GetState();
+	auto mouseState = DeviceAccessor::GetInstance()->GetMouse()->GetState();
 
 	//視点移動処理
 	if (pad.thumbSticks.rightX != 0 || pad.thumbSticks.rightY != 0 || mouseState.x != 0 || mouseState.y != 0)

@@ -113,5 +113,7 @@ private:
 	vector<XMFLOAT3> m_vertices;		//モデルの頂点座標
 	ComPtr<ID3D11ShaderResourceView> m_vertexBufferSRV;		//頂点バッファSRV
 	ComPtr<ID3D11UnorderedAccessView> m_outputBufferUAV;	//出力バッファUAV
+
+	const float m_scale;		//ブロックのスケール
 };
 

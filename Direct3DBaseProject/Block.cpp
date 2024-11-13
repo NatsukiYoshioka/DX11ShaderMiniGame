@@ -22,6 +22,7 @@
 //êœÇ›ñÿÉuÉçÉbÉNÇÃèâä˙âª
 Block::Block(Model* modelHandle, vector<Vector3> pos, vector<float> rotate, vector<int> textureID):
 	m_rotate(),
+	m_scale(float(Json::GetInstance()->GetData()["BlockScale"])),
 	m_ditheringBuffer(DeviceAccessor::GetInstance()->GetDevice())
 {
 	m_model = modelHandle;
@@ -31,7 +32,7 @@ Block::Block(Model* modelHandle, vector<Vector3> pos, vector<float> rotate, vect
 	{
 		InstanceData instance = {};
 		instance.world = Matrix::Identity;
-		instance.world = XMMatrixMultiply(instance.world, Matrix::CreateScale(0.0125f));
+		instance.world = XMMatrixMultiply(instance.world, Matrix::CreateScale(m_scale));
 		instance.world = XMMatrixMultiply(instance.world, Matrix::CreateRotationY(rotate.at(i) * XM_PI / 180.f));
 		instance.world = XMMatrixMultiply(instance.world, XMMatrixTranslation(pos.at(i).x, pos.at(i).y, pos.at(i).z));
 		instance.textureID = textureID.at(i);
@@ -120,7 +121,7 @@ Block::Block(Model* modelHandle, vector<Vector3> pos, vector<float> rotate, vect
 			vbufferDesc.BindFlags = 0;
 			vbufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
 			vbufferDesc.StructureByteStride = sizeof(VertexPositionNormalTexture);
-			_Post_ _Notnull_ ID3D11Buffer* vBuffer;
+			ID3D11Buffer* vBuffer;
 			deviceAccessor->GetDevice()->CreateBuffer(&vbufferDesc, NULL, &vBuffer);
 			assert(vBuffer);
 			deviceAccessor->GetContext()->CopyResource(vBuffer, part->vertexBuffer.Get());
@@ -207,16 +208,7 @@ void Block::Update()
 	m_effect->SetLightPosition(EnemyAccessor::GetInstance()->GetEnemy()->GetEyePosition());
 	m_effect->SetLightDirection(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeDirection());
 	m_effect->SetEyePosition(CameraAccessor::GetInstance()->GetCamera()->GetPos());
-	for (int i = 0; i < UIAccessor::GetInstance()->GetUIs().size(); i++)
-	{
-		auto foundUI = dynamic_cast<FoundUI*>(UIAccessor::GetInstance()->GetUIs().at(i));
-		if (foundUI)
-		{
-			//m_effect->SetLightColor(Vector3(1.f, 1.f - foundUI->GetTimeRatio(), 1.f - foundUI->GetTimeRatio()));
-			m_effect->SetLightColor(Vector3(1.f, 1.f, 1.f));
-			break;
-		}
-	}
+	m_effect->SetLightColor(Vector3(1.f, 1.f, 1.f));
 	m_effect->SetLightView(EnemyAccessor::GetInstance()->GetEnemy()->GetEyeView());
 }
 

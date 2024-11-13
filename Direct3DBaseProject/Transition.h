@@ -83,6 +83,11 @@ public:
 	/// </summary>
 	bool GetIsFinishFadein()const { return m_isFinishFadein; }
 
+	/// <summary>
+	/// トランジションをスタートさせる
+	/// </summary>
+	void SetTransitionStart(bool isStart) { m_isStartTransition = isStart; }
+
 private:
 	ComPtr<ID3D11ShaderResourceView> m_texture;		//テクスチャ
 	ComPtr<ID3D11Resource> m_textureResource;		//テクスチャ情報
@@ -90,6 +95,7 @@ private:
 	Vector2 m_origin;		//テクスチャ中心座標
 	float m_alpha;			//テクスチャのアルファ値
 
+	bool m_isStartTransition;
 	bool m_isFinishFadeout;	//フェードアウトが終わったかどうか
 	bool m_isFinishFadein;	//フェードインが終わったかどうか
 
