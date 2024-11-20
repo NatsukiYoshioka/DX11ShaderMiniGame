@@ -24,7 +24,7 @@ namespace
     std::unique_ptr<Mouse> mouse;
 }
 
-LPCWSTR g_szAppName = L"Direct3DBaseProject";
+LPCWSTR g_szAppName = L"HiddenToy";
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 void ExitGame() noexcept;

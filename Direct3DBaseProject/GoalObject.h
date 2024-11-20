@@ -12,7 +12,7 @@ class OriginalEffect;
 class GoalObject:public GameObject
 {
 public:
-	GoalObject();
+	GoalObject(const wchar_t* fileName, Vector3 pos, float rotate);
 	~GoalObject();
 
 	/// <summary>
@@ -66,16 +66,10 @@ public:
 	void DrawShadow()override;
 
 private:
-	unique_ptr<GeometricPrimitive> m_box;
-	unique_ptr<OriginalEffect> m_effect;
-	ComPtr<ID3D11InputLayout> m_inputLayout;
+	shared_ptr<OriginalEffect> m_effect;
+	Matrix m_world;
 
-	const XMFLOAT3 m_size;
-
-	struct __declspec(align(16)) Color
-	{
-		Vector4 color;
-	};
-	ConstantBuffer<Color> m_colorBuffer;
+	const float m_fixPosZ;
+	const Vector3 m_scale;
 };
 

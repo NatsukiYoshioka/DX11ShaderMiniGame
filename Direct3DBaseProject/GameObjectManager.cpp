@@ -46,7 +46,8 @@ float GameObjectManager::Lerp(float a, float b, float t)
 //管理するオブジェクトの設定
 GameObjectManager::GameObjectManager():
 	m_AOConstantBuffer(DeviceAccessor::GetInstance()->GetDevice()),
-	m_LUTConstantBuffer(DeviceAccessor::GetInstance()->GetDevice())
+	m_LUTConstantBuffer(DeviceAccessor::GetInstance()->GetDevice()),
+	m_blurBuffer(DeviceAccessor::GetInstance()->GetDevice())
 {
 	m_batch = make_unique<SpriteBatch>(DeviceAccessor::GetInstance()->GetContext());
 
@@ -90,6 +91,8 @@ GameObjectManager::GameObjectManager():
 	CreateAmbientOcclusionDevice();
 
 	CreateLUTDevice();
+
+	CreateBloomDevice();
 }
 
 //データ破棄
@@ -182,7 +185,7 @@ void GameObjectManager::Initialize()
 	{
 		m_gameObjects.push_back(dynamic_cast<GameObject*>(BlockAccessor::GetInstance()->GetBlocks().at(i)));
 	}
-	//m_gameObjects.push_back(dynamic_cast<GameObject*>(GoalObjectAccessor::GetInstance()->GetGoalObject()));
+	m_gameObjects.push_back(dynamic_cast<GameObject*>(GoalObjectAccessor::GetInstance()->GetGoalObject()));
 	m_gameObjects.push_back(dynamic_cast<GameObject*>(DeskAccessor::GetInstance()->GetDesk()));
 	m_gameObjects.push_back(dynamic_cast<GameObject*>(PlayerAccessor::GetInstance()->GetPlayer()));
 	m_gameObjects.push_back(dynamic_cast<GameObject*>(RoomAccessor::GetInstance()->GetRoom()));
@@ -731,6 +734,239 @@ void GameObjectManager::DrawLUT()
 	m_LUTConstantBuffer.SetData(context, constants);
 	auto cb = m_LUTConstantBuffer.GetBuffer();
 	context->PSSetConstantBuffers(4, 1, &cb);
+
+	UINT stride = sizeof(Vertex);
+	UINT offset = 0;
+	context->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &stride, &offset);
+	context->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	context->DrawIndexed(6, 0, 0);
+}
+
+//ブルーム用デバイス作成
+void GameObjectManager::CreateBloomDevice()
+{
+	auto device = DeviceAccessor::GetInstance()->GetDevice();
+
+	D3D11_TEXTURE2D_DESC textureDesc = {};
+	textureDesc.Width = DeviceAccessor::GetInstance()->GetScreenSize().right;
+	textureDesc.Height = DeviceAccessor::GetInstance()->GetScreenSize().bottom;
+	textureDesc.MipLevels = 1;
+	textureDesc.ArraySize = 1;
+	textureDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	textureDesc.SampleDesc.Count = 1;
+	textureDesc.Usage = D3D11_USAGE_DEFAULT;
+	textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+	device->CreateTexture2D(&textureDesc, nullptr, m_bloomTexture.ReleaseAndGetAddressOf());
+
+	device->CreateRenderTargetView(m_bloomTexture.Get(), nullptr, m_bloomRTV.ReleaseAndGetAddressOf());
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+	srvDesc.Format = textureDesc.Format;
+	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	srvDesc.Texture2D.MipLevels = 1;
+	device->CreateShaderResourceView(m_bloomTexture.Get(), &srvDesc, m_bloomSRV.ReleaseAndGetAddressOf());
+
+	//ガウシアンブラーの重み計算
+	BlurConstants constants = {};
+	float total = 0.f;
+
+	//ガウス関数を用いて重み計算をする
+	//iが基準テクセルからの距離
+	for (int i = 0;i < 8;i++)
+	{
+		constants.weights[i] = expf(-0.5f * (float)(i * i) / 2.f);
+		total += 2.f * constants.weights[i];
+	}
+
+	//重みの合計で除算して、合計を1にする
+	for (int i = 0;i < 8;i++)
+	{
+		constants.weights[i] /= total;
+	}
+	m_blurBuffer.SetData(DeviceAccessor::GetInstance()->GetContext(), constants);
+
+	//ブラー用デバイスの作成
+	for (int i = 0;i < 4;i++)
+	{
+		float width = DeviceAccessor::GetInstance()->GetScreenSize().right;
+		float height = DeviceAccessor::GetInstance()->GetScreenSize().bottom;
+		for (int j = 0;j < i;j++)
+		{
+			width /= 2.f;
+			height /= 2.f;
+		}
+		CreateBlurDevice(
+			width,
+			height,
+			m_blurTexture[i],
+			m_blurRTV[i],
+			m_blurSRV[i]);
+	}
+}
+
+void GameObjectManager::CreateBlurDevice(float exWidth, float exHeight,
+	ComPtr<ID3D11Texture2D> texture[],
+	ComPtr<ID3D11RenderTargetView> rtv[],
+	ComPtr<ID3D11ShaderResourceView> srv[])
+{
+	auto device = DeviceAccessor::GetInstance()->GetDevice();
+
+	//横ブラー用デバイス作成
+	D3D11_TEXTURE2D_DESC xBlurTextureDesc = {};
+	xBlurTextureDesc.Width = exWidth / 2.f;
+	xBlurTextureDesc.Height = exHeight;
+	xBlurTextureDesc.MipLevels = 1;
+	xBlurTextureDesc.ArraySize = 1;
+	xBlurTextureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	xBlurTextureDesc.SampleDesc.Count = 1;
+	xBlurTextureDesc.Usage = D3D11_USAGE_DEFAULT;
+	xBlurTextureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+
+	//縦ブラー用デバイス作成
+	D3D11_TEXTURE2D_DESC yBlurTextureDesc = {};
+	yBlurTextureDesc.Width = exWidth / 2.f;
+	yBlurTextureDesc.Height = exHeight / 2.f;
+	yBlurTextureDesc.MipLevels = 1;
+	yBlurTextureDesc.ArraySize = 1;
+	yBlurTextureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	yBlurTextureDesc.SampleDesc.Count = 1;
+	yBlurTextureDesc.Usage = D3D11_USAGE_DEFAULT;
+	yBlurTextureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+
+	device->CreateTexture2D(&xBlurTextureDesc, nullptr, texture[0].ReleaseAndGetAddressOf());
+	device->CreateTexture2D(&yBlurTextureDesc, nullptr, texture[1].ReleaseAndGetAddressOf());
+
+	device->CreateRenderTargetView(texture[0].Get(), nullptr, rtv[0].ReleaseAndGetAddressOf());
+	device->CreateRenderTargetView(texture[1].Get(), nullptr, rtv[1].ReleaseAndGetAddressOf());
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+	srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	srvDesc.Texture2D.MipLevels = 1;
+	device->CreateShaderResourceView(texture[0].Get(), &srvDesc, srv[0].ReleaseAndGetAddressOf());
+	device->CreateShaderResourceView(texture[1].Get(), &srvDesc, srv[1].ReleaseAndGetAddressOf());
+
+	SetCurrentDirectory(L"Assets/Shader");
+	auto vsBlob = DX::ReadData(L"XBlurVertex.cso");
+	device->CreateVertexShader(vsBlob.data(), vsBlob.size(), nullptr, m_xBlurVertex.ReleaseAndGetAddressOf());
+	vsBlob = DX::ReadData(L"YBlurVertex.cso");
+	device->CreateVertexShader(vsBlob.data(), vsBlob.size(), nullptr, m_yBlurVertex.ReleaseAndGetAddressOf());
+
+	auto psBlob = DX::ReadData(L"BlurPixel.cso");
+	device->CreatePixelShader(psBlob.data(), psBlob.size(), nullptr, m_blurPixel.ReleaseAndGetAddressOf());
+	psBlob = DX::ReadData(L"BloomPixel.cso");
+	device->CreatePixelShader(psBlob.data(), psBlob.size(), nullptr, m_bloomPixel.ReleaseAndGetAddressOf());
+	SetCurrentDirectory(L"../../");
+}
+
+//ブルーム描画
+void GameObjectManager::DrawBloom(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv)
+{
+	auto context = DeviceAccessor::GetInstance()->GetContext();
+	auto depthStencil = dsv;
+	float width = DeviceAccessor::GetInstance()->GetScreenSize().right;
+	float height = DeviceAccessor::GetInstance()->GetScreenSize().bottom;
+	//出力した輝度にガウシアンブラーをかけて4回ダウンサンプリングする
+	for (int i = 0;i < 4;i++)
+	{
+		//横ブラー用に解像度を半分にする
+		width /= 2.f;
+		for (int j = 0;j < 2;j++)
+		{
+			context->ClearRenderTargetView(m_blurRTV[i][j].Get(), Colors::Black);
+
+			//レンダーターゲット設定
+			context->OMSetRenderTargets(1, m_blurRTV[i][j].GetAddressOf(), nullptr);
+			CD3D11_VIEWPORT view(0.f, 0.f, float(width), float(height));
+			context->RSSetViewports(1, &view);
+
+			context->IASetInputLayout(m_inputLayout.Get());
+			
+			if (j == 0)
+			{
+				//縦ブラー用に解像度を半分にする
+				height /= 2.f;
+
+				//横ブラー用の頂点シェーダー設定
+				context->VSSetShader(m_xBlurVertex.Get(), nullptr, 0);
+			}
+			else
+			{
+				//縦ブラー用頂点シェーダー設定
+				context->VSSetShader(m_yBlurVertex.Get(), nullptr, 0);
+			}
+			//ピクセルシェーダー設定
+			context->PSSetShader(m_blurPixel.Get(), nullptr, 0);
+			//SRV設定
+			if (i == 0 && j == 0)
+			{
+				context->VSSetShaderResources(0, 1, m_bloomSRV.GetAddressOf());
+				context->PSSetShaderResources(0, 1, m_bloomSRV.GetAddressOf());
+			}
+			else if (i == 0)
+			{
+				context->VSSetShaderResources(0, 1, m_blurSRV[i][j - 1].GetAddressOf());
+				context->PSSetShaderResources(0, 1, m_blurSRV[i][j - 1].GetAddressOf());
+			}
+			else if (j == 0)
+			{
+				context->VSSetShaderResources(0, 1, m_blurSRV[i - 1][j].GetAddressOf());
+				context->PSSetShaderResources(0, 1, m_blurSRV[i - 1][j].GetAddressOf());
+			}
+			else
+			{
+				context->VSSetShaderResources(0, 1, m_blurSRV[i - 1][j - 1].GetAddressOf());
+				context->PSSetShaderResources(0, 1, m_blurSRV[i - 1][j - 1].GetAddressOf());
+			}
+			auto states = DeviceAccessor::GetInstance()->GetStates();
+			ID3D11SamplerState* samplers[] =
+			{
+				states->LinearClamp(),
+				states->LinearClamp(),
+			};
+			context->PSSetSamplers(0, 1, samplers);
+
+			context->OMSetBlendState(states->Opaque(), 0, 0xffffffff);
+			context->OMSetDepthStencilState(states->DepthDefault(), 0);
+
+			auto bb = m_blurBuffer.GetBuffer();
+			context->PSSetConstantBuffers(5, 1, &bb);
+
+			UINT stride = sizeof(Vertex);
+			UINT offset = 0;
+			context->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &stride, &offset);
+			context->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+			context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			context->DrawIndexed(6, 0, 0);
+		}
+	}
+
+	//川瀬式ブルームフィルターの適用
+	width = DeviceAccessor::GetInstance()->GetScreenSize().right;
+	height = DeviceAccessor::GetInstance()->GetScreenSize().bottom;
+	context->OMSetRenderTargets(1, &rtv, depthStencil);
+	CD3D11_VIEWPORT view(0.f, 0.f, float(width), float(height));
+	context->RSSetViewports(1, &view);
+
+	context->IASetInputLayout(m_inputLayout.Get());
+	context->VSSetShader(m_PostProccessVertex.Get(), nullptr, 0);
+	context->PSSetShader(m_bloomPixel.Get(), nullptr, 0);
+	context->PSSetShaderResources(0, 1, m_blurSRV[0][1].GetAddressOf());
+	context->PSSetShaderResources(1, 1, m_blurSRV[1][1].GetAddressOf());
+	context->PSSetShaderResources(2, 1, m_blurSRV[2][1].GetAddressOf());
+	context->PSSetShaderResources(3, 1, m_blurSRV[3][1].GetAddressOf());
+
+	auto states = DeviceAccessor::GetInstance()->GetStates();
+	ID3D11SamplerState* samplers[] =
+	{
+		states->LinearClamp(),
+		states->LinearClamp(),
+	};
+	context->PSSetSamplers(0, 1, samplers);
+
+	context->OMSetBlendState(states->Additive(), 0, 0xffffffff);
+	context->OMSetDepthStencilState(states->DepthDefault(), 0);
 
 	UINT stride = sizeof(Vertex);
 	UINT offset = 0;

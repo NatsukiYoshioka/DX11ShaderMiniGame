@@ -16,7 +16,7 @@ struct PSOut
     float4 Brightness : SV_Target3;
 };
 
-PSOut main(BlockPS pout) : SV_Target0
+PSOut main(BlockPS pout)
 {
     PSOut Out;
     //ピクセルの座標 - スポットライトの座標を計算

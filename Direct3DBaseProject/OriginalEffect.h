@@ -120,6 +120,11 @@ public:
 	/// </summary>
 	void SetLightView(Matrix view);
 
+	/// <summary>
+	/// 色の設定
+	/// </summary>
+	void SetColor(Vector3 color);
+
 private:
 	PixelType m_type;		//ピクセルシェーダーのタイプ
 
@@ -186,5 +191,12 @@ private:
 	};
 	SkinnedConstants m_skinnedConstants;				//ボーン変換行列
 	ConstantBuffer<SkinnedConstants> m_skinnedBuffer;	//ボーン変換行列の定数バッファ
+
+	struct __declspec(align(16)) Color
+	{
+		Vector3 color;
+	};
+	ConstantBuffer<Color> m_colorBuffer;
+	Color m_color;
 };
 

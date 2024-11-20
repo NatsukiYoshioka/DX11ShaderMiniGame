@@ -174,6 +174,11 @@ public:
 	void DrawLUT();
 
 	/// <summary>
+	/// ブルーム描画(ポストプロセス)
+	/// </summary>
+	void DrawBloom(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv);
+
+	/// <summary>
 	/// 法線・深度値を取得するためのRTVを取得
 	/// </summary>
 	ID3D11RenderTargetView* GetNormalDepthRTV() { return m_normalDepthRTV.Get(); }
@@ -182,6 +187,11 @@ public:
 	/// カラーグレーディングするための画面の色サンプリング用RTVを取得
 	/// </summary>
 	ID3D11RenderTargetView* GetLUTColorRTV() { return m_LUTColorRTV.Get(); }
+
+	/// <summary>
+	/// ブルーム用RTV取得
+	/// </summary>
+	ID3D11RenderTargetView* GetBloomRTV() { return m_bloomRTV.Get(); }
 
 private:
 	static GameObjectManager* m_instance;	//マネージャのインスタンス
@@ -270,5 +280,31 @@ private:
 	ComPtr<ID3D11ShaderResourceView> m_LUTColorSRV;		//LUT用カラーリソースビュー
 	ComPtr<ID3D11ShaderResourceView> m_LUTSampleSRV;	//LUT用サンプリングリソースビュー
 	ComPtr<ID3D11PixelShader> m_LUTPixel;				//LUT用ピクセルシェーダー
+
+	/// <summary>
+	/// ブルーム処理用デバイス作成
+	/// </summary>
+	void CreateBloomDevice();
+	ComPtr<ID3D11Texture2D> m_bloomTexture;		//輝度出力用テクスチャ
+	ComPtr<ID3D11RenderTargetView> m_bloomRTV;	//輝度出力用RTV
+	ComPtr<ID3D11ShaderResourceView> m_bloomSRV;//輝度出力用リソースビュー
+	struct __declspec(align(16)) BlurConstants
+	{
+		float weights[8];
+	};
+	ConstantBuffer<BlurConstants> m_blurBuffer;
+
+	void CreateBlurDevice(float exWidth,float exHeight,
+		ComPtr<ID3D11Texture2D> texture[],
+		ComPtr<ID3D11RenderTargetView> rtv[],
+		ComPtr<ID3D11ShaderResourceView> srv[]);
+	ComPtr<ID3D11Texture2D> m_blurTexture[4][2];
+	ComPtr<ID3D11RenderTargetView> m_blurRTV[4][2];
+	ComPtr<ID3D11ShaderResourceView> m_blurSRV[4][2];
+
+	ComPtr<ID3D11VertexShader> m_xBlurVertex;
+	ComPtr<ID3D11VertexShader> m_yBlurVertex;
+	ComPtr<ID3D11PixelShader> m_blurPixel;
+	ComPtr<ID3D11PixelShader> m_bloomPixel;
 };
 

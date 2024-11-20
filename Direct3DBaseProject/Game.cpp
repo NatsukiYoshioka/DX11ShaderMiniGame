@@ -123,6 +123,11 @@ void Game::Render()
     GameObjectManager::GetInstance()->DrawAmbientOcclusion();
     m_deviceResources->PIXEndEvent();
 
+    //Bloomポストプロセス
+    m_deviceResources->PIXBeginEvent(L"Bloom");
+    GameObjectManager::GetInstance()->DrawBloom(renderTarget, depthStencil);
+    m_deviceResources->PIXEndEvent();
+
     context;
 
     // Show the new frame.
@@ -143,11 +148,13 @@ void Game::Clear()
     context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
     context->ClearRenderTargetView(GameObjectManager::GetInstance()->GetNormalDepthRTV(), Colors::Black);
     context->ClearRenderTargetView(GameObjectManager::GetInstance()->GetLUTColorRTV(), Colors::Black);
-    ID3D11RenderTargetView* rtv[3] = { NULL,NULL,NULL };
+    context->ClearRenderTargetView(GameObjectManager::GetInstance()->GetBloomRTV(), Colors::Black);
+    ID3D11RenderTargetView* rtv[4] = { NULL,NULL,NULL,NULL };
     rtv[0] = renderTarget;
     rtv[1] = GameObjectManager::GetInstance()->GetNormalDepthRTV();
     rtv[2] = GameObjectManager::GetInstance()->GetLUTColorRTV();
-    context->OMSetRenderTargets(3, rtv, depthStencil);
+    rtv[3] = GameObjectManager::GetInstance()->GetBloomRTV();
+    context->OMSetRenderTargets(4, rtv, depthStencil);
 
     // Set the viewport.
     auto const viewport = m_deviceResources->GetScreenViewport();

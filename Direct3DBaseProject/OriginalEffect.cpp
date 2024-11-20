@@ -10,6 +10,7 @@ OriginalEffect::OriginalEffect(ID3D11Device* device, PixelType type, bool isSkin
 	m_skinnedBuffer(device),
 	m_lightBuffer(device),
 	m_LVPBuffer(device),
+	m_colorBuffer(device),
 	m_skinnedConstants(),
 	m_light()
 {
@@ -78,11 +79,14 @@ void OriginalEffect::Apply(ID3D11DeviceContext* context)
 	LVP.LVP = XMMatrixMultiply(m_lightView, m_projection);
 	m_LVPBuffer.SetData(context, LVP);
 
+	m_colorBuffer.SetData(context, m_color);
+
 	//定数バッファとSRVのセット
 	auto mb = m_matrixBuffer.GetBuffer();
 	auto sb = m_skinnedBuffer.GetBuffer();
 	auto lb = m_lightBuffer.GetBuffer();
 	auto lvpb = m_LVPBuffer.GetBuffer();
+	auto cb = m_colorBuffer.GetBuffer();
 	context->VSSetConstantBuffers(0, 1, &mb);
 	context->VSSetConstantBuffers(1, 1, &sb);
 	context->VSSetConstantBuffers(3, 1, &lvpb);
@@ -94,6 +98,10 @@ void OriginalEffect::Apply(ID3D11DeviceContext* context)
 		context->PSSetShaderResources(1, 1, m_texture2.GetAddressOf());
 		context->PSSetShaderResources(2, 1, m_texture3.GetAddressOf());
 		context->PSSetShaderResources(3, 1, m_texture4.GetAddressOf());
+	}
+	if (m_type == PixelType::Light)
+	{
+		context->PSSetConstantBuffers(4, 1, &cb);
 	}
 
 	//シェーダーの適用
@@ -223,4 +231,10 @@ void OriginalEffect::SetLightColor(Vector3 lightColor)
 void OriginalEffect::SetLightView(Matrix view)
 {
 	m_lightView = view;
+}
+
+//色の設定
+void OriginalEffect::SetColor(Vector3 color)
+{
+	m_color.color = color;
 }

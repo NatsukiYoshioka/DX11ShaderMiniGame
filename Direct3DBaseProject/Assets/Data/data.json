@@ -399,7 +399,10 @@
 
     "DeskTexture": "Wood_Oak.dds",
 
-    "GoalBoxScale": [ 10, 30, 10 ],
+    "GoalBox": "goal.sdkmesh",
+    "GoalBoxFixPosZ": 1.25,
+    "GoalBoxScale": [ 0.25, 1.5, 1 ],
+    "GoalBoxRotate": 0,
 
     "GiftBox": [
         "Gift.sdkmesh",

@@ -2,7 +2,7 @@
 
 cbuffer LightColor : register(b4)
 {
-    float4 color;
+    float3 color;
 };
 
 struct PSOut
@@ -17,7 +17,7 @@ PSOut main(PSOutput pout)
 {
     PSOut Out;
     
-    float4 finalColor = color;
+    float4 finalColor = float4(color.xyz, 0.f);
     Out.BackBuffer = finalColor;
     
     //法線ベクトル計算要素の出力
