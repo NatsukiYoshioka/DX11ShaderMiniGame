@@ -12,7 +12,14 @@ class OriginalEffect;
 class GoalObject:public GameObject
 {
 public:
+	/// <summary>
+	/// オブジェクトの初期化
+	/// </summary>
 	GoalObject(const wchar_t* fileName, Vector3 pos, float rotate);
+
+	/// <summary>
+	/// データ破棄
+	/// </summary>
 	~GoalObject();
 
 	/// <summary>
@@ -66,10 +73,10 @@ public:
 	void DrawShadow()override;
 
 private:
-	shared_ptr<OriginalEffect> m_effect;
-	Matrix m_world;
+	shared_ptr<OriginalEffect> m_effect;		//描画用シェーダー
+	Matrix m_world;								//ワールド座標行列
 
-	const float m_fixPosZ;
-	const Vector3 m_scale;
+	const float m_fixPosZ;		//Z軸調整量
+	const Vector3 m_scale;		//オブジェクトのスケール
 };
 

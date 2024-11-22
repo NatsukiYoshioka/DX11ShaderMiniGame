@@ -775,7 +775,7 @@ void GameObjectManager::CreateBloomDevice()
 	//iが基準テクセルからの距離
 	for (int i = 0;i < 8;i++)
 	{
-		constants.weights[i] = expf(-0.5f * (float)(i * i) / 2.f);
+		constants.weights[i] = expf(-0.5f * (float)(i * i) / 8.f);
 		total += 2.f * constants.weights[i];
 	}
 
@@ -805,6 +805,7 @@ void GameObjectManager::CreateBloomDevice()
 	}
 }
 
+//ブラー処理デバイス作成
 void GameObjectManager::CreateBlurDevice(float exWidth, float exHeight,
 	ComPtr<ID3D11Texture2D> texture[],
 	ComPtr<ID3D11RenderTargetView> rtv[],

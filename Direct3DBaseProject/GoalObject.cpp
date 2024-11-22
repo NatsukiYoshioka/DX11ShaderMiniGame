@@ -6,6 +6,7 @@
 #include"CameraAccessor.h"
 #include "GoalObject.h"
 
+//オブジェクトの初期化
 GoalObject::GoalObject(const wchar_t* fileName, Vector3 pos, float rotate):
 	m_world(),
 	m_fixPosZ(float(Json::GetInstance()->GetData()["GoalBoxFixPosZ"])),
@@ -49,9 +50,10 @@ GoalObject::GoalObject(const wchar_t* fileName, Vector3 pos, float rotate):
 	m_pos.z += m_fixPosZ;
 }
 
+//データ破棄
 GoalObject::~GoalObject()
 {
-
+	m_modelHandle.reset();
 }
 
 //タイトルでの初期化(処理なし)

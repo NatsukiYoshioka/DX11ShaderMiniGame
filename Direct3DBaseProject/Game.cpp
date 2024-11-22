@@ -114,6 +114,7 @@ void Game::Render()
     auto depthStencil = m_deviceResources->GetDepthStencilView();
     ID3D11RenderTargetView* rtv[2] = { NULL,NULL };
     rtv[0] = renderTarget;
+    rtv[1] = GameObjectManager::GetInstance()->GetBloomRTV();
     context->OMSetRenderTargets(2, rtv, depthStencil);
     GameObjectManager::GetInstance()->DrawLUT();
     m_deviceResources->PIXEndEvent();
@@ -149,12 +150,11 @@ void Game::Clear()
     context->ClearRenderTargetView(GameObjectManager::GetInstance()->GetNormalDepthRTV(), Colors::Black);
     context->ClearRenderTargetView(GameObjectManager::GetInstance()->GetLUTColorRTV(), Colors::Black);
     context->ClearRenderTargetView(GameObjectManager::GetInstance()->GetBloomRTV(), Colors::Black);
-    ID3D11RenderTargetView* rtv[4] = { NULL,NULL,NULL,NULL };
+    ID3D11RenderTargetView* rtv[3] = { NULL,NULL,NULL };
     rtv[0] = renderTarget;
     rtv[1] = GameObjectManager::GetInstance()->GetNormalDepthRTV();
     rtv[2] = GameObjectManager::GetInstance()->GetLUTColorRTV();
-    rtv[3] = GameObjectManager::GetInstance()->GetBloomRTV();
-    context->OMSetRenderTargets(4, rtv, depthStencil);
+    context->OMSetRenderTargets(3, rtv, depthStencil);
 
     // Set the viewport.
     auto const viewport = m_deviceResources->GetScreenViewport();

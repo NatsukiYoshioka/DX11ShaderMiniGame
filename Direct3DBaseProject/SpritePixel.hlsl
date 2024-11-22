@@ -6,7 +6,6 @@ struct PSOut
     float4 BackBuffer : SV_Target0;
     float4 Normal : SV_Target1;
     float4 Color : SV_Target2;
-    float4 Brightness : SV_Target3;
 };
 
 PSOut main(float4 color : COLOR0,
@@ -20,8 +19,6 @@ PSOut main(float4 color : COLOR0,
     Out.Normal.zw = color.a;
     
     Out.Color = Out.BackBuffer * Out.BackBuffer.a;
-    
-    Out.Brightness = float4(0.f, 0.f, 0.f, Out.BackBuffer.a);
     
     return Out;
 }
