@@ -288,12 +288,19 @@ private:
 	ComPtr<ID3D11Texture2D> m_bloomTexture;		//輝度出力用テクスチャ
 	ComPtr<ID3D11RenderTargetView> m_bloomRTV;	//輝度出力用RTV
 	ComPtr<ID3D11ShaderResourceView> m_bloomSRV;//輝度出力用リソースビュー
+
+	/// <summary>
+	/// ブラー用定数構造体
+	/// </summary>
 	struct __declspec(align(16)) BlurConstants
 	{
-		float weights[8];
+		float weights[8];		//ブラーの重み
 	};
-	ConstantBuffer<BlurConstants> m_blurBuffer;
+	ConstantBuffer<BlurConstants> m_blurBuffer;	//ブラー用定数バッファ
 
+	/// <summary>
+	/// ブラー処理デバイス作成
+	/// </summary>
 	void CreateBlurDevice(float exWidth,float exHeight,
 		ComPtr<ID3D11Texture2D> texture[],
 		ComPtr<ID3D11RenderTargetView> rtv[],
@@ -302,9 +309,9 @@ private:
 	ComPtr<ID3D11RenderTargetView> m_blurRTV[4][2];
 	ComPtr<ID3D11ShaderResourceView> m_blurSRV[4][2];
 
-	ComPtr<ID3D11VertexShader> m_xBlurVertex;
-	ComPtr<ID3D11VertexShader> m_yBlurVertex;
-	ComPtr<ID3D11PixelShader> m_blurPixel;
-	ComPtr<ID3D11PixelShader> m_bloomPixel;
+	ComPtr<ID3D11VertexShader> m_xBlurVertex;		//横ブラー用頂点シェーダー
+	ComPtr<ID3D11VertexShader> m_yBlurVertex;		//縦ブラー用頂点シェーダー
+	ComPtr<ID3D11PixelShader> m_blurPixel;			//ブラー用ピクセルシェーダー
+	ComPtr<ID3D11PixelShader> m_bloomPixel;			//ブルーム処理用ピクセルシェーダー
 };
 
