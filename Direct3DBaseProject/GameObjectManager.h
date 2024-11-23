@@ -169,6 +169,11 @@ public:
 	void HitCheck();
 
 	/// <summary>
+	/// スプライトの最終描画
+	/// </summary>
+	void DrawSprite();
+
+	/// <summary>
 	/// LUT描画(ポストプロセス)
 	/// </summary>
 	void DrawLUT();
@@ -220,6 +225,13 @@ private:
 	ComPtr<ID3D11ShaderResourceView> m_hitCheckShaderResourceView;	//見つかり判定用オブジェクトSRV
 	ComPtr<ID3D11ShaderResourceView> m_hitCheckCharacterSRV;		//見つかり判定用プレイヤーSRV
 
+	/// <summary>
+	/// スプライト用デバイス作成
+	/// </summary>
+	void CreateSpriteRenderDevice();
+	ComPtr<ID3D11Texture2D> m_spriteTexture;			//スプライト描画テクスチャ
+	ComPtr<ID3D11RenderTargetView> m_spriteRTV;			//スプライト描画レイヤー
+	ComPtr<ID3D11ShaderResourceView> m_spriteSRV;		//スプライトリソースビュー
 	ComPtr<ID3D11PixelShader> m_spritePixel;			//スプライト描画用ピクセルシェーダー
 
 	/// <summary>

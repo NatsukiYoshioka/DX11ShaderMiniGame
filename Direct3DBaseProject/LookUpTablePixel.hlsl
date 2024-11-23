@@ -42,11 +42,11 @@ PSOut main(PPPS pout):SV_Target0
     lutColor.b = lerp(left.b, right.b, frac(color.b * 15.f));
     
     color.rgb = lerp(color.rgb, lutColor.rgb, lutPower);
-
+    
     Out.BackBuffer = color;
     
     //ãPìxèoóÕ
-    float t = dot(color.xyz, float3(0.2125f, 0.7154f, 0.0721f));
+    float t = dot(color.xyz, float3(0.3f, 0.625f, 0.1f));
     if (t - 1.f < 0.f)
     {
         color = float4(0.f, 0.f, 0.f, 0.f);

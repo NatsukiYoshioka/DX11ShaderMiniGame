@@ -101,9 +101,6 @@
     <Filter Include="GameObject\DollHead\DollHeadAccessor">
       <UniqueIdentifier>{3f1b8444-a7be-4d0f-aa80-bb2f12adfd94}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObject\UI\FoundEffect">
-      <UniqueIdentifier>{d0621c59-edae-4ef9-b77d-72d88a09b435}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameObject\UI\GameOverUI">
       <UniqueIdentifier>{3c36fe8e-07f2-4bf7-a17b-2c25be20200c}</UniqueIdentifier>
     </Filter>
@@ -259,9 +256,6 @@
     <ClInclude Include="DollHeadAccessor.h">
       <Filter>GameObject\DollHead\DollHeadAccessor</Filter>
     </ClInclude>
-    <ClInclude Include="FoundEffect.h">
-      <Filter>GameObject\UI\FoundEffect</Filter>
-    </ClInclude>
     <ClInclude Include="GameOverUI.h">
       <Filter>GameObject\UI\GameOverUI</Filter>
     </ClInclude>
@@ -402,9 +396,6 @@
     </ClCompile>
     <ClCompile Include="DollHeadAccessor.cpp">
       <Filter>GameObject\DollHead\DollHeadAccessor</Filter>
-    </ClCompile>
-    <ClCompile Include="FoundEffect.cpp">
-      <Filter>GameObject\UI\FoundEffect</Filter>
     </ClCompile>
     <ClCompile Include="GameOverUI.cpp">
       <Filter>GameObject\UI\GameOverUI</Filter>

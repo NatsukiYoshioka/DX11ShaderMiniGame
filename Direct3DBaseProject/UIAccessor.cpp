@@ -5,7 +5,6 @@
 #include"GameOverUI.h"
 #include"GameClearUI.h"
 #include"ControlUI.h"
-#include"FoundEffect.h"
 #include"FoundUI.h"
 #include"ButtonA.h"
 #include"TitleLogo.h"
@@ -19,7 +18,6 @@ UIAccessor::UIAccessor()
 	m_UIs.push_back(new TitleLogo());
 	m_UIs.push_back(new ButtonA());
 	m_UIs.push_back(new FoundUI());
-	m_UIs.push_back(new FoundEffect());
 	m_UIs.push_back(new ControlUI());
 	m_UIs.push_back(new GameClearUI());
 	m_UIs.push_back(new GameOverUI());

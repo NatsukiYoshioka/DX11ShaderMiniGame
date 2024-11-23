@@ -129,6 +129,11 @@ void Game::Render()
     GameObjectManager::GetInstance()->DrawBloom(renderTarget, depthStencil);
     m_deviceResources->PIXEndEvent();
 
+    //UI‚ÌÅI•`‰æ
+    m_deviceResources->PIXBeginEvent(L"RenderUI");
+    GameObjectManager::GetInstance()->DrawSprite();
+    m_deviceResources->PIXEndEvent();
+
     context;
 
     // Show the new frame.

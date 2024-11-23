@@ -88,6 +88,8 @@ GameObjectManager::GameObjectManager():
 
 	CreateFindCheckDevice();
 
+	CreateSpriteRenderDevice();
+
 	CreateAmbientOcclusionDevice();
 
 	CreateLUTDevice();
@@ -163,10 +165,14 @@ void GameObjectManager::UpdateTitle()
 void GameObjectManager::DrawTitle()
 {
 	auto states = DeviceAccessor::GetInstance()->GetStates();
+	auto deviceAccessor = DeviceAccessor::GetInstance();
+	float clearColor[4] = { 0.f,0.f,0.f,0.f };
+	deviceAccessor->GetContext()->ClearRenderTargetView(m_spriteRTV.Get(), clearColor);
 	m_batch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied(),
 		nullptr, nullptr, nullptr, [=]
 		{
-			DeviceAccessor::GetInstance()->GetContext()->PSSetShader(m_spritePixel.Get(), NULL, 0);
+			deviceAccessor->GetContext()->OMSetRenderTargets(1, m_spriteRTV.GetAddressOf(), nullptr);
+			deviceAccessor->GetContext()->PSSetShader(m_spritePixel.Get(), NULL, 0);
 		});
 	for (int i = 0; i < m_gameObjects.size(); i++)
 	{
@@ -217,10 +223,14 @@ void GameObjectManager::Update()
 void GameObjectManager::Draw()
 {
 	auto states = DeviceAccessor::GetInstance()->GetStates();
+	auto deviceAccessor = DeviceAccessor::GetInstance();
+	float clearColor[4] = { 0.f,0.f,0.f,0.f };
+	deviceAccessor->GetContext()->ClearRenderTargetView(m_spriteRTV.Get(), clearColor);
 	m_batch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied(),
 		nullptr, nullptr, nullptr, [=]
 		{
-			DeviceAccessor::GetInstance()->GetContext()->PSSetShader(m_spritePixel.Get(), NULL, 0);
+			deviceAccessor->GetContext()->OMSetRenderTargets(1, m_spriteRTV.GetAddressOf(), nullptr);
+			deviceAccessor->GetContext()->PSSetShader(m_spritePixel.Get(), NULL, 0);
 		});
 	for (int i = 0; i < m_gameObjects.size(); i++)
 	{
@@ -267,10 +277,14 @@ void GameObjectManager::UpdateResult()
 void GameObjectManager::DrawResult()
 {
 	auto states = DeviceAccessor::GetInstance()->GetStates();
+	auto deviceAccessor = DeviceAccessor::GetInstance();
+	float clearColor[4] = { 0.f,0.f,0.f,0.f };
+	deviceAccessor->GetContext()->ClearRenderTargetView(m_spriteRTV.Get(), clearColor);
 	m_batch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied(),
 		nullptr, nullptr, nullptr, [=]
 		{
-			DeviceAccessor::GetInstance()->GetContext()->PSSetShader(m_spritePixel.Get(), NULL, 0);
+			deviceAccessor->GetContext()->OMSetRenderTargets(1, m_spriteRTV.GetAddressOf(), nullptr);
+			deviceAccessor->GetContext()->PSSetShader(m_spritePixel.Get(), NULL, 0);
 		});
 	for (int i = 0; i < m_gameObjects.size(); i++)
 	{
@@ -354,6 +368,40 @@ void GameObjectManager::DrawShadow()
 	{
 		m_gameObjects.at(i)->DrawShadow();
 	}
+}
+
+//スプライト用デバイス作成
+void GameObjectManager::CreateSpriteRenderDevice()
+{
+	auto device = DeviceAccessor::GetInstance()->GetDevice();
+	
+	D3D11_TEXTURE2D_DESC textureDesc = {};
+	textureDesc.Width = DeviceAccessor::GetInstance()->GetScreenSize().right;
+	textureDesc.Height = DeviceAccessor::GetInstance()->GetScreenSize().bottom;
+	textureDesc.MipLevels = 1;
+	textureDesc.ArraySize = 1;
+	textureDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	textureDesc.SampleDesc.Count = 1;
+	textureDesc.Usage = D3D11_USAGE_DEFAULT;
+	textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+	device->CreateTexture2D(&textureDesc, nullptr, m_spriteTexture.ReleaseAndGetAddressOf());
+
+	device->CreateRenderTargetView(m_spriteTexture.Get(), nullptr, m_spriteRTV.ReleaseAndGetAddressOf());
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+	srvDesc.Format = textureDesc.Format;
+	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	srvDesc.Texture2D.MipLevels = 1;
+	device->CreateShaderResourceView(m_spriteTexture.Get(), &srvDesc, m_spriteSRV.ReleaseAndGetAddressOf());
+}
+
+//スプライトの最終描画
+void GameObjectManager::DrawSprite()
+{
+	auto states = DeviceAccessor::GetInstance()->GetStates();
+	m_batch->Begin(SpriteSortMode_Deferred, states->AlphaBlend());
+	m_batch->Draw(m_spriteSRV.Get(), Vector2(0, 0));
+	m_batch->End();
 }
 
 //SSAO描画用デバイスの作成
@@ -668,7 +716,7 @@ void GameObjectManager::CreateLUTDevice()
 	textureDesc.Height = DeviceAccessor::GetInstance()->GetScreenSize().bottom;
 	textureDesc.MipLevels = 1;
 	textureDesc.ArraySize = 1;
-	textureDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	textureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	textureDesc.SampleDesc.Count = 1;
 	textureDesc.Usage = D3D11_USAGE_DEFAULT;
 	textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
@@ -717,6 +765,7 @@ void GameObjectManager::DrawLUT()
 	context->PSSetSamplers(0, 1, m_LUTSampler.GetAddressOf());
 	context->PSSetShaderResources(0, 1, m_LUTColorSRV.GetAddressOf());
 	context->PSSetShaderResources(1, 1, m_LUTSampleSRV.GetAddressOf());
+	context->PSSetShaderResources(2, 1, m_spriteSRV.GetAddressOf());
 
 	context->OMSetBlendState(states->Opaque(), 0, 0xffffffff);
 	context->OMSetDepthStencilState(states->DepthDefault(), 0);
