@@ -47,7 +47,8 @@ float GameObjectManager::Lerp(float a, float b, float t)
 GameObjectManager::GameObjectManager():
 	m_AOConstantBuffer(DeviceAccessor::GetInstance()->GetDevice()),
 	m_LUTConstantBuffer(DeviceAccessor::GetInstance()->GetDevice()),
-	m_blurBuffer(DeviceAccessor::GetInstance()->GetDevice())
+	m_blurBuffer(DeviceAccessor::GetInstance()->GetDevice()),
+	m_shadowTextureSize(float(Json::GetInstance()->GetData()["ShadowTextureSize"]))
 {
 	m_batch = make_unique<SpriteBatch>(DeviceAccessor::GetInstance()->GetContext());
 
@@ -299,8 +300,8 @@ void GameObjectManager::CreateShadowDevice()
 	//オブジェクトシャドウ描画用デバイスの作成
 	CD3D11_TEXTURE2D_DESC textureDesc(
 		DXGI_FORMAT_R32_TYPELESS,
-		15000,
-		15000,
+		m_shadowTextureSize,
+		m_shadowTextureSize,
 		1,
 		1,
 		D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL,
@@ -349,7 +350,7 @@ void GameObjectManager::SetObjectShadowRenderTarget()
 	ID3D11RenderTargetView* rtv = NULL;
 	context->OMSetRenderTargets(1, &rtv, m_objectShadowDepthView.Get());
 
-	CD3D11_VIEWPORT view(0.f, 0.f, float(15000), float(15000));
+	CD3D11_VIEWPORT view(0.f, 0.f, m_shadowTextureSize, m_shadowTextureSize);
 	context->RSSetViewports(1, &view);
 }
 

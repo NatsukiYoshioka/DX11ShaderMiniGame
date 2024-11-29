@@ -99,8 +99,8 @@ private:
 	float m_pitch;			//カメラの縦軸回転量
 	float m_yaw;			//カメラの横軸回転量
 
-	const float m_near;
-	const float m_far;
+	const float m_near;		//カメラの近描画距離
+	const float m_far;		//カメラの遠描画距離
 
 	float m_titlePosRatio;	//タイトルの座標移動割合
 

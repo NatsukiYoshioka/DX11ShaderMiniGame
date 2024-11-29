@@ -553,6 +553,8 @@
     "TransitionLayerDepth": 0,
     "TransitionAlphaAdd": 0.005,
 
+    "ShadowTextureSize": 15000,
+
     "HitCheckTextureSize": 2000,
 
     "MaxFoundTime": 4,

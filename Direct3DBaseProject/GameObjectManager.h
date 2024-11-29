@@ -213,6 +213,7 @@ private:
 	ComPtr<ID3D11Texture2D> m_objectShadowDepth;				//オブジェクトのテクスチャ
 	ComPtr<ID3D11DepthStencilView> m_objectShadowDepthView;		//オブジェクトの深度テストデバイス
 	ComPtr<ID3D11ShaderResourceView> m_objectShadowView;		//オブジェクトのテクスチャSRV
+	const float m_shadowTextureSize;							//影の解像度
 
 	/// <summary>
 	/// 見つかり判定用デバイスの作成

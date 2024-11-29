@@ -11,7 +11,8 @@
 //サウンドの初期化
 FoundSE::FoundSE():
 	m_pitch(0.f),
-	m_volume(float(Json::GetInstance()->GetData()["FoundSEVolume"]))
+	m_volume(0.f),
+	m_maxVolume(float(Json::GetInstance()->GetData()["FoundSEVolume"]))
 {
 	auto audioEngine = DeviceAccessor::GetInstance()->GetAudioEngine();
 	auto json = Json::GetInstance();
@@ -51,6 +52,7 @@ void FoundSE::Initialize()
 //ゲームシーンでの更新
 void FoundSE::Update()
 {
+	m_soundInstance->Play(true);
 	//見つかっていたらピッチを上げながら再生
 	if (PlayerAccessor::GetInstance()->GetPlayer()->GetBeFound() &&
 		PlayerAccessor::GetInstance()->GetPlayer()->GetNowAnimationState() != Player::AnimationState::Die&&
@@ -61,14 +63,27 @@ void FoundSE::Update()
 			auto foundUI = dynamic_cast<FoundUI*>(UIAccessor::GetInstance()->GetUIs().at(i));
 			if (foundUI)
 			{
-				m_soundInstance->SetPitch(m_pitch + 1.f * foundUI->GetTimeRatio());
+				m_pitch = 1.f * foundUI->GetTimeRatio();
+				m_soundInstance->SetPitch(m_pitch);
 			}
 		}
-		m_soundInstance->Play(true);
+		m_volume += 0.01f;
+		if (m_volume >= m_maxVolume)
+		{
+			m_volume = m_maxVolume;
+		}
+		m_soundInstance->SetVolume(m_volume);
 	}
 	else
 	{
-		m_soundInstance->Stop(true);
+		m_volume -= 0.1f;
+		if (m_volume <= 0.f)
+		{
+			m_volume = 0.f;
+			m_soundInstance->Stop(true);
+		}
+		m_soundInstance->SetVolume(m_volume);
+		m_soundInstance->SetPitch(m_pitch);
 	}
 }
 

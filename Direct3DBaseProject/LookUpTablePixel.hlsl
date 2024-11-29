@@ -46,7 +46,7 @@ PSOut main(PPPS pout):SV_Target0
     Out.BackBuffer = color;
     
     //ãPìxèoóÕ
-    float t = dot(color.xyz, float3(0.3f, 0.625f, 0.1f));
+    float t = dot(color.xyz, float3(0.3f, 0.625f, 0.125f));
     if (t - 1.f < 0.f)
     {
         color = float4(0.f, 0.f, 0.f, 0.f);

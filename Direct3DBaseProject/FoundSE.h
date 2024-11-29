@@ -51,7 +51,8 @@ public:
 	void UpdateResult()override;
 
 private:
-	float m_pitch;			//サウンドのピッチ
-	const float m_volume;	//サウンドのボリューム
+	float m_pitch;				//サウンドのピッチ
+	float m_volume;				//サウンドのボリューム
+	const float m_maxVolume;	//サウンドの最大ボリューム
 };
 
