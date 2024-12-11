@@ -122,6 +122,7 @@ void Camera::Initialize()
 	m_pitch = m_initializePitch;
 	m_yaw = m_initializeYaw;
 	m_distance = float(json->GetData()["CameraDistance"]);
+	m_firstDistance = float(Json::GetInstance()->GetData()["CameraFirstDistance"]);
 	m_isFinishMoving = false;
 	m_moveWaitTime = 0.f;
 }
